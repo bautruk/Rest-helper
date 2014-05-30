@@ -93,14 +93,14 @@ public class MainController {
         forwardRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 
         HttpResponse response = client.execute(forwardRequest);
+
         return mainService.constructSuccessResponse(response);
     }
 
     @RequestMapping(value = "/exchange", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
     public Response exchange(@RequestBody Map<String, String> requestData) throws IOException {
-        HttpClient client =
-                HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
+        HttpClient client = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
         HttpPost exchangeRequest = new HttpPost("http://localhost:25945/exchjson/service/do/login");
         exchangeRequest.setEntity(mainService.constructRequestBody(requestData.get("parameters").trim()));
         exchangeRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));

@@ -56,16 +56,6 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public Response constructErrorResponse(int statusCode, String statusMessage) {
-        String metaStr = statusCode + lineSeparator + statusMessage;
-
-        Response responseRepresentation = new Response();
-        responseRepresentation.setMeta(metaStr);
-
-        return responseRepresentation;
-    }
-
-    @Override
     public Response constructSuccessResponse(HttpResponse response) throws IOException {
         Response responseRepresentation = new Response();
 
