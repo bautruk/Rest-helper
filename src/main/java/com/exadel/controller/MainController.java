@@ -1,88 +1,112 @@
 package com.exadel.controller;
 
+import com.exadel.dto.PredefinedRequestData;
 import com.exadel.dto.Response;
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
+import com.exadel.service.MainService;
+import org.apache.http.*;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
+import org.apache.http.impl.client.LaxRedirectStrategy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/")
 @SessionAttributes(value = {"authToken"})
 public class MainController {
 
+    @Autowired
+    private MainService mainService;
+
     @RequestMapping("/")
     public String getMainPageName() {
         return "index";
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login/predefined", method = RequestMethod.GET)
     @ResponseBody
-    public Response authenticate(@RequestBody String requestParameters, Model model) throws IOException {
+    public PredefinedRequestData getPredefParamsForLogin() {
+        PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+        requestData.addRequestParam("username", "skoval");
+        requestData.addRequestParam("password", "Exadel1");
+        requestData.addRequestParam("domain", "botf03.net");
+
+        return requestData;
+    }
+
+    @RequestMapping(value = "/forwardUrl/predefined", method = RequestMethod.GET)
+    @ResponseBody
+    public PredefinedRequestData getPredefParamsForForward(@ModelAttribute("authToken") String authToken) {
+        // TODO: check if authToken is empty
+        PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+        requestData.addRequestHeader("X-UBSAS-Proxy-Authorization", authToken);
+        requestData.addRequestHeader("X-UBSAS-FORWARDURL", "http://www.google.com/");
+
+        return requestData;
+    }
+
+    @RequestMapping(value = "/exchange/predefined", method = RequestMethod.GET)
+    @ResponseBody
+    public PredefinedRequestData getPredefParamsForExchange(@ModelAttribute("authToken") String authToken) {
+        // TODO: check if authToken is empty
+        PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+
+        requestData.addRequestParam("username", "skoval");
+        requestData.addRequestParam("password", "Exadel1");
+        requestData.addRequestParam("domain", "botf03.net");
+        requestData.addRequestParam("RequestId", "authStepOne");
+        requestData.addRequestParam("jsonSupport", "true");
+
+        requestData.addRequestHeader("Authorization", "Bearer " + authToken);
+
+        return requestData;
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/json")
+    @ResponseBody
+    public Response authenticate(@RequestBody Map<String, String> requestData, Model model) throws IOException {
         HttpClient client = HttpClients.createDefault();
+
         HttpPost authRequest = new HttpPost("http://localhost:25945/service/session/logins");
-        authRequest.setEntity(constructRequestBody(requestParameters));
+        authRequest.setEntity(mainService.constructRequestBody(requestData.get("parameters").trim()));
 
         HttpResponse response = client.execute(authRequest);
-        Header[] headers = response.getHeaders("X-UBSAS-AuthToken");
-        model.addAttribute("authToken", headers[0].getValue());
+        Header[] responseHeaders = response.getHeaders("X-UBSAS-AuthToken");
+        model.addAttribute("authToken", responseHeaders[0].getValue());
 
-        return constructResponseRepresentation(response);
+        return mainService.constructSuccessResponse(response);
     }
 
-    private HttpEntity constructRequestBody(String requestParameters) {
-        List<NameValuePair> params = parseParametersString(requestParameters);
+    @RequestMapping(value = "/forwardUrl", method = RequestMethod.POST, consumes = "application/json")
+    @ResponseBody
+    public Response forwardUrl(@RequestBody Map<String, String> requestData) throws IOException {
+        HttpClient client = HttpClients.createDefault();
+        HttpGet forwardRequest = new HttpGet("http://localhost:25945/forwardurl");
+        forwardRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 
-        try {
-            return new UrlEncodedFormEntity(params, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        return null;
+        HttpResponse response = client.execute(forwardRequest);
+        return mainService.constructSuccessResponse(response);
     }
 
-    private List<NameValuePair> parseParametersString(String requestParameters) {
-        List<NameValuePair> parsedParameters = new ArrayList<NameValuePair>();
-        String[] pairs = requestParameters.split("&");
+    @RequestMapping(value = "/exchange", method = RequestMethod.POST, consumes = "application/json")
+    @ResponseBody
+    public Response exchange(@RequestBody Map<String, String> requestData) throws IOException {
+        HttpClient client =
+                HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
+        HttpPost exchangeRequest = new HttpPost("http://localhost:25945/exchjson/service/do/login");
+        exchangeRequest.setEntity(mainService.constructRequestBody(requestData.get("parameters").trim()));
+        exchangeRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 
-        for (String pair : pairs) {
-            String[] parsedPair = pair.split("=");
-            parsedParameters.add(new BasicNameValuePair(parsedPair[0], parsedPair[1]));
-        }
+        HttpResponse response = client.execute(exchangeRequest);
 
-        return parsedParameters;
-    }
-
-    private Response constructResponseRepresentation(HttpResponse response) throws IOException {
-        Response responseRepresentation = new Response();
-
-        String responseBodyStr = EntityUtils.toString(response.getEntity());
-        responseRepresentation.setBody(responseBodyStr);
-
-        String statusMessage = "Status message: " + response.getStatusLine().getReasonPhrase();
-        String statusCode = "Status code: " + response.getStatusLine().getStatusCode();
-        String headers = Arrays.toString(response.getAllHeaders());
-
-        String metaStr = statusMessage + "&#013;&#010;" + statusCode + "&#013;&#010;" + headers;
-
-        responseRepresentation.setMeta(metaStr);
-
-        return responseRepresentation;
+        return mainService.constructSuccessResponse(response);
     }
 }
