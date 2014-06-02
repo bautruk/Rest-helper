@@ -46,7 +46,7 @@ public class MainServiceImpl implements MainService {
         String[] headersStrArr = requestHeaders.split(lineSeparator);
 
         for (String headerStr : headersStrArr) {
-            String[] headerKeyVal = headerStr.split(headerKeyValDelim);
+            String[] headerKeyVal = headerStr.split(headerKeyValDelim, 2);
             headers.add(new BasicHeader(headerKeyVal[0], headerKeyVal[1]));
         }
 
