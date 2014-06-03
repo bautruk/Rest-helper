@@ -4,12 +4,19 @@ import com.exadel.dto.PredefinedRequestData;
 import com.exadel.dto.Response;
 import com.exadel.service.MainService;
 import org.apache.http.*;
+import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.protocol.ClientContext;
+import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.client.LaxRedirectStrategy;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +32,13 @@ public class MainController {
 
     @Autowired
     private MainService mainService;
+
+    private final String loginUrl = "http://localhost:25945/service/session/logins";
+    private final String forwardUrl = "http://localhost:25945/forwardurl";
+    private final String exchangeUrl = "http://localhost:25945/exchjson/service/do/login";
+
+    private HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
+    private HttpContext httpContext;
 
     @RequestMapping("/")
     public String getMainPageName() {
@@ -73,12 +87,12 @@ public class MainController {
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
     public Response authenticate(@RequestBody Map<String, String> requestData, Model model) throws IOException {
-        HttpClient client = HttpClients.createDefault();
-
-        HttpPost authRequest = new HttpPost("http://localhost:25945/service/session/logins");
+        HttpPost authRequest = new HttpPost(loginUrl);
         authRequest.setEntity(mainService.constructRequestBody(requestData.get("parameters").trim()));
 
-        HttpResponse response = client.execute(authRequest);
+        initHttpContext();
+
+        HttpResponse response = httpClient.execute(authRequest, httpContext);
         Header[] responseHeaders = response.getHeaders("X-UBSAS-AuthToken");
         model.addAttribute("authToken", responseHeaders[0].getValue());
 
@@ -88,11 +102,11 @@ public class MainController {
     @RequestMapping(value = "/forwardUrl", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
     public Response forwardUrl(@RequestBody Map<String, String> requestData) throws IOException {
-        HttpClient client = HttpClients.createDefault();
-        HttpGet forwardRequest = new HttpGet("http://localhost:25945/forwardurl");
+        httpClient = HttpClients.createDefault();
+        HttpGet forwardRequest = new HttpGet(forwardUrl);
         forwardRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 
-        HttpResponse response = client.execute(forwardRequest);
+        HttpResponse response = httpClient.execute(forwardRequest, httpContext);
 
         return mainService.constructSuccessResponse(response);
     }
@@ -100,13 +114,18 @@ public class MainController {
     @RequestMapping(value = "/exchange", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
     public Response exchange(@RequestBody Map<String, String> requestData) throws IOException {
-        HttpClient client = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
-        HttpPost exchangeRequest = new HttpPost("http://localhost:25945/exchjson/service/do/login");
+        HttpPost exchangeRequest = new HttpPost(exchangeUrl);
         exchangeRequest.setEntity(mainService.constructRequestBody(requestData.get("parameters").trim()));
         exchangeRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 
-        HttpResponse response = client.execute(exchangeRequest);
+        HttpResponse response = httpClient.execute(exchangeRequest, httpContext);
 
         return mainService.constructSuccessResponse(response);
+    }
+
+    private void initHttpContext() {
+        CookieStore cookieStore = new BasicCookieStore();
+        httpContext = new BasicHttpContext();
+        httpContext.setAttribute(HttpClientContext.COOKIE_STORE, cookieStore);
     }
 }
