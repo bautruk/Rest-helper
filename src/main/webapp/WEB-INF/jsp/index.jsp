@@ -14,6 +14,8 @@
           <input type="button" value="Forward" id="forwardUrlButton"/>
           <br/>
           <input type="button" value="Exchange" id="exchangeButton"/>
+          <br/>
+          <input type="button" value="Folders" id="foldersButton"/>
         </div>
         <%-- SECOND COLUMN (areas) --%>
         <div style="margin-left:200px;">

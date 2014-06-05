@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/")
-@SessionAttributes(value = {"authToken", "setCookieHeaderValue"})
+@SessionAttributes(value = {"authToken", "setCookieHeaderValue", "exchgToken"})
 public class MainController {
 
     @Autowired
@@ -33,6 +33,7 @@ public class MainController {
     private final String loginUrl = "http://localhost:80/service/session/logins";
     private final String forwardUrl = "http://localhost:80/forwardurl";
     private final String exchangeUrl = "http://localhost:80/exchjson/service/do/login";
+    private final String foldersUrl = "http://localhost:80/exchjson/service/do/folders";
 
     private HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
 
@@ -76,6 +77,23 @@ public class MainController {
         requestData.addRequestParam("jsonSupport", "true");
 
         requestData.addRequestHeader("Authorization", "Bearer " + authToken);
+
+        return requestData;
+    }
+
+    @RequestMapping(value = "/folders/predefined")
+    @ResponseBody
+    public PredefinedRequestData getPredefParamsForFolders(@ModelAttribute("authToken") String authToken,
+                                                           @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
+                                                           @ModelAttribute("exchgToken") String exchgToken) {
+        // TODO: check if authToken is empty
+        PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+
+        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
+        requestData.addRequestHeader("Authorization", "Bearer " + authToken);
+        requestData.addRequestHeader("X-UBSAS-Exchg-Token", exchgToken);
+
+        requestData.addRequestParam("AllTree", "false");
 
         return requestData;
     }
@@ -127,11 +145,24 @@ public class MainController {
 
         // check matcher.find()
         if (matcher.find() || (setCookieHeaderValue == null) || setCookieHeaderValue.isEmpty()) {
-            String exchToken = matcher.group(1);
-            model.addAttribute("setCookieHeaderValue", response.getFirstHeader("Set-Cookie").getValue() + "; X-UBSAS-Exchg-Token=" + exchToken);
+            String exchgToken = matcher.group(1);
+            model.addAttribute("setCookieHeaderValue", response.getFirstHeader("Set-Cookie").getValue());
+            model.addAttribute("exchgToken", exchgToken);
         }
 
         return result;
+    }
+
+    @RequestMapping(value = "/folders", method = RequestMethod.POST)
+    @ResponseBody
+    public Response folders(@RequestBody Map<String, String> requestData) throws IOException {
+        HttpPost foldersRequest = new HttpPost(foldersUrl);
+        foldersRequest.setEntity(mainService.constructRequestBody(requestData.get("parameters").trim()));
+        foldersRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
+
+        HttpResponse response = httpClient.execute(foldersRequest);
+
+        return mainService.constructSuccessResponse(response);
     }
 
     private Matcher getMatcherForSecurityToken(Response response) {

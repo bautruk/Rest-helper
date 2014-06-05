@@ -34,6 +34,11 @@ $(function() {
         fillPredefinedInfo('/exchange/predefined');
     });
 
+    $('#foldersButton').click(function() {
+        sendUrl = "/folders";
+        fillPredefinedInfo('/folders/predefined');
+    });
+
     $('#sendButton').click(function() {
         $.ajax({
             type: 'post',
