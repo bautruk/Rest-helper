@@ -1,6 +1,15 @@
 $(function() {
     var sendUrl = "";
 
+    $.ajaxSetup({
+        beforeSend:function(){
+            $("#loading").show();
+        },
+        complete:function(){
+            $("#loading").hide();
+        }
+    });
+
     var clearResponseAreas = function() {
         $('#responseMetaArea').val('');
         $('#responseBodyArea').val('');

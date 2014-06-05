@@ -20,6 +20,9 @@
         <%-- SECOND COLUMN (areas) --%>
         <div style="margin-left:200px;">
           <input type="button" value="Send" id="sendButton"/>
+          <span style="display: none;" id="loading">
+            <img src="${pageContext.request.contextPath}/resources/application/images/indicator.gif"/>
+          </span>
           <br/>
           <label for="parametersArea">Parameters</label>
           <textarea wrap="off" id="parametersArea" rows="10" style="width: 100%"></textarea>
