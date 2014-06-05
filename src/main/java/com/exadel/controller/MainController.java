@@ -3,20 +3,15 @@ package com.exadel.controller;
 import com.exadel.dto.PredefinedRequestData;
 import com.exadel.dto.Response;
 import com.exadel.service.MainService;
-import org.apache.http.*;
-import org.apache.http.client.CookieStore;
+import org.apache.http.Header;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.protocol.ClientContext;
-import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.cookie.Cookie;
-import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.client.LaxRedirectStrategy;
-import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.protocol.HttpContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,21 +19,22 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/")
-@SessionAttributes(value = {"authToken"})
+@SessionAttributes(value = {"authToken", "setCookieHeaderValue"})
 public class MainController {
 
     @Autowired
     private MainService mainService;
 
-    private final String loginUrl = "http://localhost:25945/service/session/logins";
-    private final String forwardUrl = "http://localhost:25945/forwardurl";
-    private final String exchangeUrl = "http://localhost:25945/exchjson/service/do/login";
+    private final String loginUrl = "http://localhost:80/service/session/logins";
+    private final String forwardUrl = "http://localhost:80/forwardurl";
+    private final String exchangeUrl = "http://localhost:80/exchjson/service/do/login";
 
     private HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
-    private HttpContext httpContext;
 
     @RequestMapping("/")
     public String getMainPageName() {
@@ -90,11 +86,11 @@ public class MainController {
         HttpPost authRequest = new HttpPost(loginUrl);
         authRequest.setEntity(mainService.constructRequestBody(requestData.get("parameters").trim()));
 
-        initHttpContext();
-
-        HttpResponse response = httpClient.execute(authRequest, httpContext);
+        HttpResponse response = httpClient.execute(authRequest);
         Header[] responseHeaders = response.getHeaders("X-UBSAS-AuthToken");
+
         model.addAttribute("authToken", responseHeaders[0].getValue());
+        model.addAttribute("setCookieHeaderValue", "");
 
         return mainService.constructSuccessResponse(response);
     }
@@ -106,26 +102,40 @@ public class MainController {
         HttpGet forwardRequest = new HttpGet(forwardUrl);
         forwardRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 
-        HttpResponse response = httpClient.execute(forwardRequest, httpContext);
+        HttpResponse response = httpClient.execute(forwardRequest);
 
         return mainService.constructSuccessResponse(response);
     }
 
     @RequestMapping(value = "/exchange", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
-    public Response exchange(@RequestBody Map<String, String> requestData) throws IOException {
+    public Response exchange(@RequestBody Map<String, String> requestData,
+                             @ModelAttribute(value = "setCookieHeaderValue") String setCookieHeaderValue,
+                             Model model) throws IOException {
+
         HttpPost exchangeRequest = new HttpPost(exchangeUrl);
         exchangeRequest.setEntity(mainService.constructRequestBody(requestData.get("parameters").trim()));
         exchangeRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 
-        HttpResponse response = httpClient.execute(exchangeRequest, httpContext);
+        if ((setCookieHeaderValue != null) && !setCookieHeaderValue.isEmpty()) {
+            exchangeRequest.setHeader("Cookie", setCookieHeaderValue);
+        }
 
-        return mainService.constructSuccessResponse(response);
+        HttpResponse response = httpClient.execute(exchangeRequest);
+        Response result = mainService.constructSuccessResponse(response);
+        Matcher matcher = getMatcherForSecurityToken(result);
+
+        // check matcher.find()
+        if (matcher.find() || (setCookieHeaderValue == null) || setCookieHeaderValue.isEmpty()) {
+            String exchToken = matcher.group(1);
+            model.addAttribute("setCookieHeaderValue", response.getFirstHeader("Set-Cookie").getValue() + "; X-UBSAS-Exchg-Token=" + exchToken);
+        }
+
+        return result;
     }
 
-    private void initHttpContext() {
-        CookieStore cookieStore = new BasicCookieStore();
-        httpContext = new BasicHttpContext();
-        httpContext.setAttribute(HttpClientContext.COOKIE_STORE, cookieStore);
+    private Matcher getMatcherForSecurityToken(Response response) {
+        Pattern pattern = Pattern.compile("\"SecurityToken\":\"(.*)\"");
+        return pattern.matcher(response.getBody());
     }
 }
