@@ -75,7 +75,7 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public PredefinedRequestData createPredefinedRequestData() {
-        return new PredefinedRequestData(lineSeparator);
+        return new PredefinedRequestData(headerKeyValDelim, paramKeyValDelim, lineSeparator);
     }
 
     public String getParamKeyValDelim() {

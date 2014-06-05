@@ -54,7 +54,6 @@ public class MainController {
     @RequestMapping(value = "/forwardUrl/predefined", method = RequestMethod.GET)
     @ResponseBody
     public PredefinedRequestData predefParamsForForward(@ModelAttribute("authToken") String authToken) {
-        // TODO: check if authToken is empty
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestHeader("X-UBSAS-Proxy-Authorization", authToken);
         requestData.addRequestHeader("X-UBSAS-FORWARDURL", "http://www.google.com/");
@@ -65,16 +64,14 @@ public class MainController {
     @RequestMapping(value = "/exchangeLogin/predefined", method = RequestMethod.GET)
     @ResponseBody
     public PredefinedRequestData predefParamsForExchgLogin(@ModelAttribute("authToken") String authToken) {
-        // TODO: check if authToken is empty
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+        requestData.addRequestHeader("Authorization", "Bearer " + authToken);
 
         requestData.addRequestParam("username", "skoval");
         requestData.addRequestParam("password", "Exadel1");
         requestData.addRequestParam("domain", "botf03.net");
         requestData.addRequestParam("RequestId", "authStepOne");
         requestData.addRequestParam("jsonSupport", "true");
-
-        requestData.addRequestHeader("Authorization", "Bearer " + authToken);
 
         return requestData;
     }
@@ -84,9 +81,7 @@ public class MainController {
     public PredefinedRequestData predefParamsForExchgFolders(@ModelAttribute("authToken") String authToken,
                                                              @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
                                                              @ModelAttribute("exchgToken") String exchgToken) {
-        // TODO: check if authToken is empty
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-
         requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("Authorization", "Bearer " + authToken);
         requestData.addRequestHeader("X-UBSAS-Exchg-Token", exchgToken);
@@ -102,9 +97,7 @@ public class MainController {
                                                                 @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
                                                                 @ModelAttribute("exchgToken") String exchgToken,
                                                                 @ModelAttribute("entryId") String entryId) {
-        // TODO: check if authToken is empty
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-
         requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("Authorization", "Bearer " + authToken);
         requestData.addRequestHeader("X-UBSAS-Exchg-Token", exchgToken);
@@ -121,14 +114,14 @@ public class MainController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
-    public Response authenticate(@RequestBody Map<String, String> requestData, Model model) throws IOException {
+    public Response login(@RequestBody Map<String, String> requestData, Model model) throws IOException {
         HttpClient httpClient = HttpClients.createDefault();
         HttpPost authRequest = new HttpPost(loginUrl);
         authRequest.setEntity(mainService.constructRequestBody(requestData.get("parameters").trim()));
 
         HttpResponse response = httpClient.execute(authRequest);
-        Header tokenHeader = response.getFirstHeader("X-UBSAS-AuthToken");
 
+        Header tokenHeader = response.getFirstHeader("X-UBSAS-AuthToken");
         model.addAttribute("authToken", tokenHeader.getValue());
         model.addAttribute("setCookieHeaderValue", "");
 
@@ -149,27 +142,20 @@ public class MainController {
 
     @RequestMapping(value = "/exchangeLogin", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
-    public Response exchangeLogin(@RequestBody Map<String, String> requestData,
-                                  @ModelAttribute(value = "setCookieHeaderValue") String setCookieHeaderValue,
-                                  Model model) throws IOException {
+    public Response exchangeLogin(@RequestBody Map<String, String> requestData, Model model) throws IOException {
 
         HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
         HttpPost exchangeRequest = new HttpPost(exchangeLoginUrl);
         exchangeRequest.setEntity(mainService.constructRequestBody(requestData.get("parameters").trim()));
         exchangeRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 
-        if ((setCookieHeaderValue != null) && !setCookieHeaderValue.isEmpty()) {
-            exchangeRequest.setHeader("Cookie", setCookieHeaderValue);
-        }
-
         HttpResponse response = httpClient.execute(exchangeRequest);
         Response result = mainService.constructSuccessResponse(response);
         Matcher matcher = getMatcherForSecurityToken(result);
 
-        if (matcher.find() || (setCookieHeaderValue == null) || setCookieHeaderValue.isEmpty()) {
-            String exchgToken = matcher.group(1);
+        if (matcher.find()) {
             model.addAttribute("setCookieHeaderValue", getHeaderBeginWith(response, "Set-Cookie", "X-UBSAS-SESSIONID").getValue());
-            model.addAttribute("exchgToken", exchgToken);
+            model.addAttribute("exchgToken", matcher.group(1));
         }
 
         return result;
