@@ -4,7 +4,6 @@ import com.exadel.dto.PredefinedRequestData;
 import com.exadel.dto.Response;
 import com.exadel.service.MainService;
 import org.apache.http.Header;
-import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -24,7 +23,7 @@ import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/")
-@SessionAttributes(value = {"authToken", "setCookieHeaderValue", "exchgToken"})
+@SessionAttributes(value = {"authToken", "setCookieHeaderValue", "exchgToken", "entryId"})
 public class MainController {
 
     @Autowired
@@ -32,10 +31,9 @@ public class MainController {
 
     private final String loginUrl = "http://localhost:80/service/session/logins";
     private final String forwardUrl = "http://localhost:80/forwardurl";
-    private final String exchangeUrl = "http://localhost:80/exchjson/service/do/login";
-    private final String foldersUrl = "http://localhost:80/exchjson/service/do/folders";
-
-    private HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
+    private final String exchangeLoginUrl = "http://localhost:80/exchjson/service/do/login";
+    private final String exchangeFoldersUrl = "http://localhost:80/exchjson/service/do/folders";
+    private final String exchangeFolderdataUrl = "http://localhost:80/exchjson/service/do/folderdata";
 
     @RequestMapping("/")
     public String getMainPageName() {
@@ -44,7 +42,7 @@ public class MainController {
 
     @RequestMapping(value = "/login/predefined", method = RequestMethod.GET)
     @ResponseBody
-    public PredefinedRequestData getPredefParamsForLogin() {
+    public PredefinedRequestData predefParamsForLogin() {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestParam("username", "skoval");
         requestData.addRequestParam("password", "Exadel1");
@@ -55,7 +53,7 @@ public class MainController {
 
     @RequestMapping(value = "/forwardUrl/predefined", method = RequestMethod.GET)
     @ResponseBody
-    public PredefinedRequestData getPredefParamsForForward(@ModelAttribute("authToken") String authToken) {
+    public PredefinedRequestData predefParamsForForward(@ModelAttribute("authToken") String authToken) {
         // TODO: check if authToken is empty
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestHeader("X-UBSAS-Proxy-Authorization", authToken);
@@ -64,9 +62,9 @@ public class MainController {
         return requestData;
     }
 
-    @RequestMapping(value = "/exchange/predefined", method = RequestMethod.GET)
+    @RequestMapping(value = "/exchangeLogin/predefined", method = RequestMethod.GET)
     @ResponseBody
-    public PredefinedRequestData getPredefParamsForExchange(@ModelAttribute("authToken") String authToken) {
+    public PredefinedRequestData predefParamsForExchgLogin(@ModelAttribute("authToken") String authToken) {
         // TODO: check if authToken is empty
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
 
@@ -81,11 +79,11 @@ public class MainController {
         return requestData;
     }
 
-    @RequestMapping(value = "/folders/predefined")
+    @RequestMapping(value = "/exchangeFolders/predefined")
     @ResponseBody
-    public PredefinedRequestData getPredefParamsForFolders(@ModelAttribute("authToken") String authToken,
-                                                           @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
-                                                           @ModelAttribute("exchgToken") String exchgToken) {
+    public PredefinedRequestData predefParamsForExchgFolders(@ModelAttribute("authToken") String authToken,
+                                                             @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
+                                                             @ModelAttribute("exchgToken") String exchgToken) {
         // TODO: check if authToken is empty
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
 
@@ -98,16 +96,40 @@ public class MainController {
         return requestData;
     }
 
+    @RequestMapping(value = "/exchangeFolderData/predefined")
+    @ResponseBody
+    public PredefinedRequestData predefParamsForExchgFolderData(@ModelAttribute("authToken") String authToken,
+                                                                @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
+                                                                @ModelAttribute("exchgToken") String exchgToken,
+                                                                @ModelAttribute("entryId") String entryId) {
+        // TODO: check if authToken is empty
+        PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+
+        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
+        requestData.addRequestHeader("Authorization", "Bearer " + authToken);
+        requestData.addRequestHeader("X-UBSAS-Exchg-Token", exchgToken);
+
+        requestData.addRequestParam("EntryID", entryId);
+        requestData.addRequestParam("StartIndex", "0");
+        requestData.addRequestParam("PageSize", "500");
+        requestData.addRequestParam("ShortHeader", "true");
+        requestData.addRequestParam("WithBody", "false");
+        requestData.addRequestParam("ModifiedSince", "0");
+
+        return requestData;
+    }
+
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
     public Response authenticate(@RequestBody Map<String, String> requestData, Model model) throws IOException {
+        HttpClient httpClient = HttpClients.createDefault();
         HttpPost authRequest = new HttpPost(loginUrl);
         authRequest.setEntity(mainService.constructRequestBody(requestData.get("parameters").trim()));
 
         HttpResponse response = httpClient.execute(authRequest);
-        Header[] responseHeaders = response.getHeaders("X-UBSAS-AuthToken");
+        Header tokenHeader = response.getFirstHeader("X-UBSAS-AuthToken");
 
-        model.addAttribute("authToken", responseHeaders[0].getValue());
+        model.addAttribute("authToken", tokenHeader.getValue());
         model.addAttribute("setCookieHeaderValue", "");
 
         return mainService.constructSuccessResponse(response);
@@ -116,7 +138,7 @@ public class MainController {
     @RequestMapping(value = "/forwardUrl", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
     public Response forwardUrl(@RequestBody Map<String, String> requestData) throws IOException {
-        httpClient = HttpClients.createDefault();
+        HttpClient httpClient = HttpClients.createDefault();
         HttpGet forwardRequest = new HttpGet(forwardUrl);
         forwardRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 
@@ -125,13 +147,14 @@ public class MainController {
         return mainService.constructSuccessResponse(response);
     }
 
-    @RequestMapping(value = "/exchange", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/exchangeLogin", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
-    public Response exchange(@RequestBody Map<String, String> requestData,
-                             @ModelAttribute(value = "setCookieHeaderValue") String setCookieHeaderValue,
-                             Model model) throws IOException {
+    public Response exchangeLogin(@RequestBody Map<String, String> requestData,
+                                  @ModelAttribute(value = "setCookieHeaderValue") String setCookieHeaderValue,
+                                  Model model) throws IOException {
 
-        HttpPost exchangeRequest = new HttpPost(exchangeUrl);
+        HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
+        HttpPost exchangeRequest = new HttpPost(exchangeLoginUrl);
         exchangeRequest.setEntity(mainService.constructRequestBody(requestData.get("parameters").trim()));
         exchangeRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 
@@ -143,20 +166,39 @@ public class MainController {
         Response result = mainService.constructSuccessResponse(response);
         Matcher matcher = getMatcherForSecurityToken(result);
 
-        // check matcher.find()
         if (matcher.find() || (setCookieHeaderValue == null) || setCookieHeaderValue.isEmpty()) {
             String exchgToken = matcher.group(1);
-            model.addAttribute("setCookieHeaderValue", response.getFirstHeader("Set-Cookie").getValue());
+            model.addAttribute("setCookieHeaderValue", getHeaderBeginWith(response, "Set-Cookie", "X-UBSAS-SESSIONID").getValue());
             model.addAttribute("exchgToken", exchgToken);
         }
 
         return result;
     }
 
-    @RequestMapping(value = "/folders", method = RequestMethod.POST)
+    @RequestMapping(value = "/exchangeFolders", method = RequestMethod.POST)
     @ResponseBody
-    public Response folders(@RequestBody Map<String, String> requestData) throws IOException {
-        HttpPost foldersRequest = new HttpPost(foldersUrl);
+    public Response exchangeFolders(@RequestBody Map<String, String> requestData, Model model) throws IOException {
+        HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
+        HttpPost foldersRequest = new HttpPost(exchangeFoldersUrl);
+        foldersRequest.setEntity(mainService.constructRequestBody(requestData.get("parameters").trim()));
+        foldersRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
+
+        HttpResponse response = httpClient.execute(foldersRequest);
+        Response result = mainService.constructSuccessResponse(response);
+        Matcher matcher = getMatcherForEntryID(result);
+
+        if (matcher.find()) {
+            model.addAttribute("entryId", matcher.group(1));
+        }
+
+        return result;
+    }
+
+    @RequestMapping(value = "/exchangeFolderData", method = RequestMethod.POST)
+    @ResponseBody
+    public Response exchangeFolderData(@RequestBody Map<String, String> requestData) throws IOException {
+        HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
+        HttpPost foldersRequest = new HttpPost(exchangeFolderdataUrl);
         foldersRequest.setEntity(mainService.constructRequestBody(requestData.get("parameters").trim()));
         foldersRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 
@@ -168,5 +210,20 @@ public class MainController {
     private Matcher getMatcherForSecurityToken(Response response) {
         Pattern pattern = Pattern.compile("\"SecurityToken\":\"(.*)\"");
         return pattern.matcher(response.getBody());
+    }
+
+    private Matcher getMatcherForEntryID(Response response) {
+        Pattern pattern = Pattern.compile("\"Name\":\"Inbox\",\\s*\"EntryID\":\"([^\"]+)");
+        return pattern.matcher(response.getBody());
+    }
+
+    private Header getHeaderBeginWith(HttpResponse response, String name, String begin) {
+        for (Header header : response.getHeaders(name)) {
+            if (header.getValue().startsWith(begin)) {
+                return header;
+            }
+        }
+
+        return null;
     }
 }

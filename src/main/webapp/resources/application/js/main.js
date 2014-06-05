@@ -28,24 +28,29 @@ $(function() {
         });
     };
 
-    $('#loginButton').click(function() {
+    $('#loginBtn').click(function() {
         sendUrl = "/login";
         fillPredefinedInfo('/login/predefined');
     });
 
-    $('#forwardUrlButton').click(function() {
+    $('#forwardUrlBtn').click(function() {
         sendUrl = "/forwardUrl";
         fillPredefinedInfo('/forwardUrl/predefined');
     });
 
-    $('#exchangeButton').click(function() {
-        sendUrl = "/exchange";
-        fillPredefinedInfo('/exchange/predefined');
+    $('#exchangeLoginBtn').click(function() {
+        sendUrl = "/exchangeLogin";
+        fillPredefinedInfo('/exchangeLogin/predefined');
     });
 
-    $('#foldersButton').click(function() {
-        sendUrl = "/folders";
-        fillPredefinedInfo('/folders/predefined');
+    $('#exchangeFoldersBtn').click(function() {
+        sendUrl = "/exchangeFolders";
+        fillPredefinedInfo('/exchangeFolders/predefined');
+    });
+
+    $('#exchangeFolderDataBtn').click(function() {
+        sendUrl = "/exchangeFolderData";
+        fillPredefinedInfo('/exchangeFolderData/predefined');
     });
 
     $('#sendButton').click(function() {

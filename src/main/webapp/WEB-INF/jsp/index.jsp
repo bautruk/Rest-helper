@@ -9,20 +9,27 @@
       <div>
         <%-- FIRST COLUMN (buttons) --%>
         <div style="width:200px;float:left;display:inline-block;">
-          <input type="button" value="Login" id="loginButton"/>
+          <p>REQUESTS: </p>
+          <input type="button" value="Login" id="loginBtn"/>
           <br/>
-          <input type="button" value="Forward" id="forwardUrlButton"/>
+          <hr/>
+          <input type="button" value="Forward" id="forwardUrlBtn"/>
           <br/>
-          <input type="button" value="Exchange" id="exchangeButton"/>
+          <hr/>
+          <input type="button" value="Exchange login" id="exchangeLoginBtn"/>
           <br/>
-          <input type="button" value="Folders" id="foldersButton"/>
-        </div>
-        <%-- SECOND COLUMN (areas) --%>
-        <div style="margin-left:200px;">
-          <input type="button" value="Send" id="sendButton"/>
+          <input type="button" value="Exchange folders" id="exchangeFoldersBtn"/>
+          <br/>
+          <input type="button" value="Exchange folder data" id="exchangeFolderDataBtn"/>
+          <br/>
+          <hr/>
           <span style="display: none;" id="loading">
             <img src="${pageContext.request.contextPath}/resources/application/images/indicator.gif"/>
           </span>
+        </div>
+        <%-- SECOND COLUMN (areas) --%>
+        <div style="margin-left:200px; padding-left: 20px">
+          <input type="button" value="Send" id="sendButton"/>
           <br/>
           <label for="parametersArea">Parameters</label>
           <textarea wrap="off" id="parametersArea" rows="10" style="width: 100%"></textarea>
