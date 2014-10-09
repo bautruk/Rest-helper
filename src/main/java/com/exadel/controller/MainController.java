@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/")
-@SessionAttributes(value = {"authToken", "setCookieHeaderValue", "exchgToken", "entryId"})
+@SessionAttributes(value = {"authToken", "setCookieHeaderValue", "exchgToken", "inboxEntryId", "contactsEntryId"})
 public class MainController {
 
     @Autowired
@@ -34,6 +34,7 @@ public class MainController {
     private final String exchangeLoginUrl = "http://localhost:80/exchjson/service/do/login";
     private final String exchangeFoldersUrl = "http://localhost:80/exchjson/service/do/folders";
     private final String exchangeFolderdataUrl = "http://localhost:80/exchjson/service/do/folderdata";
+    private final String exchangeContactsdataUrl = "http://localhost:80/exchjson/service/do/contactsdata";
 
     @RequestMapping("/")
     public String getMainPageName() {
@@ -44,8 +45,8 @@ public class MainController {
     @ResponseBody
     public PredefinedRequestData predefParamsForLogin() {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestParam("username", "skoval");
-        requestData.addRequestParam("password", "Exadel1");
+        requestData.addRequestParam("username", "milshtyu");
+        requestData.addRequestParam("password", "Frame1hawk");
         requestData.addRequestParam("domain", "botf03.net");
 
         return requestData;
@@ -67,8 +68,8 @@ public class MainController {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestHeader("Authorization", "Bearer " + authToken);
 
-        requestData.addRequestParam("username", "skoval");
-        requestData.addRequestParam("password", "Exadel1");
+        requestData.addRequestParam("username", "milshtyu");
+        requestData.addRequestParam("password", "Frame1hawk");
         requestData.addRequestParam("domain", "botf03.net");
         requestData.addRequestParam("RequestId", "authStepOne");
         requestData.addRequestParam("jsonSupport", "true");
@@ -96,7 +97,7 @@ public class MainController {
     public PredefinedRequestData predefParamsForExchgFolderData(@ModelAttribute("authToken") String authToken,
                                                                 @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
                                                                 @ModelAttribute("exchgToken") String exchgToken,
-                                                                @ModelAttribute("entryId") String entryId) {
+                                                                @ModelAttribute("inboxEntryId") String entryId) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("Authorization", "Bearer " + authToken);
@@ -108,6 +109,22 @@ public class MainController {
         requestData.addRequestParam("ShortHeader", "true");
         requestData.addRequestParam("WithBody", "false");
         requestData.addRequestParam("ModifiedSince", "0");
+
+        return requestData;
+    }
+
+    @RequestMapping(value = "/exchangeContactsData/predefined")
+    @ResponseBody
+    public PredefinedRequestData predefParamsForExchgContactsData(@ModelAttribute("authToken") String authToken,
+                                                                  @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
+                                                                  @ModelAttribute("exchgToken") String exchgToken,
+                                                                  @ModelAttribute("contactsEntryId") String entryId) {
+        PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
+        requestData.addRequestHeader("Authorization", "Bearer " + authToken);
+        requestData.addRequestHeader("X-UBSAS-Exchg-Token", exchgToken);
+
+        requestData.addRequestParam("EntryID", entryId);
 
         return requestData;
     }
@@ -171,10 +188,15 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(foldersRequest);
         Response result = mainService.constructSuccessResponse(response);
-        Matcher matcher = getMatcherForEntryID(result);
 
-        if (matcher.find()) {
-            model.addAttribute("entryId", matcher.group(1));
+        Matcher inboxMatcher = getMatcherForEntryID(result, "Inbox");
+        if (inboxMatcher.find()) {
+            model.addAttribute("inboxEntryId", inboxMatcher.group(1));
+        }
+
+        Matcher contactsMatcher = getMatcherForEntryID(result, "Contacts");
+        if (contactsMatcher.find()) {
+            model.addAttribute("contactsEntryId", contactsMatcher.group(1));
         }
 
         return result;
@@ -193,13 +215,26 @@ public class MainController {
         return mainService.constructSuccessResponse(response);
     }
 
+    @RequestMapping(value = "/exchangeContactsData", method = RequestMethod.POST)
+    @ResponseBody
+    public Response exchangeContactsData(@RequestBody Map<String, String> requestData) throws IOException {
+        HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
+        HttpPost contactsRequest = new HttpPost(exchangeContactsdataUrl);
+        contactsRequest.setEntity(mainService.constructRequestBody(requestData.get("parameters").trim()));
+        contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
+
+        HttpResponse response = httpClient.execute(contactsRequest);
+
+        return mainService.constructSuccessResponse(response);
+    }
+
     private Matcher getMatcherForSecurityToken(Response response) {
         Pattern pattern = Pattern.compile("\"SecurityToken\":\"(.*)\"");
         return pattern.matcher(response.getBody());
     }
 
-    private Matcher getMatcherForEntryID(Response response) {
-        Pattern pattern = Pattern.compile("\"Name\":\"Inbox\",\\s*\"EntryID\":\"([^\"]+)");
+    private Matcher getMatcherForEntryID(Response response, String name) {
+        Pattern pattern = Pattern.compile("\"Name\":\"" + name + "\",\\s*\"EntryID\":\"([^\"]+)");
         return pattern.matcher(response.getBody());
     }
 

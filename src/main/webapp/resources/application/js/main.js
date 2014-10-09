@@ -53,6 +53,11 @@ $(function() {
         fillPredefinedInfo('/exchangeFolderData/predefined');
     });
 
+    $('#exchangeContactsDataBtn').click(function() {
+        sendUrl = "/exchangeContactsData";
+        fillPredefinedInfo('/exchangeContactsData/predefined');
+    });
+
     $('#sendButton').click(function() {
         $.ajax({
             type: 'post',
