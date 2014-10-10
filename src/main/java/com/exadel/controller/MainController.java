@@ -48,6 +48,12 @@ public class MainController {
         requestData.addRequestParam("username", "milshtyu");
         requestData.addRequestParam("password", "Frame1hawk");
         requestData.addRequestParam("domain", "botf03.net");
+        requestData.addRequestParam("deviceId", "sfdfwefwefds");
+        requestData.addRequestParam("deviceIp", "192.168.0.12");
+        requestData.addRequestParam("os", "IOS");
+        requestData.addRequestParam("osVersion", "7.1");
+        requestData.addRequestParam("application", "BOTF Mobile");
+        requestData.addRequestParam("applicationVersion", "1");
 
         return requestData;
     }
@@ -139,7 +145,9 @@ public class MainController {
         HttpResponse response = httpClient.execute(authRequest);
 
         Header tokenHeader = response.getFirstHeader("X-UBSAS-AuthToken");
-        model.addAttribute("authToken", tokenHeader.getValue());
+        if (tokenHeader != null) {
+            model.addAttribute("authToken", tokenHeader.getValue());
+        }
         model.addAttribute("setCookieHeaderValue", "");
 
         return mainService.constructSuccessResponse(response);
