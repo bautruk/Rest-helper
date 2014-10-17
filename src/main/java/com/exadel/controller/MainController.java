@@ -29,12 +29,15 @@ public class MainController {
     @Autowired
     private MainService mainService;
 
-    private final String loginUrl = "http://localhost:80/service/session/logins";
-    private final String forwardUrl = "http://localhost:80/forwardurl";
-    private final String exchangeLoginUrl = "http://localhost:80/exchjson/service/do/login";
-    private final String exchangeFoldersUrl = "http://localhost:80/exchjson/service/do/folders";
-    private final String exchangeFolderdataUrl = "http://localhost:80/exchjson/service/do/folderdata";
-    private final String exchangeContactsdataUrl = "http://localhost:80/exchjson/service/do/contactsdata";
+//    private final String baseUrl = "http://localhost:80/";
+    private final String baseUrl = "http://msa.botf03.net:180/";
+
+    private final String loginUrl = baseUrl + "service/session/logins";
+    private final String forwardUrl = baseUrl + "forwardurl";
+    private final String exchangeLoginUrl = baseUrl + "exchjson/service/do/login";
+    private final String exchangeFoldersUrl = baseUrl + "exchjson/service/do/folders";
+    private final String exchangeFolderdataUrl = baseUrl + "exchjson/service/do/folderdata";
+    private final String exchangeContactsdataUrl = baseUrl + "exchjson/service/do/contactsdata";
 
     @RequestMapping("/")
     public String getMainPageName() {
