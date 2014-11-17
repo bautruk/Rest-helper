@@ -8,33 +8,53 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class MainServiceImpl implements MainService {
+    private static final String CONTENT_TYPE_FORM = "form";
+    private static final String CONTENT_TYPE_JSON = "json";
+
+    private ObjectMapper jsonMapper;
     private String paramKeyValDelim;
-
     private String headerKeyValDelim;
-
     private String lineSeparator;
 
     @Override
-    public HttpEntity constructRequestBody(String requestParameters) {
-        List<NameValuePair> params = parseParametersString(requestParameters);
+    public HttpEntity constructRequestBody(Map<String, String> requestData) {
+        String contentType = requestData.get("type");
+        String requestParameters = requestData.get("parameters").trim();
 
-        try {
-            return new UrlEncodedFormEntity(params, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        if (CONTENT_TYPE_FORM.equals(contentType)) {
+            try {
+                return new UrlEncodedFormEntity(parseParametersStringForm(requestParameters), "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        } else if (CONTENT_TYPE_JSON.equals(contentType)) {
+            try {
+                return new StringEntity(jsonMapper.writeValueAsString(parseParametersStringJson(requestParameters)), ContentType.APPLICATION_JSON);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (JsonMappingException e) {
+                e.printStackTrace();
+            } catch (JsonGenerationException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         return null;
@@ -102,16 +122,30 @@ public class MainServiceImpl implements MainService {
         this.lineSeparator = lineSeparator;
     }
 
-    private List<NameValuePair> parseParametersString(String requestParameters) {
+    public void setJsonMapper(ObjectMapper jsonMapper) {
+        this.jsonMapper = jsonMapper;
+    }
+
+    private List<NameValuePair> parseParametersStringForm(String requestParameters) {
         List<NameValuePair> parsedParameters = new ArrayList<NameValuePair>();
+        HashMap<String, String> parameters = parseParametersStringJson(requestParameters);
+        for (String parameter : parameters.keySet()) {
+            parsedParameters.add(new BasicNameValuePair(parameter, parameters.get(parameter)));
+        }
+
+        return parsedParameters;
+    }
+
+    private HashMap<String, String> parseParametersStringJson(String requestParameters) {
+        HashMap<String, String> parametersMap = new HashMap<String, String>();
         String[] pairs = requestParameters.split(lineSeparator);
 
         for (String pair : pairs) {
             String[] parsedPair = pair.split("=");
-            parsedParameters.add(new BasicNameValuePair(parsedPair[0], parsedPair[1]));
+            parametersMap.put(parsedPair[0], parsedPair[1]);
         }
 
-        return parsedParameters;
+        return parametersMap;
     }
 
     private<T> String join(List<T> objects, String delimiter) {

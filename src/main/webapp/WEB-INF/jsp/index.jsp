@@ -10,6 +10,9 @@
         <%-- FIRST COLUMN (buttons) --%>
         <div style="width:200px;float:left;display:inline-block;">
           <p>REQUESTS: </p>
+          <input type="radio" name="contentType" checked="checked" value="form">Form <br>
+          <input type="radio" name="contentType" value="json">Json <br>
+          <hr/>
           <input type="button" value="Login" id="loginBtn"/>
           <br/>
           <hr/>

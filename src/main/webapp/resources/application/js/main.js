@@ -65,7 +65,8 @@ $(function() {
             dataType: 'json',
             data: JSON.stringify({
                 'parameters': $('#parametersArea').val(),
-                'headers': $('#headersArea').val()
+                'headers': $('#headersArea').val(),
+                'type': $('input[name=contentType]:checked').val()
             }),
             contentType: 'application/json'
         }).done(function(result) {

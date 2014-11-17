@@ -7,5 +7,8 @@
     <property name="paramKeyValDelim" value="="/>
     <property name="headerKeyValDelim" value=":"/>
     <property name="lineSeparator" value="\n"/>
+    <property name="jsonMapper" ref="objectMapper"/>
   </bean>
+
+    <bean id="objectMapper" class="org.codehaus.jackson.map.ObjectMapper" />
 </beans>

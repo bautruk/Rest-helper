@@ -29,10 +29,12 @@ public class MainController {
     @Autowired
     private MainService mainService;
 
-//    private final String baseUrl = "http://localhost:80/";
-    private final String baseUrl = "http://msa.botf03.net:180/";
+    private final String baseUrl = "http://localhost:80/";
+//    private final String baseUrl = "https://controller.botf03.net:4440/newmsa/";
+//    private final String baseUrl = "http://msa.botf03.net:180/";
 
-    private final String loginUrl = baseUrl + "service/session/logins";
+//    private final String loginUrl = baseUrl + "service/session/logins";
+private final String loginUrl = baseUrl + "authentication/login";
     private final String forwardUrl = baseUrl + "forwardurl";
     private final String exchangeLoginUrl = baseUrl + "exchjson/service/do/login";
     private final String exchangeFoldersUrl = baseUrl + "exchjson/service/do/folders";
@@ -143,7 +145,7 @@ public class MainController {
     public Response login(@RequestBody Map<String, String> requestData, Model model) throws IOException {
         HttpClient httpClient = HttpClients.createDefault();
         HttpPost authRequest = new HttpPost(loginUrl);
-        authRequest.setEntity(mainService.constructRequestBody(requestData.get("parameters").trim()));
+        authRequest.setEntity(mainService.constructRequestBody(requestData));
 
         HttpResponse response = httpClient.execute(authRequest);
 
@@ -174,7 +176,7 @@ public class MainController {
 
         HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
         HttpPost exchangeRequest = new HttpPost(exchangeLoginUrl);
-        exchangeRequest.setEntity(mainService.constructRequestBody(requestData.get("parameters").trim()));
+        exchangeRequest.setEntity(mainService.constructRequestBody(requestData));
         exchangeRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 
         HttpResponse response = httpClient.execute(exchangeRequest);
@@ -194,7 +196,7 @@ public class MainController {
     public Response exchangeFolders(@RequestBody Map<String, String> requestData, Model model) throws IOException {
         HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
         HttpPost foldersRequest = new HttpPost(exchangeFoldersUrl);
-        foldersRequest.setEntity(mainService.constructRequestBody(requestData.get("parameters").trim()));
+        foldersRequest.setEntity(mainService.constructRequestBody(requestData));
         foldersRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 
         HttpResponse response = httpClient.execute(foldersRequest);
@@ -218,7 +220,7 @@ public class MainController {
     public Response exchangeFolderData(@RequestBody Map<String, String> requestData) throws IOException {
         HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
         HttpPost foldersRequest = new HttpPost(exchangeFolderdataUrl);
-        foldersRequest.setEntity(mainService.constructRequestBody(requestData.get("parameters").trim()));
+        foldersRequest.setEntity(mainService.constructRequestBody(requestData));
         foldersRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 
         HttpResponse response = httpClient.execute(foldersRequest);
@@ -231,7 +233,7 @@ public class MainController {
     public Response exchangeContactsData(@RequestBody Map<String, String> requestData) throws IOException {
         HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
         HttpPost contactsRequest = new HttpPost(exchangeContactsdataUrl);
-        contactsRequest.setEntity(mainService.constructRequestBody(requestData.get("parameters").trim()));
+        contactsRequest.setEntity(mainService.constructRequestBody(requestData));
         contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 
         HttpResponse response = httpClient.execute(contactsRequest);

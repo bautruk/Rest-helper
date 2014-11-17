@@ -7,6 +7,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Provides common methods to work with requests and responses
@@ -16,10 +17,10 @@ public interface MainService {
     /**
      * Creates HttpEntity object based on given parameters
      *
-     * @param requestParameters String containing request parameters in "name(param-delim)value(line-separator)" form
+     * @param requestData map of request data. Parameters string contains request parameters in "name(param-delim)value(line-separator)" form
      * @return {@link org.apache.http.HttpEntity} object containing all parameters accepted in argument
      */
-    public HttpEntity constructRequestBody(String requestParameters);
+    public HttpEntity constructRequestBody(Map<String, String> requestData);
 
     /**
      * Creates an array of {@link org.apache.http.Header} objects from given headers
