@@ -33,6 +33,11 @@ $(function() {
         fillPredefinedInfo('/login/predefined');
     });
 
+    $('#getPasswordBtn').click(function() {
+        sendUrl = "/getPassword";
+        fillPredefinedInfo('/getPassword/predefined');
+    });
+
     $('#forwardUrlBtn').click(function() {
         sendUrl = "/forwardUrl";
         fillPredefinedInfo('/forwardUrl/predefined');

@@ -15,6 +15,8 @@
           <hr/>
           <input type="button" value="Login" id="loginBtn"/>
           <br/>
+          <input type="button" value="Get Password" id="getPasswordBtn"/>
+          <br/>
           <hr/>
           <input type="button" value="Forward" id="forwardUrlBtn"/>
           <br/>

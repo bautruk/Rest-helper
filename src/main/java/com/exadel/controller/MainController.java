@@ -29,12 +29,12 @@ public class MainController {
     @Autowired
     private MainService mainService;
 
-    private final String baseUrl = "http://localhost:80/";
-//    private final String baseUrl = "https://controller.botf03.net:4440/newmsa/";
+//    private final String baseUrl = "http://localhost:80/";
+    private final String baseUrl = "https://controller.botf03.net:4440/newmsa/";
 //    private final String baseUrl = "http://msa.botf03.net:180/";
 
-//    private final String loginUrl = baseUrl + "service/session/logins";
-private final String loginUrl = baseUrl + "authentication/login";
+    private final String loginUrl = baseUrl + "proxy/authentication/login";
+    private final String getPasswordUrl = baseUrl + "proxy/profile/getPassword";
     private final String forwardUrl = baseUrl + "forwardurl";
     private final String exchangeLoginUrl = baseUrl + "exchjson/service/do/login";
     private final String exchangeFoldersUrl = baseUrl + "exchjson/service/do/folders";
@@ -59,6 +59,16 @@ private final String loginUrl = baseUrl + "authentication/login";
         requestData.addRequestParam("osVersion", "7.1");
         requestData.addRequestParam("application", "BOTF Mobile");
         requestData.addRequestParam("applicationVersion", "1");
+
+        return requestData;
+    }
+
+    @RequestMapping(value = "/getPassword/predefined", method = RequestMethod.GET)
+    @ResponseBody
+    public PredefinedRequestData predefParamsForGetPassword(@ModelAttribute("authToken") String authToken) {
+        PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+        requestData.addRequestParam("passwordKey", "1234567890");
+        requestData.addRequestHeader("Authorization", authToken);
 
         return requestData;
     }
@@ -155,6 +165,18 @@ private final String loginUrl = baseUrl + "authentication/login";
         }
         model.addAttribute("setCookieHeaderValue", "");
 
+        return mainService.constructSuccessResponse(response);
+    }
+
+    @RequestMapping(value = "/getPassword", method = RequestMethod.POST, consumes = "application/json")
+    @ResponseBody
+    public Response getPassword(@RequestBody Map<String, String> requestData, Model model) throws IOException {
+        HttpClient httpClient = HttpClients.createDefault();
+        HttpPost authRequest = new HttpPost(getPasswordUrl);
+        authRequest.setEntity(mainService.constructRequestBody(requestData));
+        authRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
+
+        HttpResponse response = httpClient.execute(authRequest);
         return mainService.constructSuccessResponse(response);
     }
 
