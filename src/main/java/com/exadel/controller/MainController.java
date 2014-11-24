@@ -29,8 +29,8 @@ public class MainController {
     @Autowired
     private MainService mainService;
 
-//    private final String baseUrl = "http://localhost:80/";
-    private final String baseUrl = "https://controller.botf03.net:4440/newmsa/";
+    private final String baseUrl = "http://localhost:80/";
+//    private final String baseUrl = "https://controller.botf03.net:4440/newmsa/";
 //    private final String baseUrl = "http://msa.botf03.net:180/";
 
     private final String loginUrl = baseUrl + "proxy/authentication/login";
@@ -52,12 +52,13 @@ public class MainController {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestParam("username", "milshtyu");
         requestData.addRequestParam("password", "Frame1hawk");
+        requestData.addRequestParam("encryptedPassword", "test");
         requestData.addRequestParam("domain", "botf03.net");
         requestData.addRequestParam("deviceId", "sfdfwefwefds");
         requestData.addRequestParam("deviceIp", "192.168.0.12");
         requestData.addRequestParam("os", "IOS");
         requestData.addRequestParam("osVersion", "7.1");
-        requestData.addRequestParam("application", "BOTF Mobile");
+        requestData.addRequestParam("application", "edge");
         requestData.addRequestParam("applicationVersion", "1");
 
         return requestData;
@@ -67,8 +68,7 @@ public class MainController {
     @ResponseBody
     public PredefinedRequestData predefParamsForGetPassword(@ModelAttribute("authToken") String authToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestParam("passwordKey", "1234567890");
-        requestData.addRequestHeader("Authorization", authToken);
+        requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
 
         return requestData;
     }
@@ -77,8 +77,8 @@ public class MainController {
     @ResponseBody
     public PredefinedRequestData predefParamsForForward(@ModelAttribute("authToken") String authToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestHeader("X-UBSAS-Proxy-Authorization", authToken);
-        requestData.addRequestHeader("X-UBSAS-FORWARDURL", "http://www.google.com/");
+        requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+        requestData.addRequestHeader("X-51MAPS-ForwardUrl", "http://www.google.com/");
 
         return requestData;
     }
@@ -87,7 +87,7 @@ public class MainController {
     @ResponseBody
     public PredefinedRequestData predefParamsForExchgLogin(@ModelAttribute("authToken") String authToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestHeader("Authorization", "Bearer " + authToken);
+        requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
 
         requestData.addRequestParam("username", "milshtyu");
         requestData.addRequestParam("password", "Frame1hawk");
@@ -105,8 +105,8 @@ public class MainController {
                                                              @ModelAttribute("exchgToken") String exchgToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestHeader("Cookie", setCookieHeaderValue);
-        requestData.addRequestHeader("Authorization", "Bearer " + authToken);
-        requestData.addRequestHeader("X-UBSAS-Exchg-Token", exchgToken);
+        requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+        requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
         requestData.addRequestParam("AllTree", "false");
 
@@ -121,8 +121,8 @@ public class MainController {
                                                                 @ModelAttribute("inboxEntryId") String entryId) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestHeader("Cookie", setCookieHeaderValue);
-        requestData.addRequestHeader("Authorization", "Bearer " + authToken);
-        requestData.addRequestHeader("X-UBSAS-Exchg-Token", exchgToken);
+        requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+        requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
         requestData.addRequestParam("EntryID", entryId);
         requestData.addRequestParam("StartIndex", "0");
@@ -142,8 +142,8 @@ public class MainController {
                                                                   @ModelAttribute("contactsEntryId") String entryId) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestHeader("Cookie", setCookieHeaderValue);
-        requestData.addRequestHeader("Authorization", "Bearer " + authToken);
-        requestData.addRequestHeader("X-UBSAS-Exchg-Token", exchgToken);
+        requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+        requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
         requestData.addRequestParam("EntryID", entryId);
 
@@ -159,7 +159,7 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(authRequest);
 
-        Header tokenHeader = response.getFirstHeader("X-UBSAS-AuthToken");
+        Header tokenHeader = response.getFirstHeader("X-51MAPS-AuthToken");
         if (tokenHeader != null) {
             model.addAttribute("authToken", tokenHeader.getValue());
         }
@@ -206,7 +206,7 @@ public class MainController {
         Matcher matcher = getMatcherForSecurityToken(result);
 
         if (matcher.find()) {
-            model.addAttribute("setCookieHeaderValue", getHeaderBeginWith(response, "Set-Cookie", "X-UBSAS-SESSIONID").getValue());
+            model.addAttribute("setCookieHeaderValue", getHeaderBeginWith(response, "Set-Cookie", "X-51MAPS-SessionId").getValue());
             model.addAttribute("exchgToken", matcher.group(1));
         }
 
