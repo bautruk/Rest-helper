@@ -35,6 +35,7 @@ public class MainController {
 
     private final String loginUrl = baseUrl + "proxy/authentication/login";
     private final String getPasswordUrl = baseUrl + "proxy/profile/getPassword";
+    private final String explorerFolderDataUrl = baseUrl + "shared-drive/do/dir";
     private final String forwardUrl = baseUrl + "forwardurl";
     private final String exchangeLoginUrl = baseUrl + "exchjson/service/do/login";
     private final String exchangeFoldersUrl = baseUrl + "exchjson/service/do/folders";
@@ -69,8 +70,6 @@ public class MainController {
     public PredefinedRequestData predefParamsForExplorerFolderData(@ModelAttribute("authToken") String authToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
-        requestData.addRequestHeader("X-51MAPS-ForwardUrl", "https://127.0.0.1/explorer/do/dir");
-        requestData.addRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
 
         requestData.addRequestParam("user", "milshtyu");
         requestData.addRequestParam("pwd", "Frame1hawk");
@@ -200,11 +199,11 @@ public class MainController {
     @ResponseBody
     public Response explorerFolderData(@RequestBody Map<String, String> requestData) throws IOException {
         HttpClient httpClient = HttpClients.createDefault();
-        HttpPost forwardRequest = new HttpPost(forwardUrl);
-        forwardRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
-        forwardRequest.setEntity(mainService.constructRequestBody(requestData));
+        HttpPost explorerFRequest = new HttpPost(explorerFolderDataUrl);
+        explorerFRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
+        explorerFRequest.setEntity(mainService.constructRequestBody(requestData));
 
-        HttpResponse response = httpClient.execute(forwardRequest);
+        HttpResponse response = httpClient.execute(explorerFRequest);
 
         return mainService.constructSuccessResponse(response);
     }
