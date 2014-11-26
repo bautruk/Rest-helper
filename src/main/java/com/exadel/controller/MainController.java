@@ -64,6 +64,22 @@ public class MainController {
         return requestData;
     }
 
+    @RequestMapping(value = "/explorerFolderData/predefined", method = RequestMethod.GET)
+    @ResponseBody
+    public PredefinedRequestData predefParamsForExplorerFolderData(@ModelAttribute("authToken") String authToken) {
+        PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+        requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+        requestData.addRequestHeader("X-51MAPS-ForwardUrl", "https://127.0.0.1/explorer/do/dir");
+        requestData.addRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        requestData.addRequestParam("user", "milshtyu");
+        requestData.addRequestParam("pwd", "Frame1hawk");
+        requestData.addRequestParam("domain", "botf03");
+        requestData.addRequestParam("create", "true");
+
+        return requestData;
+    }
+
     @RequestMapping(value = "/getPassword/predefined", method = RequestMethod.GET)
     @ResponseBody
     public PredefinedRequestData predefParamsForGetPassword(@ModelAttribute("authToken") String authToken) {
@@ -177,6 +193,19 @@ public class MainController {
         authRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 
         HttpResponse response = httpClient.execute(authRequest);
+        return mainService.constructSuccessResponse(response);
+    }
+
+    @RequestMapping(value = "/explorerFolderData", method = RequestMethod.POST, consumes = "application/json")
+    @ResponseBody
+    public Response explorerFolderData(@RequestBody Map<String, String> requestData) throws IOException {
+        HttpClient httpClient = HttpClients.createDefault();
+        HttpPost forwardRequest = new HttpPost(forwardUrl);
+        forwardRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
+        forwardRequest.setEntity(mainService.constructRequestBody(requestData));
+
+        HttpResponse response = httpClient.execute(forwardRequest);
+
         return mainService.constructSuccessResponse(response);
     }
 

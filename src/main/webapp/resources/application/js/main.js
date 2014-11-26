@@ -33,6 +33,11 @@ $(function() {
         fillPredefinedInfo('/login/predefined');
     });
 
+    $('#explorerFolderDataBtn').click(function() {
+        sendUrl = "/explorerFolderData";
+        fillPredefinedInfo('/explorerFolderData/predefined');
+    });
+
     $('#getPasswordBtn').click(function() {
         sendUrl = "/getPassword";
         fillPredefinedInfo('/getPassword/predefined');

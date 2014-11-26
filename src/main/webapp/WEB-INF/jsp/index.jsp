@@ -18,6 +18,9 @@
           <input type="button" value="Get Password" id="getPasswordBtn"/>
           <br/>
           <hr/>
+            <input type="button" value="Explorer Folder data" id="explorerFolderDataBtn"/>
+            <br/>
+          <hr/>
           <input type="button" value="Forward" id="forwardUrlBtn"/>
           <br/>
           <hr/>
