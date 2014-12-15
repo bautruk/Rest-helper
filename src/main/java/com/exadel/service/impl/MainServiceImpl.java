@@ -26,6 +26,7 @@ import java.util.*;
 public class MainServiceImpl implements MainService {
     private static final String CONTENT_TYPE_FORM = "form";
     private static final String CONTENT_TYPE_JSON = "json";
+    private static final String CONTENT_TYPE_APPLICATION_JSON = "application/json";
 
     private ObjectMapper jsonMapper;
     private String paramKeyValDelim;
@@ -91,6 +92,48 @@ public class MainServiceImpl implements MainService {
         responseRepresentation.setMeta(metaStr);
 
         return responseRepresentation;
+    }
+
+    @Override
+    public Response constructSuccessResponse(HttpResponse response, String responseBodyStr) throws IOException {
+        Response responseRepresentation = new Response();
+
+        responseRepresentation.setBody(responseBodyStr);
+
+        String statusMessage = "Status message: " + response.getStatusLine().getReasonPhrase();
+        String statusCode = "Status code: " + response.getStatusLine().getStatusCode();
+        String headers = join(Arrays.asList(response.getAllHeaders()), lineSeparator);
+
+        String metaStr = statusCode + lineSeparator + statusMessage + lineSeparator + headers;
+
+        responseRepresentation.setMeta(metaStr);
+
+        return responseRepresentation;
+    }
+
+    @Override
+    public String getResponseBody(HttpResponse response) throws IOException {
+        return EntityUtils.toString(response.getEntity());
+    }
+
+    @Override
+    public String getResponseParameter(String responseBodyStr, HttpResponse response, String... keys) throws IOException {
+        Object resultValue;
+        String result = null;
+        String contentType = response.getEntity().getContentType().getValue();
+        if (CONTENT_TYPE_APPLICATION_JSON.equals(contentType)) {
+            resultValue = jsonMapper.readValue(responseBodyStr, Map.class);
+            for (String key : keys) {
+                if (resultValue instanceof Map) {
+                    resultValue = ((Map) resultValue).get(key);
+                }
+            }
+            if (resultValue != null && resultValue instanceof String) {
+                result = (String) resultValue;
+            }
+        }
+        
+        return result;
     }
 
     @Override

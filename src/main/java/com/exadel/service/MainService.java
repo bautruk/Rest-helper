@@ -34,9 +34,14 @@ public interface MainService {
      * extracted from given {@link org.apache.http.HttpResponse} object
      */
     public Response constructSuccessResponse(HttpResponse response) throws IOException;
+    public Response constructSuccessResponse(HttpResponse response, String responseBodyStr) throws IOException;
 
     /**
      * Creates {@link com.exadel.dto.PredefinedRequestData} object based on line separator that is used in implementation
      */
     public PredefinedRequestData createPredefinedRequestData();
+
+    public String getResponseParameter(String responseBodyStr, HttpResponse response, String... keys) throws IOException;
+
+    public String getResponseBody(HttpResponse response) throws IOException;
 }

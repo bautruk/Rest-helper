@@ -51,9 +51,12 @@ public class MainController {
     @ResponseBody
     public PredefinedRequestData predefParamsForLogin() {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestParam("username", "milshtyu");
-        requestData.addRequestParam("password", "Frame1hawk");
-        requestData.addRequestParam("encryptedPassword", "test");
+//        requestData.addRequestParam("username", "milshtyu");
+//        requestData.addRequestParam("password", "Frame1hawk");
+//        requestData.addRequestParam("encryptedPassword", "MOZ8KuXRS0GPa9dx020/kg==");
+        requestData.addRequestParam("username", "pkIYHk+1Iro776XKsSjdD5tRsGKPfo7RMtGBjp7lGcJMUrYFpQKS7L6LyNaOQ4QJlCeZC641B7wU80uFd1EDxwzU1CkFOIoDolzkaIWp0hbDMAH2sbWj4wrP0cKrwnkt7XVAEt5MxeDArs18fzAw8uUcpbHjjDDM4F+mQdNLEHuI6OOSE4p/VYy87OE+S1zzmwS0bgOCk7oZ3JicQXRgAgrkym28K9gdeVJ9jTQ1ji5cLXV7OSz4RPW32hvUfkJqq4k2q9YAhTSqxycPSBJ2ilR6QAKU6CS5doU5KGOFeosR2jXCJ4kijT/pGLRwW+uZ4mLPxNrUwikvbpZ420BYpg==");
+        requestData.addRequestParam("password", "VSeIF8x/Cwc7ZLIyNd7K7J1oO935KJeTp+IhQwBcYFIXaNJIDZ1mFFK11JxlBdSMEOjtLkFW5A7bPbiCQTtRapxNlqAC9sgmn3xkmGkOZoZQjvvJN6twddf3+eiHFHDfzxdelC8GlSviqv3glSqZ8bJenz+piYBUgunaROcoqmi3da7NUmNegISrRZPepZ5aJN0ehOVyRZq8EQplX/cS9r9oL005gITeZZkLtbzSWUUOzuLirBRVv2thwpf4q0lQdFlzP539FlcUNMS6TSLMIa1QtlsrC/eHiBnpcdRAsgIu6p9Wuat/2xvvWn21PW+QBC6s2PrArJXWkWvSLj6J5w==");
+        requestData.addRequestParam("encryptedPassword", "VSeIF8x/Cwc7ZLIyNd7K7J1oO935KJeTp+IhQwBcYFIXaNJIDZ1mFFK11JxlBdSMEOjtLkFW5A7bPbiCQTtRapxNlqAC9sgmn3xkmGkOZoZQjvvJN6twddf3+eiHFHDfzxdelC8GlSviqv3glSqZ8bJenz+piYBUgunaROcoqmi3da7NUmNegISrRZPepZ5aJN0ehOVyRZq8EQplX/cS9r9oL005gITeZZkLtbzSWUUOzuLirBRVv2thwpf4q0lQdFlzP539FlcUNMS6TSLMIa1QtlsrC/eHiBnpcdRAsgIu6p9Wuat/2xvvWn21PW+QBC6s2PrArJXWkWvSLj6J5w==");
         requestData.addRequestParam("domain", "botf03.net");
         requestData.addRequestParam("deviceId", "sfdfwefwefds");
         requestData.addRequestParam("deviceIp", "192.168.0.12");
@@ -70,10 +73,9 @@ public class MainController {
     public PredefinedRequestData predefParamsForExplorerFolderData(@ModelAttribute("authToken") String authToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+        requestData.addRequestHeader("X-51MAPS-PasswordKey", "MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=");
+        requestData.addRequestHeader("X-51MAPS-AuthenticationRequired", "true");
 
-        requestData.addRequestParam("user", "milshtyu");
-        requestData.addRequestParam("pwd", "Frame1hawk");
-        requestData.addRequestParam("domain", "botf03");
         requestData.addRequestParam("create", "true");
 
         return requestData;
@@ -103,6 +105,8 @@ public class MainController {
     public PredefinedRequestData predefParamsForExchgLogin(@ModelAttribute("authToken") String authToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+        requestData.addRequestHeader("X-51MAPS-PasswordKey", "MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=");
+        requestData.addRequestHeader("X-51MAPS-AuthenticationRequired", "true");
 
         requestData.addRequestParam("username", "milshtyu");
         requestData.addRequestParam("password", "Frame1hawk");
@@ -174,13 +178,11 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(authRequest);
 
-        Header tokenHeader = response.getFirstHeader("X-51MAPS-AuthToken");
-        if (tokenHeader != null) {
-            model.addAttribute("authToken", tokenHeader.getValue());
-        }
+        String responseBody = mainService.getResponseBody(response);
+        model.addAttribute("authToken", mainService.getResponseParameter(responseBody, response, "result", "token"));
         model.addAttribute("setCookieHeaderValue", "");
 
-        return mainService.constructSuccessResponse(response);
+        return mainService.constructSuccessResponse(response, responseBody);
     }
 
     @RequestMapping(value = "/getPassword", method = RequestMethod.POST, consumes = "application/json")
