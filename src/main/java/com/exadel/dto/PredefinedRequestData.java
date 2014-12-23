@@ -30,6 +30,10 @@ public class PredefinedRequestData {
         requestParams.append(lineSeparator);
     }
 
+    public void addRequestParam(String value) {
+        requestParams.append(value);
+    }
+
     public void addRequestHeader(String name, String value) {
         requestHeaders.append(name);
         requestHeaders.append(headerKeyValDelim);

@@ -12,6 +12,7 @@
             <p>REQUESTS: </p>
             <input type="radio" name="contentType" checked="checked" value="form">Form <br>
             <input type="radio" name="contentType" value="json">Json <br>
+            <input type="radio" name="contentType" value="text">Text <br>
             <hr/>
             <input type="button" value="Login" id="loginBtn"/>
             <br/>

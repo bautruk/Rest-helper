@@ -26,6 +26,7 @@ import java.util.*;
 public class MainServiceImpl implements MainService {
     private static final String CONTENT_TYPE_FORM = "form";
     private static final String CONTENT_TYPE_JSON = "json";
+    private static final String CONTENT_TYPE_TEXT = "text";
     private static final String CONTENT_TYPE_APPLICATION_JSON = "application/json";
 
     private ObjectMapper jsonMapper;
@@ -56,6 +57,8 @@ public class MainServiceImpl implements MainService {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        } else if (CONTENT_TYPE_TEXT.equals(contentType)) {
+            return new StringEntity(requestParameters, "UTF-8");
         }
 
         return null;
