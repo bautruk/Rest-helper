@@ -83,7 +83,12 @@ public class MainServiceImpl implements MainService {
     public Response constructSuccessResponse(HttpResponse response) throws IOException {
         Response responseRepresentation = new Response();
 
-        String responseBodyStr = EntityUtils.toString(response.getEntity());
+        HttpEntity entity = response.getEntity();
+        String responseBodyStr = "";
+        if (entity != null) {
+            responseBodyStr = EntityUtils.toString(entity);
+        }
+
         responseRepresentation.setBody(responseBodyStr);
 
         String statusMessage = "Status message: " + response.getStatusLine().getReasonPhrase();

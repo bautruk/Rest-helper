@@ -21,6 +21,8 @@
             <hr/>
             <input type="button" value="Explorer Folder data" id="explorerFolderDataBtn"/>
             <br/>
+            <input type="button" value="Explorer Get File" id="explorerGetFileBtn"/>
+            <br/>
             <hr/>
             <input type="button" value="Forward" id="forwardUrlBtn"/>
             <br/>

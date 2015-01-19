@@ -36,6 +36,7 @@ public class MainController {
     private final String loginUrl = baseUrl + "proxy/authentication/login";
     private final String getPasswordUrl = baseUrl + "proxy/profile/getPassword";
     private final String explorerFolderDataUrl = baseUrl + "shared-drive/do/dir";
+    private final String explorerGetFile = baseUrl + "shared-drive/do/get";
     private final String forwardUrl = baseUrl + "forwardurl";
     private final String exchangeLoginUrl = baseUrl + "exchjson/service/do/login";
     private final String exchangeFoldersUrl = baseUrl + "exchjson/service/do/folders";
@@ -78,11 +79,24 @@ public class MainController {
     public PredefinedRequestData predefParamsForExplorerFolderData(@ModelAttribute("authToken") String authToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
-        requestData.addRequestHeader("X-51MAPS-PasswordKey", "SAAsnm/iOPx9o3unhwbE1ZFq61HnJjePWx/J7T7qfg/HQcN7wnzln13fpHPX90PFQT3SaBrCQEGUTQfCX4Ut8CRKe+7zzdmf5jGBQkYals1fOkbxgE1OZF0OOkdqPrpw5fMkJSjSpLhkW31J09gk9GsZfMp8Yw2L2Nu8wf3DV3b1OgS17fRMrAeytUKW7OCDEOhwUC0jrMjaH4D/I8WTLqx3sS3Sj0WDUSrDbJvQjIqKzT4eKUCuZEoyIxLlvKJu3l5Rjf3tWWRgPqerHfIJ3af/o/0ADBB6c8PSDkoUkMqS+yxqzlBXyMojiuV/8ig6vctShTriEQEQ5PvBUSeAVg==");
-        requestData.addRequestHeader("X-51MAPS-PasswordSalt", "VOqtuXmAR5fP2uPYlWSRlw==");
+        requestData.addRequestHeader("X-51MAPS-PasswordKey", "Bg3FFhP0t8SLuSFINmcY/9IhvOr7c5ZdIK1IFCyvxK45F6/fq8K3WjTb2mvmN4VL1q/dANccyXkd4CXYMGVVKWJ5TnXPFFwO57x3m2uq6y2XYXLnozaRyC2/kfQ+PiV+6VR2nhPafBkVur2FfgglFN3VbCuUPmnr8hjl7bRECfn7CA3f7P/rXt84EumUV+87K7lJERNN4NTpDlvKYgIjvg/2wY5FXnw7gEuk3kR/nMO8XvSdDiOT4S4b77K1f4E0548V6lf65BPfnCfcFDpLb2AXQQQk2hfSGuZvvu/CVCgU/g8VQs1jOPHFMZjPxTAZTfQ2k/aGQ7qGzPVlbObifw==");
         requestData.addRequestHeader("X-51MAPS-CredentialsRequired", "true");
 
         requestData.addRequestParam("create", "true");
+
+        return requestData;
+    }
+
+    @RequestMapping(value = "/explorerGetFile/predefined", method = RequestMethod.GET)
+    @ResponseBody
+    public PredefinedRequestData predefParamsForExplorerGetFile(@ModelAttribute("authToken") String authToken) {
+        PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+        requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+        requestData.addRequestHeader("X-51MAPS-PasswordKey", "Bg3FFhP0t8SLuSFINmcY/9IhvOr7c5ZdIK1IFCyvxK45F6/fq8K3WjTb2mvmN4VL1q/dANccyXkd4CXYMGVVKWJ5TnXPFFwO57x3m2uq6y2XYXLnozaRyC2/kfQ+PiV+6VR2nhPafBkVur2FfgglFN3VbCuUPmnr8hjl7bRECfn7CA3f7P/rXt84EumUV+87K7lJERNN4NTpDlvKYgIjvg/2wY5FXnw7gEuk3kR/nMO8XvSdDiOT4S4b77K1f4E0548V6lf65BPfnCfcFDpLb2AXQQQk2hfSGuZvvu/CVCgU/g8VQs1jOPHFMZjPxTAZTfQ2k/aGQ7qGzPVlbObifw==");
+        requestData.addRequestHeader("X-51MAPS-CredentialsRequired", "true");
+
+        requestData.addRequestParam("create", "true");
+        requestData.addRequestParam("url", "smb://mainserver/S_Drive_Shares/testtester1/Autosync/Autosync");
 
         return requestData;
     }
@@ -208,6 +222,19 @@ public class MainController {
     public Response explorerFolderData(@RequestBody Map<String, String> requestData) throws IOException {
         HttpClient httpClient = HttpClients.createDefault();
         HttpPost explorerFRequest = new HttpPost(explorerFolderDataUrl);
+        explorerFRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
+        explorerFRequest.setEntity(mainService.constructRequestBody(requestData));
+
+        HttpResponse response = httpClient.execute(explorerFRequest);
+
+        return mainService.constructSuccessResponse(response);
+    }
+
+    @RequestMapping(value = "/explorerGetFile", method = RequestMethod.POST, consumes = "application/json")
+    @ResponseBody
+    public Response explorerGetFile(@RequestBody Map<String, String> requestData) throws IOException {
+        HttpClient httpClient = HttpClients.createDefault();
+        HttpPost explorerFRequest = new HttpPost(explorerGetFile);
         explorerFRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
         explorerFRequest.setEntity(mainService.constructRequestBody(requestData));
 

@@ -38,6 +38,12 @@ $(function() {
         fillPredefinedInfo('/explorerFolderData/predefined');
     });
 
+    $('#explorerGetFileBtn').click(function() {
+        sendUrl = "/explorerGetFile";
+        fillPredefinedInfo('/explorerGetFile/predefined');
+    });
+
+
     $('#getPasswordBtn').click(function() {
         sendUrl = "/getPassword";
         fillPredefinedInfo('/getPassword/predefined');
