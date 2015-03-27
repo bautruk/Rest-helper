@@ -29,7 +29,9 @@ public class MainController {
     @Autowired
     private MainService mainService;
 
-    private final String baseUrl = "http://localhost:80/";
+//    private final String baseUrl = "http://192.168.12.60:9512/";
+    private final String baseUrl = "https://controller.e-dapt.net:4440/";
+//    private final String baseUrl = "http://10.0.0.3:9512/";
 //    private final String baseUrl = "https://controller.botf03.net:4440/newmsa/";
 //    private final String baseUrl = "http://msa.botf03.net:180/";
 
@@ -42,6 +44,7 @@ public class MainController {
     private final String exchangeFoldersUrl = baseUrl + "exchjson/service/do/folders";
     private final String exchangeFolderdataUrl = baseUrl + "exchjson/service/do/folderdata";
     private final String exchangeContactsdataUrl = baseUrl + "exchjson/service/do/contactsdata";
+    private final String exchangeReadEmailUrl = baseUrl + "/exchjson/service/do/reademail";
 
     @RequestMapping("/")
     public String getMainPageName() {
@@ -68,8 +71,8 @@ public class MainController {
 //        OjQDB8l/1JzIPZFqXxLV9uoWbxX3vzX4+FWamQgRt+n9FnLxyHU4wprWuGX2o+OURdbCzJxIKAvhOdp99rNNPxx/R2QaS7kXBQ/VgCg/EFsbM6K7e428wIW6MnfCSsnf0ofgpO38a893aq2mwfSTKts+xpJgxogq1S8fvPKJftH9EPQI57kg6xhiyrvpX5RYl+W/YBca/s4j52D7LwFaWk+NG5mS2xkjAZs0OBQ2JGKloExTv5fJMLdngbNxAFpex9ZJcg3yp7nvp/zC4WZrF1QNGNIPUTHZE0pidJh52QvqLmzpv/lJJDSPvB19dAck49fwKChp7rNhYbMr3OW/BQ==
 
 //        requestData.addRequestParam("OjQDB8l/1JzIPZFqXxLV9uoWbxX3vzX4+FWamQgRt+n9FnLxyHU4wprWuGX2o+OURdbCzJxIKAvhOdp99rNNPxx/R2QaS7kXBQ/VgCg/EFsbM6K7e428wIW6MnfCSsnf0ofgpO38a893aq2mwfSTKts+xpJgxogq1S8fvPKJftH9EPQI57kg6xhiyrvpX5RYl+W/YBca/s4j52D7LwFaWk+NG5mS2xkjAZs0OBQ2JGKloExTv5fJMLdngbNxAFpex9ZJcg3yp7nvp/zC4WZrF1QNGNIPUTHZE0pidJh52QvqLmzpv/lJJDSPvB19dAck49fwKChp7rNhYbMr3OW/BQ==", "pkIYHk+1Iro776XKsSjdD5tRsGKPfo7RMtGBjp7lGcJMUrYFpQKS7L6LyNaOQ4QJlCeZC641B7wU80uFd1EDxwzU1CkFOIoDolzkaIWp0hbDMAH2sbWj4wrP0cKrwnkt7XVAEt5MxeDArs18fzAw8uUcpbHjjDDM4F+mQdNLEHuI6OOSE4p/VYy87OE+S1zzmwS0bgOCk7oZ3JicQXRgAgrkym28K9gdeVJ9jTQ1ji5cLXV7OSz4RPW32hvUfkJqq4k2q9YAhTSqxycPSBJ2ilR6QAKU6CS5doU5KGOFeosR2jXCJ4kijT/pGLRwW+uZ4mLPxNrUwikvbpZ420BYpg==");
-        requestData.addRequestParam("data", "asndnzYotHS9QgliR7MYOmUL7LHZ9yCebvc8S47S96u2YHx9rCjoobE\\/WknsAEfaegeXAsYNeIPSvMB2QtbhhlU1LD0UtT3r3NIIbSKIRKu2sPnbeaRQsY4rSacN+6eu52cWjLPDum841vjfst172Z6hA1LlGmpj9gwd9zsHzDa\\/L1ZEvI5frQ\\/UE4fNr9mjt6l310pW2cAsSzSYQOgw4hdudA3jq9TT\\/8JdchJd4SOsfuYR+bP8FMjLCp54vXFeXfslF6I3\\/QdR9oFbe8cKdbtq0kVPUImNfNqRcl07PZBjQ3VpHaSS9R+XYofNmVpO\\/CH3LKfoqsQwn94DwJEE1WPmSiT169MZcQJYGjXGDRQ=");
-        requestData.addRequestParam("key", "QHLa8WG63SeQ5hRAOiyd9I3EUaJib22cxq8J4thlW7xpayJaQRYA9Un3Ty9jMmk+omMo4rZOocRD0nMZ2plElVqVg3QOVJX0C97fiSil34lJa1YR4TIkDEFvGqtSSPqDR74JqAoxcGUeUqw1LeoPoRb2khe2HWzHaY1TdN7YHQ1oeTYnFUCsT92IOCWZaJBQHe+Ye61e0pf7rEkqDGvBjUrBlOI6p8lkvKC5s2I81CMIIArVvCWypgAdAUSTSdGh+k0gGyTmILjQPhLOyG27B2n1pmc87SQjQgpwVdseCDcrC\\/LwdW+eL5VnruEW6ksUI0Jxbs81A5slTm4zw5RuqQ==");
+        requestData.addRequestParam("data", "bMhNT3DXv21XuGIXOAsF08hIaHEyUlp7B57CYh44qjya6mg0s2PquioWpc\\/rQtAb2vpqoP8lRyjfeG6AyUvlXUHj8Edw8hFa9CFPvszWTgC+3g41Jc1OYiysEMFxiSIkdopnkn4Vrv7uCLuolU3K6\\/rf7am2DhE8zxqY+iAM74XUcXNQUrMf3NRrzTJxex4Wrl8lzyKaoNXJ1OsLO4\\/5dbZhfd9787yMuqdsVnN4PeMUfWcZq\\/oiAC8DLnOZAKR1EQePMPzFCyPOC4F9fhJdZheMqhO4waTrubfuYF3hC2VyYdV+BezhdvKrSjppui2Jj\\/bA1xegDDNzryTar2WmcRvcARhADK0Tqw18rNHFlcE=");
+        requestData.addRequestParam("key", "pTgVx5n2PYt8pTY+tMNzSFogZdbLfrZuC8D\\/DzrkzHE\\/\\/FQWXcYC5bDCo6WzMFeBth11OB\\/YG4llXfsfTJ9LqOlSSZRKLl6kPgVEZKGJpmYHzxBTb9HKhQvO0jpkMCZ+tIA511xDq49tnjHtbtUN9HkV72OwOtvkds0ezy+6fc3UW\\/mtA1unuz4SAYwCAo0cZOxisclVlHx85Lqt0il4NW4LEvi9CDciVLdSv+NH17PVqlanU1fLsD5jxGVrGciRkvldhLj82va13khOeKeqrbT98682QS8tJLKNYc7qROu5lc\\/\\/hpVIxmJhCRaDhb1GPmY9wi6RaiGrxCiyWK3n1A==");
 
         return requestData;
     }
@@ -79,7 +82,7 @@ public class MainController {
     public PredefinedRequestData predefParamsForExplorerFolderData(@ModelAttribute("authToken") String authToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
-        requestData.addRequestHeader("X-51MAPS-PasswordKey", "Bg3FFhP0t8SLuSFINmcY/9IhvOr7c5ZdIK1IFCyvxK45F6/fq8K3WjTb2mvmN4VL1q/dANccyXkd4CXYMGVVKWJ5TnXPFFwO57x3m2uq6y2XYXLnozaRyC2/kfQ+PiV+6VR2nhPafBkVur2FfgglFN3VbCuUPmnr8hjl7bRECfn7CA3f7P/rXt84EumUV+87K7lJERNN4NTpDlvKYgIjvg/2wY5FXnw7gEuk3kR/nMO8XvSdDiOT4S4b77K1f4E0548V6lf65BPfnCfcFDpLb2AXQQQk2hfSGuZvvu/CVCgU/g8VQs1jOPHFMZjPxTAZTfQ2k/aGQ7qGzPVlbObifw==");
+        requestData.addRequestHeader("X-51MAPS-PasswordKey", "PYaNLLFyOf/3SRRU95zgmeVfmY8q/6stU7kkvrNc+fr6NOG5MQu4R4dW6Z3DRpMqnz1XTBrjH06MK04pNGBW9rKBGp3BPwjunMwvObuzxCB+2r/ouOnUoBXh1G6fwuNdCr6sE1fxFpdJGbPiZuII9KcahE8FR9kWhB/AsShPTXUdiyM9El1R3LPgOZLfgSX0JK3Eu8WOK1o5xArgXNH3xgE/XQYglN1N5NeSws0BlOQ9sVtmvHinw7KyDNRPuQ0hwMioetHOwJESLvz5MmsxPg4IFeyK8NGkbEC8NgTaRl8PY4bgtNKHKMALf3YDnGvUJRijOMYXLjV5XtQlklLnjA==");
         requestData.addRequestHeader("X-51MAPS-CredentialsRequired", "true");
 
         requestData.addRequestParam("create", "true");
@@ -92,7 +95,7 @@ public class MainController {
     public PredefinedRequestData predefParamsForExplorerGetFile(@ModelAttribute("authToken") String authToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
-        requestData.addRequestHeader("X-51MAPS-PasswordKey", "Bg3FFhP0t8SLuSFINmcY/9IhvOr7c5ZdIK1IFCyvxK45F6/fq8K3WjTb2mvmN4VL1q/dANccyXkd4CXYMGVVKWJ5TnXPFFwO57x3m2uq6y2XYXLnozaRyC2/kfQ+PiV+6VR2nhPafBkVur2FfgglFN3VbCuUPmnr8hjl7bRECfn7CA3f7P/rXt84EumUV+87K7lJERNN4NTpDlvKYgIjvg/2wY5FXnw7gEuk3kR/nMO8XvSdDiOT4S4b77K1f4E0548V6lf65BPfnCfcFDpLb2AXQQQk2hfSGuZvvu/CVCgU/g8VQs1jOPHFMZjPxTAZTfQ2k/aGQ7qGzPVlbObifw==");
+        requestData.addRequestHeader("X-51MAPS-PasswordKey", "PYaNLLFyOf/3SRRU95zgmeVfmY8q/6stU7kkvrNc+fr6NOG5MQu4R4dW6Z3DRpMqnz1XTBrjH06MK04pNGBW9rKBGp3BPwjunMwvObuzxCB+2r/ouOnUoBXh1G6fwuNdCr6sE1fxFpdJGbPiZuII9KcahE8FR9kWhB/AsShPTXUdiyM9El1R3LPgOZLfgSX0JK3Eu8WOK1o5xArgXNH3xgE/XQYglN1N5NeSws0BlOQ9sVtmvHinw7KyDNRPuQ0hwMioetHOwJESLvz5MmsxPg4IFeyK8NGkbEC8NgTaRl8PY4bgtNKHKMALf3YDnGvUJRijOMYXLjV5XtQlklLnjA==");
         requestData.addRequestHeader("X-51MAPS-CredentialsRequired", "true");
 
         requestData.addRequestParam("create", "true");
@@ -125,7 +128,7 @@ public class MainController {
     public PredefinedRequestData predefParamsForExchgLogin(@ModelAttribute("authToken") String authToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
-        requestData.addRequestHeader("X-51MAPS-PasswordKey", "Bg3FFhP0t8SLuSFINmcY/9IhvOr7c5ZdIK1IFCyvxK45F6/fq8K3WjTb2mvmN4VL1q/dANccyXkd4CXYMGVVKWJ5TnXPFFwO57x3m2uq6y2XYXLnozaRyC2/kfQ+PiV+6VR2nhPafBkVur2FfgglFN3VbCuUPmnr8hjl7bRECfn7CA3f7P/rXt84EumUV+87K7lJERNN4NTpDlvKYgIjvg/2wY5FXnw7gEuk3kR/nMO8XvSdDiOT4S4b77K1f4E0548V6lf65BPfnCfcFDpLb2AXQQQk2hfSGuZvvu/CVCgU/g8VQs1jOPHFMZjPxTAZTfQ2k/aGQ7qGzPVlbObifw==");
+        requestData.addRequestHeader("X-51MAPS-PasswordKey", "PYaNLLFyOf/3SRRU95zgmeVfmY8q/6stU7kkvrNc+fr6NOG5MQu4R4dW6Z3DRpMqnz1XTBrjH06MK04pNGBW9rKBGp3BPwjunMwvObuzxCB+2r/ouOnUoBXh1G6fwuNdCr6sE1fxFpdJGbPiZuII9KcahE8FR9kWhB/AsShPTXUdiyM9El1R3LPgOZLfgSX0JK3Eu8WOK1o5xArgXNH3xgE/XQYglN1N5NeSws0BlOQ9sVtmvHinw7KyDNRPuQ0hwMioetHOwJESLvz5MmsxPg4IFeyK8NGkbEC8NgTaRl8PY4bgtNKHKMALf3YDnGvUJRijOMYXLjV5XtQlklLnjA==");
         requestData.addRequestHeader("X-51MAPS-CredentialsRequired", "true");
 
         requestData.addRequestParam("username", "milshtyu");
@@ -185,6 +188,22 @@ public class MainController {
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
         requestData.addRequestParam("EntryID", entryId);
+
+        return requestData;
+    }
+
+    @RequestMapping(value = "/exchangeReadEmail/predefined")
+    @ResponseBody
+    public PredefinedRequestData predefParamsForExchangeReadEmail(@ModelAttribute("authToken") String authToken,
+                                                                  @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
+                                                                  @ModelAttribute("exchgToken") String exchgToken) {
+        PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
+        requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+        requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
+
+        requestData.addRequestParam("WithBody", "true");
+        requestData.addRequestParam("ItemIDs", "~/-FlatUrlSpace-/6260f6461db98c499b21d63a02cd56a7-2cc1/6260f6461db98c499b21d63a02cd56a7-8f776;");
 
         return requestData;
     }
@@ -318,6 +337,19 @@ public class MainController {
     public Response exchangeContactsData(@RequestBody Map<String, String> requestData) throws IOException {
         HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
         HttpPost contactsRequest = new HttpPost(exchangeContactsdataUrl);
+        contactsRequest.setEntity(mainService.constructRequestBody(requestData));
+        contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
+
+        HttpResponse response = httpClient.execute(contactsRequest);
+
+        return mainService.constructSuccessResponse(response);
+    }
+
+    @RequestMapping(value = "/exchangeReadEmail", method = RequestMethod.POST)
+    @ResponseBody
+    public Response exchangeReadEmail(@RequestBody Map<String, String> requestData) throws IOException {
+        HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
+        HttpPost contactsRequest = new HttpPost(exchangeReadEmailUrl);
         contactsRequest.setEntity(mainService.constructRequestBody(requestData));
         contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 

@@ -35,6 +35,8 @@
             <br/>
             <input type="button" value="Exchange contacts data" id="exchangeContactsDataBtn"/>
             <br/>
+            <input type="button" value="Exchange read email" id="exchangeReadEmailBtn"/>
+            <br/>
             <hr/>
           <span style="display: none;" id="loading">
             <img src="${pageContext.request.contextPath}/resources/application/images/indicator.gif"/>
