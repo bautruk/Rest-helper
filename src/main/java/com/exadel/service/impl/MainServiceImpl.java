@@ -192,7 +192,7 @@ public class MainServiceImpl implements MainService {
         String[] pairs = requestParameters.split(lineSeparator);
 
         for (String pair : pairs) {
-            String[] parsedPair = pair.split("=");
+            String[] parsedPair = pair.split("=", 2);
             if (parsedPair.length == 2) {
                 parametersMap.put(parsedPair[0], parsedPair[1]);
             }
