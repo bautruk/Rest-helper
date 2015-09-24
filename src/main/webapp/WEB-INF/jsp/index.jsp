@@ -37,6 +37,8 @@
             <br/>
             <input type="button" value="Exchange read email" id="exchangeReadEmailBtn"/>
             <br/>
+            <input type="button" value="Exchange calendar data" id="exchangeCalendarDataBtn"/>
+            <br/>
             <hr/>
           <span style="display: none;" id="loading">
             <img src="${pageContext.request.contextPath}/resources/application/images/indicator.gif"/>

@@ -79,6 +79,11 @@ $(function() {
         fillPredefinedInfo('/exchangeReadEmail/predefined');
     });
 
+    $('#exchangeCalendarDataBtn').click(function() {
+        sendUrl = "/exchangeCalendarData";
+        fillPredefinedInfo('/exchangeCalendarData/predefined');
+    });
+
     $('#sendButton').click(function() {
         $.ajax({
             type: 'post',
