@@ -39,6 +39,10 @@
             <br/>
             <input type="button" value="Exchange calendar data" id="exchangeCalendarDataBtn"/>
             <br/>
+            <input type="button" value="Exchange read appointment" id="exchangeReadAppointmentBtn"/>
+            <br/>
+            <input type="button" value="Exchange read master appointment" id="exchangeReadMasterAppointmentBtn"/>
+            <br/>
             <hr/>
           <span style="display: none;" id="loading">
             <img src="${pageContext.request.contextPath}/resources/application/images/indicator.gif"/>

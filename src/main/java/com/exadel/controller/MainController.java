@@ -40,13 +40,13 @@ public class MainController {
     @Autowired
     private MainService mainService;
 
-    private final String baseUrl = "http://192.168.12.60:9512/";
+//    private final String baseUrl = "http://192.168.12.60:9512/";
 //    private final String baseUrl = "http://192.168.100.22:9512/";
 //    private final String baseUrl = "http://localhost:9512/";
 //    private final String baseUrl = "http://192.168.100.22:9512/";
 //    private final String baseUrl = "http://192.168.0.102:9512/";
 //    private final String baseUrl = "https://dev.e-dapt.net:4440/";
-//    private final String baseUrl = "http://128.66.200.101:9512/";
+    private final String baseUrl = "http://128.66.200.101:9512/";
 //    private final String baseUrl = "https://controller.botf03.net:4440/newmsa/";
 //    private final String baseUrl = "http://msa.botf03.net:180/";
 //    private final String baseUrl = "http://128.66.101.101:9512/";
@@ -62,6 +62,8 @@ public class MainController {
     private final String exchangeContactsdataUrl = baseUrl + "exchjson/service/do/contactsdata";
     private final String exchangeReadEmailUrl = baseUrl + "/exchjson/service/do/reademail";
     private final String exchangeCalendarDataUrl = baseUrl + "/exchjson/service/do/calendardata";
+    private final String exchangeReadAppointmentUrl = baseUrl + "/exchjson/service/do/readappointment";
+    private final String exchangeReadMasterAppointmentUrl = baseUrl + "/exchjson/service/do/readmasterappointment";
 
     @RequestMapping("/")
     public String getMainPageName() {
@@ -89,8 +91,8 @@ public class MainController {
 
 //        requestData.addRequestParam("OjQDB8l/1JzIPZFqXxLV9uoWbxX3vzX4+FWamQgRt+n9FnLxyHU4wprWuGX2o+OURdbCzJxIKAvhOdp99rNNPxx/R2QaS7kXBQ/VgCg/EFsbM6K7e428wIW6MnfCSsnf0ofgpO38a893aq2mwfSTKts+xpJgxogq1S8fvPKJftH9EPQI57kg6xhiyrvpX5RYl+W/YBca/s4j52D7LwFaWk+NG5mS2xkjAZs0OBQ2JGKloExTv5fJMLdngbNxAFpex9ZJcg3yp7nvp/zC4WZrF1QNGNIPUTHZE0pidJh52QvqLmzpv/lJJDSPvB19dAck49fwKChp7rNhYbMr3OW/BQ==", "pkIYHk+1Iro776XKsSjdD5tRsGKPfo7RMtGBjp7lGcJMUrYFpQKS7L6LyNaOQ4QJlCeZC641B7wU80uFd1EDxwzU1CkFOIoDolzkaIWp0hbDMAH2sbWj4wrP0cKrwnkt7XVAEt5MxeDArs18fzAw8uUcpbHjjDDM4F+mQdNLEHuI6OOSE4p/VYy87OE+S1zzmwS0bgOCk7oZ3JicQXRgAgrkym28K9gdeVJ9jTQ1ji5cLXV7OSz4RPW32hvUfkJqq4k2q9YAhTSqxycPSBJ2ilR6QAKU6CS5doU5KGOFeosR2jXCJ4kijT/pGLRwW+uZ4mLPxNrUwikvbpZ420BYpg==");
         //DEV domain=e-dapt
-//        requestData.addRequestParam("data", "tD5g0O2M8mlL2JDLR105sy9z+ASIsGDLZEW+kibSIlwwqAA+Vfdl55XvyGnufqufmHolmvh87cVR0SfAIqHqcSSrCAkgsj\\/3gJ9m2P+bnQG\\/V6GgeI8gSCV6dQtVZSN3jUM5fwUiiFF7SvIN\\/zqy11iTRM8BAmqF28QgxotXmlTHhbO\\/XpRLjFs7Pi+G\\/Zenwc8K0eoKFT29YFZ\\/kNW9dkW8L8nkMKdA5BSMDn0uwzA8Jy5SkXFSqnvchauowRUgSj89rrptpIckedmnC2803jMUnoz09Bbw2HOS2v6bMW4dR3RMdDtVkr3emByicY2Uo3O2OwmCUXlQwqLDCMJT9jGpz1RdD4sMojAwKdX7gHI=");
-//        requestData.addRequestParam("key", "pClfjGT35tNWniW0JYU7VzvgIjzKx\\/wSbFgRhfsfhz0sjuybCT1eo7bCtJI6UKm8naeS9T7t3l2U5nxferoWyCbazoQ7VpvhgBXAoEu4bV3IaQd75tmJu04NkkuaHIF14lgVLeASRaWxoOHLSMyOunMalgtt9ZLjGoFASUdsg\\/c7x0DUq2DDNBn0ZKbeX\\/xRjehH4HxKCXrYquLyz3nPyIwiHNH+8W9zcNwUS8VyGxF35VqdM9phR8ibbqkubawXK4kLu9\\/qtJouDa14DJ\\/fhV1+BQVjDcnU6Uw5Ef0G+VucPjzFLLysDzrn3kp1H+Ffy0qIQmv3sXMZCivvNtEPOQ==");
+//        requestData.addRequestParam("data", "DHOmaRrJXk6f9WYgNIlQA6piWyOhFr8dDH3SYnmYVmrnczrb8Jsu5wJXNsQ6u+i8/FnbI4PJFJV/reBV75EKdMxJzduVeWNLOeIo3rMu8GyvEpkKAq7epvjhk+gTtoOAiEEsq/UH5Bm4tfqY/DE2jkc0txC1zlWqQWtUs0mDjR1DhrbsTWsQ16cRw0q2+pTngetN7Q7mkk+m2F1OQ5WMvvPIrRANu9FbEi445SKNBD38dXsBypDnuFg4hDlzWo43Jc/jXg25rpihHUuTrmEStXV+uAiIP+3Bqz/G9JkS5DbxVYKyaMM+lEqpduz0QJubMZLtkbN3hPkacEz0ON54qvA7E3Z5VRYSHjpBz1UYjMM3lKBMLxEJelFoWrOyEmWuntw2ypzErW+EojcmATWLyCbZh7p4Oe/yBqpirxdweqe2mW4hXi/De0AbnGqZKS68EO+FYml7RJ3vd0nbtgPzDxvBuJljc/IiwWWdyDCLNwA=");
+//        requestData.addRequestParam("key", "T7cbVijUmKeVC1z3odxOpE8UZLsQyku4n11KYtZI+5kvysqkBqeuRVvdlx2dFY9pAWo2UjdtbkZEBStVO2mUVUx1afBV8xur9ivn2/75ic2DPF0o3l84GlxAq7t15vkKHW7sxJBQRdYO/h0SshiI77J80ng9VXUxXwvaS8IVP7f6t5VzdZCncSVi7b8LmM6cccQLqfMlvwemZeONtWLymR+BM3TQXNEU8NjLED5z9FGGEpKkrHuIrfcXSmeXgdexRElI/vMfLU1ZMrLUX4Y+AvmhCzA2hZRntaI+dcnB7lv2p5lr1LSpn7wN2lnw5g7zyhpNErBDU3SOO6QZPzUeDQ==");
         //DEV domain=botf03
         requestData.addRequestParam("data", "vZQSXEretgwD3tBrpqDvqHGf5mrnKTDNgRMUBsBmIAS6RfAvIfkzdT\\/W6c8OR1uNXWox9CXJ8ks6p8FCAT8EWQcP0O+ObeB86EffzRniup14wrzAt\\/oD9eIAbAQ2Bbnh8bfvWS2CkTrPCcippN7Rgk+doQNQVARbZ+Qu54KpU1xCEPAvPiJsmYxHGkVAePPeKlllm3ratRF8BdL\\/kY9BLslWzMI0cpPwqetl4WVLvgoO4gto1wP2PUpNPeUymlbKtbuNMjbfBtzUFdsBdwePEuDATCkfPPv09AyqYE5tcIP4IsPbfTcMy81TJRM6uQ\\/m+Mg35Oo6JY5E36w8KaNcd08eab\\/q05LdTpE9nsiVjeGSkLZWf4xpn4VBhUK9cM6f3Lr7HXKXm3ILKEfj3jR3+VdbEHcywTVMSzTlJqChuzIJe3Znydx\\/rCNYc5Io1CCn");
         requestData.addRequestParam("key", "HxVpLcxLLUi4tUSUT88BRcOrwYYajHI6fJ5t75hMgQCldVUyvozqrGn+Sg10Lan2KBAzi09Tgdek8WIiKEijWJ0Vs5rRqF6tsdNZzHKCibWO2Ri\\/jVq5WdeuLLAniASQMbH16PcsyUj9HJN\\/y2ZgQeBv3vxkd8VQWBr06t24wpTIzVpEZbWqcEIaXr0Y1fEaaS3ux111sDTC5GVF6Oic2Etr\\/ZywtFdKNXR\\/cSvVo5w+ZyfM9WF3BbcfVuIZoJkE3TlLdiN21vyBNF4mXMoxtOMPIf\\/eiqWF8JWDQhrygUnQeO3qZax877speQyR19qeJSvNQlpyAtiANzGbwAjj2w==");
@@ -144,7 +146,7 @@ public class MainController {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-SK", "IaDNEzojmoMwOLW+mYuQNyRz8z55qK5GaZrW/+6ULig=");
-        requestData.addRequestHeader("X-51MAPS-ForwardUrl", "http://ec2-54-171-174-5.eu-west-1.compute.amazonaws.com/ux/signin.html");
+        requestData.addRequestHeader("X-51MAPS-ForwardUrl", "http://www.tashkent.org/whoami.asp");
 
         return requestData;
     }
@@ -156,6 +158,8 @@ public class MainController {
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         //DEV domain=botf03
         requestData.addRequestHeader("X-51MAPS-SK", "IaDNEzojmoMwOLW+mYuQNyRz8z55qK5GaZrW/+6ULig=");
+        //DEV domain=e-dapt
+//        requestData.addRequestHeader("X-51MAPS-SK", "drTIlheKXdkqDcwy22hwxdZWk9+TGGMoKYVuIgiTHv8=");
         //DEMO domain=e-dapt
 //        requestData.addRequestHeader("X-51MAPS-PasswordKey", "ISQrPdyzDqMnNBYpcg9WLxILB4Fli2tTUhHILA3w4X0RbGK16Jpp0H/3rczujpBIW+0Y0gqQMQo/GZxf1gWsoxQO5D1D0GQqteuvl2YfVl1irvdPtq1QToadTDmh1eoRfbUQeeM1FjaULJ/Oy9CbXn8s8uZhwSOmy0eHxXFE+bIuGfaXxsbxValtXKDBwyzB1EEiMHu2bYAjdZYPL0R+/Mbqev/MK3x19xTM9tw6YbFChXXs2DJRM+ECbSnSTR9RHJdHyBvXZLE5vhiFLQLSMFlwmRcuaviaxMjcmAsMR9CDbvF7MOrsN7jwlB6xoz8bq5QbT7r6LBKfGLnW9tTn2Q==");
         requestData.addRequestHeader("X-51MAPS-CredentialsRequired", "true");
@@ -249,11 +253,48 @@ public class MainController {
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
         requestData.addRequestParam("AsHtml", "false");
-        requestData.addRequestParam("EndDate", "1436904000000");
+        requestData.addRequestParam("EndDate", "1445140799000");
         requestData.addRequestParam("ReturnInstances", "true");
-        requestData.addRequestParam("StartDate", "1436824800000");
+        requestData.addRequestParam("StartDate", "1444536000000");
         requestData.addRequestParam("WithBody", "false");
+        //2010
+//        requestData.addRequestParam("EntryID", "AAMkAGIxNDM0ZDVhLTVkNjAtNDExNC05OGJlLTBkYTY2ZGM0Y2RlNQAuAAAAAACj/PfB/94AQ6N0pbnWmcjNAQCJOXq+UKNwSJ+TqdVrKLqdAAAAC9yeAAA=");
+        //2003
         requestData.addRequestParam("EntryID", "~/-FlatUrlSpace-/6260f6461db98c499b21d63a02cd56a7-1f75");
+
+        return requestData;
+    }
+
+    @RequestMapping(value = "/exchangeReadAppointment/predefined")
+    @ResponseBody
+    public PredefinedRequestData predefParamsForExchangeReadAppointment(@ModelAttribute("authToken") String authToken,
+                                                                        @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
+                                                                        @ModelAttribute("exchgToken") String exchgToken) {
+        PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
+        requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+        requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
+
+        requestData.addRequestParam("AsHtml", "false");
+        requestData.addRequestParam("WithBody", "true");
+        requestData.addRequestParam("EntryID", "AAMkAGIxNDM0ZDVhLTVkNjAtNDExNC05OGJlLTBkYTY2ZGM0Y2RlNQFRAAgI0taF5pJAAEYAAAAAo/z3wf/eAEOjdKW51pnIzQcAiTl6vlCjcEifk6nVayi6nQAAAAvcngAAiTl6vlCjcEifk6nVayi6nQAAAA7x5gAAEA==");
+
+        return requestData;
+    }
+
+    @RequestMapping(value = "/exchangeReadMasterAppointment/predefined")
+    @ResponseBody
+    public PredefinedRequestData predefParamsForExchangeReadMasterAppointment(@ModelAttribute("authToken") String authToken,
+                                                                        @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
+                                                                        @ModelAttribute("exchgToken") String exchgToken) {
+        PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
+        requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+        requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
+
+        requestData.addRequestParam("AsHtml", "false");
+        requestData.addRequestParam("WithBody", "true");
+        requestData.addRequestParam("EntryID", "AAMkAGIxNDM0ZDVhLTVkNjAtNDExNC05OGJlLTBkYTY2ZGM0Y2RlNQFRAAgI0taF5pJAAEYAAAAAo/z3wf/eAEOjdKW51pnIzQcAiTl6vlCjcEifk6nVayi6nQAAAAvcngAAiTl6vlCjcEifk6nVayi6nQAAAA7x5gAAEA==");
 
         return requestData;
     }
@@ -414,6 +455,32 @@ public class MainController {
     public Response exchangeCalendarData(@RequestBody Map<String, String> requestData) throws IOException {
         HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
         HttpPost contactsRequest = new HttpPost(exchangeCalendarDataUrl);
+        contactsRequest.setEntity(mainService.constructRequestBody(requestData));
+        contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
+
+        HttpResponse response = httpClient.execute(contactsRequest);
+
+        return mainService.constructSuccessResponse(response);
+    }
+
+    @RequestMapping(value = "/exchangeReadAppointment", method = RequestMethod.POST)
+    @ResponseBody
+    public Response exchangeReadAppointment(@RequestBody Map<String, String> requestData) throws IOException {
+        HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
+        HttpPost contactsRequest = new HttpPost(exchangeReadAppointmentUrl);
+        contactsRequest.setEntity(mainService.constructRequestBody(requestData));
+        contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
+
+        HttpResponse response = httpClient.execute(contactsRequest);
+
+        return mainService.constructSuccessResponse(response);
+    }
+
+    @RequestMapping(value = "/exchangeReadMasterAppointment", method = RequestMethod.POST)
+    @ResponseBody
+    public Response exchangeReadMasterAppointment(@RequestBody Map<String, String> requestData) throws IOException {
+        HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
+        HttpPost contactsRequest = new HttpPost(exchangeReadMasterAppointmentUrl);
         contactsRequest.setEntity(mainService.constructRequestBody(requestData));
         contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 

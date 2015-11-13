@@ -84,6 +84,16 @@ $(function() {
         fillPredefinedInfo('/exchangeCalendarData/predefined');
     });
 
+    $('#exchangeReadAppointmentBtn').click(function() {
+        sendUrl = "/exchangeReadAppointment";
+        fillPredefinedInfo('/exchangeReadAppointment/predefined');
+    });
+
+    $('#exchangeReadMasterAppointmentBtn').click(function() {
+        sendUrl = "/exchangeReadMasterAppointment";
+        fillPredefinedInfo('/exchangeReadMasterAppointment/predefined');
+    });
+
     $('#sendButton').click(function() {
         $.ajax({
             type: 'post',
