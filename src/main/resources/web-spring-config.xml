@@ -1,14 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-  <bean class="com.exadel.service.impl.MainServiceImpl">
-    <property name="paramKeyValDelim" value="="/>
-    <property name="headerKeyValDelim" value=":"/>
-    <property name="lineSeparator" value="\n"/>
-    <property name="jsonMapper" ref="objectMapper"/>
-  </bean>
+    <!--<context:property-placeholder order="1" location="/resources/config.properties" />-->
+    <!--<context:property-placeholder order="2" location="file:${jboss.server.edapt.dir}/common.properties"/>-->
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="properties">
+            <props>
+                <!--<prop key="jboss.server.config.dir">C:/work/MSA/JBossAppServer/standalone/configuration</prop>-->
+            </props>
+        </property>
+        <property name="locations">
+            <list>
+                <!--<value>/resources/config.properties</value>-->
+                <value>file:${jboss.server.edapt.dir}/common.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean class="com.exadel.service.impl.MainServiceImpl">
+        <property name="paramKeyValDelim" value="="/>
+        <property name="headerKeyValDelim" value=":"/>
+        <property name="jsonMapper" ref="objectMapper"/>
+        <property name="loginDataEncoder" ref="aes256CBCWithPKCS5Padding"/>
+        <property name="certificateManager" ref="certificateManager"/>
+    </bean>
 
     <bean id="objectMapper" class="org.codehaus.jackson.map.ObjectMapper" />
+
+    <bean id="certificateManager" class="com.exadel.security.certificate.CertificateManagerImpl">
+        <constructor-arg name="pathToStore" value="${serverstore.url}"/>
+        <constructor-arg name="storePassword" value="${serverstore.password}"/>
+        <constructor-arg name="alias" value="${serverstore.alias}"/>
+        <property name="rsaEncoder" ref="rsa"/>
+    </bean>
+
+    <bean id="rsa" class="com.exadel.security.encoder.BaseEncoder" scope="prototype">
+        <constructor-arg name="algorithm" value="RSA/ECB/PKCS1Padding"/>
+        <constructor-arg name="specAlgorithm" value=""/>
+    </bean>
+
+    <bean id="aes256CBCWithPKCS5Padding" class="com.exadel.security.encoder.BaseEncoder" scope="prototype">
+        <constructor-arg name="algorithm" value="AES/CBC/PKCS5Padding"/>
+        <constructor-arg name="specAlgorithm" value="AES"/>
+    </bean>
 </beans>

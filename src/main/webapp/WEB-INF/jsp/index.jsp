@@ -8,11 +8,29 @@
 <div>
     <div>
         <%-- FIRST COLUMN (buttons) --%>
-        <div style="width:200px;float:left;display:inline-block;">
+        <div style="width:220px;float:left;display:inline-block;">
             <p>REQUESTS: </p>
-            <input type="radio" name="contentType" checked="checked" value="form">Form <br>
-            <input type="radio" name="contentType" value="json">Json <br>
-            <input type="radio" name="contentType" value="text">Text <br>
+            <%--<input type="radio" name="contentType" checked="checked" value="form">Form <br>--%>
+            <%--<input type="radio" name="contentType" value="json">Json <br>--%>
+            <%--<input type="radio" name="contentType" value="text">Text <br>--%>
+            <select id="contentType">
+                <option value="form">Form </option>
+                <option value="json">Json </option>
+                <option value="text">Text </option>
+            </select>
+            <select id="baseUrl">
+                <option value="http://192.168.12.60:9512/">192.168.12.60:9512</option>
+                <option value="http://192.168.100.22:9512/">192.168.100.22:9512</option>
+                <option value="http://192.168.100.22:9512/">192.168.100.22:9512</option>
+                <option value="http://localhost:9512/">localhost:9512</option>
+                <option value="http://192.168.0.102:9512/">192.168.0.102:9512</option>
+                <option value="https://dev.e-dapt.net:4440/">dev.e-dapt.net:4440</option>
+                <option value="http://128.66.200.101:9512/" selected="selected">128.66.200.101:9512</option>
+                <option value="https://controller.botf03.net:4440/newmsa/">controller.botf03.net:4440/newmsa</option>
+                <option value="http://msa.botf03.net:180/">msa.botf03.net:180</option>
+                <option value="http://128.66.101.101:9512/">128.66.101.101:9512</option>
+                <option value="http://192.168.12.219:9512/">192.168.12.219:9512</option>
+            </select>
             <hr/>
             <input type="button" value="Login" id="loginBtn"/>
             <br/>
@@ -49,7 +67,7 @@
           </span>
         </div>
         <%-- SECOND COLUMN (areas) --%>
-        <div style="margin-left:200px; padding-left: 20px">
+        <div style="margin-left:220px; padding-left: 20px">
             <input type="button" value="Send" id="sendButton"/>
             <br/>
             <label for="parametersArea">Parameters</label>

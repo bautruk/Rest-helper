@@ -21,6 +21,7 @@ public interface MainService {
      * @return {@link org.apache.http.HttpEntity} object containing all parameters accepted in argument
      */
     public HttpEntity constructRequestBody(Map<String, String> requestData);
+    public String encodeRequestParameters(Map<String, String> requestData);
 
     /**
      * Creates an array of {@link org.apache.http.Header} objects from given headers

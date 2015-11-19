@@ -15,8 +15,6 @@
 
   <context:component-scan base-package="com.exadel.controller"/>
 
-  <context:property-placeholder location="classpath:config.properties" />
-
   <mvc:resources mapping="/resources/**" location="/resources/"/>
 
   <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
