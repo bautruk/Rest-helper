@@ -41,30 +41,6 @@ public class MainController {
     @Autowired
     private MainService mainService;
 
-//    private final String baseUrl = "http://192.168.12.60:9512/";
-//    private final String baseUrl = "http://192.168.100.22:9512/";
-//    private final String baseUrl = "http://localhost:9512/";
-//    private final String baseUrl = "http://192.168.100.22:9512/";
-//    private final String baseUrl = "http://192.168.0.102:9512/";
-//    private final String baseUrl = "https://dev.e-dapt.net:4440/";
-//    private final String baseUrl = "http://128.66.200.101:9512/";
-//    private final String baseUrl = "https://controller.botf03.net:4440/newmsa/";
-//    private final String baseUrl = "http://msa.botf03.net:180/";
-//    private final String baseUrl = "http://128.66.101.101:9512/";
-
-//    private final String loginUrl = baseUrl + "proxy/authentication/login";
-//    private final String getPasswordUrl = baseUrl + "proxy/profile/getPassword";
-//    private final String explorerFolderDataUrl = baseUrl + "shared-drive/getItems";
-//    private final String explorerGetFile = baseUrl + "shared-drive/do/get";
-//    private final String forwardUrl = baseUrl + "forwardurl";
-//    private final String exchangeLoginUrl = baseUrl + "exchjson/service/do/login";
-//    private final String exchangeFoldersUrl = baseUrl + "exchjson/service/do/folders";
-//    private final String exchangeFolderdataUrl = baseUrl + "exchjson/service/do/folderdata";
-//    private final String exchangeContactsdataUrl = baseUrl + "exchjson/service/do/contactsdata";
-//    private final String exchangeReadEmailUrl = baseUrl + "/exchjson/service/do/reademail";
-//    private final String exchangeCalendarDataUrl = baseUrl + "/exchjson/service/do/calendardata";
-//    private final String exchangeReadAppointmentUrl = baseUrl + "/exchjson/service/do/readappointment";
-//    private final String exchangeReadMasterAppointmentUrl = baseUrl + "/exchjson/service/do/readmasterappointment";
     private final String loginUrl = "proxy/authentication/login";
     private final String getPasswordUrl = "proxy/profile/getPassword";
     private final String explorerFolderDataUrl = "shared-drive/getItems";
@@ -93,7 +69,7 @@ public class MainController {
         requestData.addRequestParam("username", "milshtyu");
         requestData.addRequestParam("password", "Frame1hawk");
         requestData.addRequestParam("domain", "botf03.net");
-        requestData.addRequestParam("deviceId", "D0971C72-7413-41AB-9C5F-6A7771127F27");
+        requestData.addRequestParam("deviceId", "rest-client");
         requestData.addRequestParam("deviceIp", "10.0.0.86");
         requestData.addRequestParam("os", "IOS");
         requestData.addRequestParam("osVersion", "8.3");
