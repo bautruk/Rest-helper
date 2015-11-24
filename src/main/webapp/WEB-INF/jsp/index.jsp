@@ -10,9 +10,6 @@
         <%-- FIRST COLUMN (buttons) --%>
         <div style="width:220px;float:left;display:inline-block;">
             <p>REQUESTS: </p>
-            <%--<input type="radio" name="contentType" checked="checked" value="form">Form <br>--%>
-            <%--<input type="radio" name="contentType" value="json">Json <br>--%>
-            <%--<input type="radio" name="contentType" value="text">Text <br>--%>
             <select id="contentType">
                 <option value="form">Form </option>
                 <option value="json">Json </option>

@@ -84,7 +84,7 @@ public class MainServiceImpl implements MainService {
     @Override
     public HttpEntity constructRequestBody(Map<String, String> requestData) {
         String contentType = requestData.get("type");
-        String requestParameters = requestData.get("parameters");
+        String requestParameters = requestData.get("parameters").trim();
         if (CONTENT_TYPE_FORM.equals(contentType)) {
             try {
                 return new UrlEncodedFormEntity(parseParametersStringForm(requestParameters), "UTF-8");
