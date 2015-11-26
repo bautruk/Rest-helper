@@ -111,6 +111,12 @@ $(function() {
         fillPredefinedInfo('/exchangeReadMasterAppointment/predefined');
     });
 
+    $('#exchangeAddAppointmentBtn').click(function() {
+        setContentType("form");
+        sendUrl = "/exchangeAddAppointment";
+        fillPredefinedInfo('/exchangeAddAppointment/predefined');
+    });
+
     $('#sendButton').click(function() {
         $.ajax({
             type: 'post',

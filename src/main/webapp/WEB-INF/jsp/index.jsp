@@ -58,6 +58,8 @@
             <br/>
             <input type="button" value="Exchange read master appointment" id="exchangeReadMasterAppointmentBtn"/>
             <br/>
+            <input type="button" value="Exchange add appointment" id="exchangeAddAppointmentBtn"/>
+            <br/>
             <hr/>
           <span style="display: none;" id="loading">
             <img src="${pageContext.request.contextPath}/resources/application/images/indicator.gif"/>
