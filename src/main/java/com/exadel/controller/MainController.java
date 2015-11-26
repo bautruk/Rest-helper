@@ -64,8 +64,6 @@ public class MainController {
     @ResponseBody
     public PredefinedRequestData predefParamsForLogin() {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        //requestData.addRequestParam("data", "vZQSXEretgwD3tBrpqDvqHGf5mrnKTDNgRMUBsBmIAS6RfAvIfkzdT\\/W6c8OR1uNXWox9CXJ8ks6p8FCAT8EWQcP0O+ObeB86EffzRniup14wrzAt\\/oD9eIAbAQ2Bbnh8bfvWS2CkTrPCcippN7Rgk+doQNQVARbZ+Qu54KpU1xCEPAvPiJsmYxHGkVAePPeKlllm3ratRF8BdL\\/kY9BLslWzMI0cpPwqetl4WVLvgoO4gto1wP2PUpNPeUymlbKtbuNMjbfBtzUFdsBdwePEuDATCkfPPv09AyqYE5tcIP4IsPbfTcMy81TJRM6uQ\\/m+Mg35Oo6JY5E36w8KaNcd08eab\\/q05LdTpE9nsiVjeGSkLZWf4xpn4VBhUK9cM6f3Lr7HXKXm3ILKEfj3jR3+VdbEHcywTVMSzTlJqChuzIJe3Znydx\\/rCNYc5Io1CCn");
-        //requestData.addRequestParam("key", "HxVpLcxLLUi4tUSUT88BRcOrwYYajHI6fJ5t75hMgQCldVUyvozqrGn+Sg10Lan2KBAzi09Tgdek8WIiKEijWJ0Vs5rRqF6tsdNZzHKCibWO2Ri\\/jVq5WdeuLLAniASQMbH16PcsyUj9HJN\\/y2ZgQeBv3vxkd8VQWBr06t24wpTIzVpEZbWqcEIaXr0Y1fEaaS3ux111sDTC5GVF6Oic2Etr\\/ZywtFdKNXR\\/cSvVo5w+ZyfM9WF3BbcfVuIZoJkE3TlLdiN21vyBNF4mXMoxtOMPIf\\/eiqWF8JWDQhrygUnQeO3qZax877speQyR19qeJSvNQlpyAtiANzGbwAjj2w==");
         requestData.addRequestParam("username", "milshtyu");
         requestData.addRequestParam("password", "Frame1hawk");
         requestData.addRequestParam("domain", "botf03.net");
@@ -73,7 +71,6 @@ public class MainController {
         requestData.addRequestParam("deviceIp", "10.0.0.86");
         requestData.addRequestParam("os", "IOS");
         requestData.addRequestParam("osVersion", "8.3");
-        //requestData.addRequestParam("provisionVersions", "0e664c701741d9448e2bf9831c411733");
         requestData.addRequestParam("application", "edge");
         requestData.addRequestParam("applicationVersion", "1.0");
        return requestData;
@@ -86,7 +83,6 @@ public class MainController {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-CredentialsRequired", "true");
-        //DEV domain=botf03
         requestData.addRequestHeader("X-51MAPS-SK", key);
 
         requestData.addRequestParam("path", "");
@@ -134,7 +130,6 @@ public class MainController {
                                                            @ModelAttribute("X-51MAPS-SK") String key) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
-        //DEV domain=botf03
         requestData.addRequestHeader("X-51MAPS-SK", key);
         //DEV domain=e-dapt
         requestData.addRequestHeader("X-51MAPS-CredentialsRequired", "true");
