@@ -21,6 +21,15 @@ public interface MainService {
      * @return {@link org.apache.http.HttpEntity} object containing all parameters accepted in argument
      */
     public HttpEntity constructRequestBody(Map<String, String> requestData);
+
+    /**
+     * Adds a new parameter "encryptedPassword" to given parameters and replace them with new request parameters
+     * in "name(param-delim)value(line-separator)" form: "data" - encoded with zero vector parameters (Base64 string),
+     * "key" - key for decrypting data (Base64 string)
+     *
+     * @param requestData map of request data. Parameters string contains request parameters in "name(param-delim)value(line-separator)" form
+     * @return key for decrypting encrypted password (Base64 string)
+     */
     public String encodeRequestParameters(Map<String, String> requestData);
 
     /**
