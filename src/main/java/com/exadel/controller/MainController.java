@@ -66,7 +66,7 @@ public class MainController {
     public PredefinedRequestData predefParamsForLogin() {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestParam("username", "milshtyu");
-        requestData.addRequestParam("password", "Frame1hawk");
+        requestData.addRequestParam("password", "511maps");
         requestData.addRequestParam("domain", "botf03.net");
         requestData.addRequestParam("deviceId", "rest-client");
         requestData.addRequestParam("deviceIp", "10.0.0.86");
@@ -224,14 +224,14 @@ public class MainController {
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
         requestData.addRequestParam("AsHtml", "false");
-        requestData.addRequestParam("EndDate", "1445140799000");
+        requestData.addRequestParam("EndDate", "1449377999000");
         requestData.addRequestParam("ReturnInstances", "true");
-        requestData.addRequestParam("StartDate", "1444536000000");
+        requestData.addRequestParam("StartDate", "1448773200000");
         requestData.addRequestParam("WithBody", "false");
         //2010
 //        requestData.addRequestParam("EntryID", "AAMkAGIxNDM0ZDVhLTVkNjAtNDExNC05OGJlLTBkYTY2ZGM0Y2RlNQAuAAAAAACj/PfB/94AQ6N0pbnWmcjNAQCJOXq+UKNwSJ+TqdVrKLqdAAAAC9yeAAA=");
         //2003
-        requestData.addRequestParam("EntryID", "~/-FlatUrlSpace-/6260f6461db98c499b21d63a02cd56a7-1f75");
+        requestData.addRequestParam("EntryID", "~/-FlatUrlSpace-/6260f6461db98c499b21d63a02cd56a7-b9e23");
 
         return requestData;
     }

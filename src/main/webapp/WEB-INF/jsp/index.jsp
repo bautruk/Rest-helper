@@ -16,13 +16,13 @@
                 <option value="text">Text </option>
             </select>
             <select id="baseUrl">
-                <option value="http://192.168.12.60:9512/">192.168.12.60:9512</option>
+                <option value="http://192.168.12.60:9512/" selected="selected">192.168.12.60:9512</option>
+                <option value="http://128.66.200.101:9512/">Dev-128.66.200.101:9512</option>
                 <option value="http://192.168.100.22:9512/">192.168.100.22:9512</option>
                 <option value="http://192.168.100.22:9512/">192.168.100.22:9512</option>
                 <option value="http://localhost:9512/">localhost:9512</option>
                 <option value="http://192.168.0.102:9512/">192.168.0.102:9512</option>
                 <option value="https://dev.e-dapt.net:4440/">dev.e-dapt.net:4440</option>
-                <option value="http://128.66.200.101:9512/" selected="selected">128.66.200.101:9512</option>
                 <option value="https://controller.botf03.net:4440/newmsa/">controller.botf03.net:4440/newmsa</option>
                 <option value="http://msa.botf03.net:180/">msa.botf03.net:180</option>
                 <option value="http://128.66.101.101:9512/">128.66.101.101:9512</option>
