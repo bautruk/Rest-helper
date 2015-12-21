@@ -74,7 +74,8 @@ public class MainController {
         requestData.addRequestParam("osVersion", "8.3");
         requestData.addRequestParam("application", "edge");
         requestData.addRequestParam("applicationVersion", "1.0");
-       return requestData;
+        requestData.addRequestParam("deviceType", "test-device-type");
+        return requestData;
     }
 
     @RequestMapping(value = "/explorerFolderData/predefined", method = RequestMethod.GET)
@@ -581,8 +582,7 @@ public class MainController {
                     },
                     SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER
             );
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
