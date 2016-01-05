@@ -50,6 +50,7 @@ public class MainController {
     private final String exchangeFoldersUrl = "exchjson/service/do/folders";
     private final String exchangeFolderdataUrl = "exchjson/service/do/folderdata";
     private final String exchangeContactsdataUrl = "exchjson/service/do/contactsdata";
+    private final String exchangeMoveItemUrl = "exchjson/service/do/moveitem";
     private final String exchangeReadEmailUrl = "/exchjson/service/do/reademail";
     private final String exchangeCalendarDataUrl = "/exchjson/service/do/calendardata";
     private final String exchangeReadAppointmentUrl = "/exchjson/service/do/readappointment";
@@ -198,6 +199,24 @@ public class MainController {
         return requestData;
     }
 
+    @RequestMapping(value = "/exchangeMoveItem/predefined")
+    @ResponseBody
+    public PredefinedRequestData predefParamsForExchgMoveData(@ModelAttribute("authToken") String authToken,
+                                                              @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
+                                                              @ModelAttribute("exchgToken") String exchgToken,
+                                                              @ModelAttribute("itemId") String itemId,
+                                                              @ModelAttribute("destinationId") String destId) {
+        PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
+        requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+        requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
+
+        requestData.addRequestParam("ItemId", "~/-FlatUrlSpace-/6260f6461db98c499b21d63a02cd56a7-bcc48/6260f6461db98c499b21d63a02cd56a7-bd60b");
+        requestData.addRequestParam("FolderId", "~/-FlatUrlSpace-/6260f6461db98c499b21d63a02cd56a7-bcc49");
+
+        return requestData;
+    }
+
     @RequestMapping(value = "/exchangeReadEmail/predefined")
     @ResponseBody
     public PredefinedRequestData predefParamsForExchangeReadEmail(@ModelAttribute("authToken") String authToken,
@@ -257,8 +276,8 @@ public class MainController {
     @RequestMapping(value = "/exchangeReadMasterAppointment/predefined")
     @ResponseBody
     public PredefinedRequestData predefParamsForExchangeReadMasterAppointment(@ModelAttribute("authToken") String authToken,
-                                                                        @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
-                                                                        @ModelAttribute("exchgToken") String exchgToken) {
+                                                                              @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
+                                                                              @ModelAttribute("exchgToken") String exchgToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
@@ -436,6 +455,20 @@ public class MainController {
         HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
         String baseUrl = requestData.get("baseUrl").trim();
         HttpPost contactsRequest = new HttpPost(baseUrl + exchangeContactsdataUrl);
+        contactsRequest.setEntity(mainService.constructRequestBody(requestData));
+        contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
+
+        HttpResponse response = httpClient.execute(contactsRequest);
+
+        return mainService.constructSuccessResponse(response);
+    }
+
+    @RequestMapping(value = "/exchangeMoveItem", method = RequestMethod.POST)
+    @ResponseBody
+    public Response exchangeMoveData(@RequestBody Map<String, String> requestData) throws IOException {
+        HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
+        String baseUrl = requestData.get("baseUrl").trim();
+        HttpPost contactsRequest = new HttpPost(baseUrl + exchangeMoveItemUrl);
         contactsRequest.setEntity(mainService.constructRequestBody(requestData));
         contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 
