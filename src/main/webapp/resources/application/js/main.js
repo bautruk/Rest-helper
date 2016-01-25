@@ -123,6 +123,18 @@ $(function() {
         fillPredefinedInfo('/exchangeAddAppointment/predefined');
     });
 
+    $('#exchangeDeleteAppointmentBtn').click(function() {
+        setContentType("form");
+        sendUrl = "/exchangeDeleteAppointment";
+        fillPredefinedInfo('/exchangeDeleteAppointment/predefined');
+    });
+
+    $('#exchangeUpdateAppointmentBtn').click(function() {
+        setContentType("form");
+        sendUrl = "/exchangeUpdateAppointment";
+        fillPredefinedInfo('/exchangeUpdateAppointment/predefined');
+    });
+
     $('#sendButton').click(function() {
         $.ajax({
             type: 'post',

@@ -19,6 +19,7 @@
                 <option value="http://192.168.12.60:9512/" selected="selected">192.168.12.60:9512</option>
                 <option value="http://128.66.200.101:9512/">Dev-128.66.200.101:9512</option>
                 <option value="http://192.168.100.22:9512/">192.168.100.22:9512</option>
+                <option value="http://192.168.100.21:9512/">192.168.100.21:9512</option>
                 <option value="https://dev.e-dapt.net:4440/">dev.e-dapt.net:4440</option>
                 <option value="https://controller.botf03.net:4440/newmsa/">controller.botf03.net:4440/newmsa</option>
                 <option value="http://128.66.101.101:9512/">128.66.101.101:9512</option>
@@ -57,6 +58,10 @@
             <input type="button" value="Exchange read master appointment" id="exchangeReadMasterAppointmentBtn"/>
             <br/>
             <input type="button" value="Exchange add appointment" id="exchangeAddAppointmentBtn"/>
+            <br/>
+            <input type="button" value="Exchange delete appointment" id="exchangeDeleteAppointmentBtn"/>
+            <br/>
+            <input type="button" value="Exchange update appointment" id="exchangeUpdateAppointmentBtn"/>
             <br/>
             <hr/>
           <span style="display: none;" id="loading">
