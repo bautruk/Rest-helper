@@ -354,6 +354,7 @@ public class MainController {
         requestData.addRequestParam("ReminderOffset", "0");
         requestData.addRequestParam("StartTime", "1448545096000");
         requestData.addRequestParam("Subject", "");
+        requestData.addRequestParam("Label", "red");
         requestData.addRequestParam("TimeZone", "Dateline Standard Time");
 
 
