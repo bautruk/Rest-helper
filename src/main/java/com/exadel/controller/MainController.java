@@ -307,12 +307,12 @@ public class MainController {
 
         requestData.addRequestParam("AllDayEvent", "false");
         requestData.addRequestParam("Body", "");
-        requestData.addRequestParam("EndTime", "1448546896000");
+        requestData.addRequestParam("EndDate", "1448546896000");
         requestData.addRequestParam("Label", "red");
         requestData.addRequestParam("Location", "");
         requestData.addRequestParam("RecurrenceRule", "");
         requestData.addRequestParam("ReminderOffset", "0");
-        requestData.addRequestParam("StartTime", "1448545096000");
+        requestData.addRequestParam("StartDate", "1448545096000");
         requestData.addRequestParam("Subject", "");
         requestData.addRequestParam("TimeZone", "Dateline Standard Time");
 
@@ -348,11 +348,11 @@ public class MainController {
         requestData.addRequestParam("EntryID", "");
         requestData.addRequestParam("AllDayEvent", "false");
         requestData.addRequestParam("Body", "");
-        requestData.addRequestParam("EndTime", "1448546896000");
+        requestData.addRequestParam("EndDate", "1448546896000");
         requestData.addRequestParam("Location", "");
         requestData.addRequestParam("RecurrenceRule", "");
         requestData.addRequestParam("ReminderOffset", "0");
-        requestData.addRequestParam("StartTime", "1448545096000");
+        requestData.addRequestParam("StartDate", "1448545096000");
         requestData.addRequestParam("Subject", "");
         requestData.addRequestParam("Label", "red");
         requestData.addRequestParam("TimeZone", "Dateline Standard Time");
