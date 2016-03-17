@@ -99,6 +99,12 @@ $(function() {
         fillPredefinedInfo('/exchangeReadEmail/predefined');
     });
 
+    $('#exchangeSendEmailBtn').click(function() {
+        setContentType("form");
+        sendUrl = "/exchangeSendEmail";
+        fillPredefinedInfo('/exchangeSendEmail/predefined');
+    });
+
     $('#exchangeCalendarDataBtn').click(function() {
         setContentType("form");
         sendUrl = "/exchangeCalendarData";
