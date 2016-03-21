@@ -99,6 +99,18 @@ $(function() {
         fillPredefinedInfo('/exchangeReadEmail/predefined');
     });
 
+    $('#exchangeSendEmailBtn').click(function() {
+        setContentType("form");
+        sendUrl = "/exchangeSendEmail";
+        fillPredefinedInfo('/exchangeSendEmail/predefined');
+    });
+
+    $('#exchangeAddAttachmentToDraft').click(function() {
+        setContentType("multipart-form");
+        sendUrl = "/exchangeAddAttachment";
+        fillPredefinedInfo('/exchangeAddAttachment/predefined');
+    });
+
     $('#exchangeCalendarDataBtn').click(function() {
         setContentType("form");
         sendUrl = "/exchangeCalendarData";

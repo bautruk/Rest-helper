@@ -6,6 +6,7 @@ import com.exadel.security.certificate.CertificateManager;
 import com.exadel.security.encoder.Encoder;
 import com.exadel.service.MainService;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -13,6 +14,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
@@ -21,8 +23,7 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.*;
 
 @Service
@@ -30,8 +31,14 @@ public class MainServiceImpl implements MainService {
     private static final String CONTENT_TYPE_FORM = "form";
     private static final String CONTENT_TYPE_JSON = "json";
     private static final String CONTENT_TYPE_TEXT = "text";
+    private static final String CONTENT_TYPE_MULTIPART = "multipart-form";
     private static final String CONTENT_TYPE_APPLICATION_JSON = "application/json";
+    private static final String CONTENT_TYPE_APPLICATION_OCTET_STREAM =  "application/octet-stream";
+    private static final String TEXT_PLAIN =  "text/plain";
     private static final String LINE_SEPARATOR = "\n";
+    private static final String ATTACHMENT_DATA_KEY = "AttachmentData";
+    private static final String FILE_PATH_KEY = "FilePath";
+    private static final String FILE_NAME_KEY = "FileName";
 
     private ObjectMapper jsonMapper;
     private String paramKeyValDelim;
@@ -105,8 +112,18 @@ public class MainServiceImpl implements MainService {
             }
         } else if (CONTENT_TYPE_TEXT.equals(contentType)) {
             return new StringEntity(requestParameters, "UTF-8");
-        }
+        } else if (CONTENT_TYPE_MULTIPART.equals(contentType)) {
+            HashMap<String, String> parsedParameters = parseParametersStringJson(requestParameters);
+            String filePath = parsedParameters.remove(FILE_PATH_KEY);
+            String fileName = parsedParameters.get(FILE_NAME_KEY);
 
+            MultipartEntityBuilder entityBuilder = MultipartEntityBuilder.create();
+            setBinaryData(entityBuilder, filePath, fileName);
+            for (Map.Entry<String, String> parameterPair : parsedParameters.entrySet()) {
+                entityBuilder.addTextBody(parameterPair.getKey(), parameterPair.getValue(), ContentType.create(TEXT_PLAIN));
+            }
+            return entityBuilder.build();
+        }
         return null;
     }
 
@@ -186,7 +203,7 @@ public class MainServiceImpl implements MainService {
                 result = (String) resultValue;
             }
         }
-        
+
         return result;
     }
 
@@ -262,5 +279,19 @@ public class MainServiceImpl implements MainService {
         result.delete(result.lastIndexOf(delimiter), result.length());
 
         return result.toString();
+    }
+
+    private void setBinaryData(MultipartEntityBuilder builder, String filePath, String fileName) {
+        if (fileName != null && filePath != null) {
+            try {
+                byte[] content = IOUtils.toByteArray(new FileInputStream(new File(filePath)));
+                builder.addBinaryBody(ATTACHMENT_DATA_KEY, content,
+                        ContentType.create(CONTENT_TYPE_APPLICATION_OCTET_STREAM), fileName);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

@@ -14,8 +14,11 @@
                 <option value="form">Form </option>
                 <option value="json">Json </option>
                 <option value="text">Text </option>
+                <option value="multipart-form">Multipart-form </option>
             </select>
             <select id="baseUrl">
+                <option value="http://192.168.12.7:9512/">192.168.12.7:9512</option>
+                <option value="http://192.168.0.41:9512/">192.168.0.41:9512</option>
                 <option value="http://192.168.12.60:9512/" selected="selected">192.168.12.60:9512</option>
                 <option value="http://128.66.200.101:9512/">Dev-128.66.200.101:9512</option>
                 <option value="http://192.168.100.22:9512/">192.168.100.22:9512</option>
@@ -23,7 +26,6 @@
                 <option value="https://dev.e-dapt.net:4440/">dev.e-dapt.net:4440</option>
                 <option value="https://controller.botf03.net:4440/newmsa/">controller.botf03.net:4440/newmsa</option>
                 <option value="http://128.66.101.101:9512/">128.66.101.101:9512</option>
-                <option value="http://192.168.12.219:9512/">192.168.12.219:9512</option>
             </select>
             <hr/>
             <input type="button" value="Login" id="loginBtn"/>
@@ -51,6 +53,9 @@
             <br/>
             <input type="button" value="Exchange read email" id="exchangeReadEmailBtn"/>
             <br/>
+            <input type="button" value="Exchange send email" id="exchangeSendEmailBtn"/>
+            <br/>
+
             <input type="button" value="Exchange calendar data" id="exchangeCalendarDataBtn"/>
             <br/>
             <input type="button" value="Exchange read appointment" id="exchangeReadAppointmentBtn"/>
@@ -62,6 +67,8 @@
             <input type="button" value="Exchange delete appointment" id="exchangeDeleteAppointmentBtn"/>
             <br/>
             <input type="button" value="Exchange update appointment" id="exchangeUpdateAppointmentBtn"/>
+            <br/>
+            <input type="button" value="Exchange add attachment to draft" id="exchangeAddAttachmentToDraft"/>
             <br/>
             <hr/>
           <span style="display: none;" id="loading">
