@@ -17,8 +17,6 @@
                 <option value="multipart-form">Multipart-form </option>
             </select>
             <select id="baseUrl">
-                <option value="http://192.168.12.7:9512/">192.168.12.7:9512</option>
-                <option value="http://192.168.0.41:9512/">192.168.0.41:9512</option>
                 <option value="http://192.168.12.60:9512/" selected="selected">192.168.12.60:9512</option>
                 <option value="http://128.66.200.101:9512/">Dev-128.66.200.101:9512</option>
                 <option value="http://192.168.100.22:9512/">192.168.100.22:9512</option>
@@ -26,6 +24,8 @@
                 <option value="https://dev.e-dapt.net:4440/">dev.e-dapt.net:4440</option>
                 <option value="https://controller.botf03.net:4440/newmsa/">controller.botf03.net:4440/newmsa</option>
                 <option value="http://128.66.101.101:9512/">128.66.101.101:9512</option>
+                <option value="http://192.168.12.58:9512/">192.168.12.58:9512</option>
+                <option value="http://192.168.12.7:9512/">192.168.12.7:9512</option>
             </select>
             <hr/>
             <input type="button" value="Login" id="loginBtn"/>
@@ -33,13 +33,16 @@
             <input type="button" value="Get Password" id="getPasswordBtn"/>
             <br/>
             <hr/>
+            <hr/>
             <input type="button" value="Explorer Folder data" id="explorerFolderDataBtn"/>
             <br/>
             <input type="button" value="Explorer Get File" id="explorerGetFileBtn"/>
             <br/>
             <hr/>
+            <hr/>
             <input type="button" value="Forward" id="forwardUrlBtn"/>
             <br/>
+            <hr/>
             <hr/>
             <input type="button" value="Exchange login" id="exchangeLoginBtn"/>
             <br/>
@@ -51,11 +54,16 @@
             <br/>
             <input type="button" value="Exchange move item" id="exchangeMoveItemBtn"/>
             <br/>
+            <hr/>
             <input type="button" value="Exchange read email" id="exchangeReadEmailBtn"/>
             <br/>
-            <input type="button" value="Exchange send email" id="exchangeSendEmailBtn"/>
+            <input type="button" value="Exchange prepare email" id="exchangePrepareEmailBtn"/>
             <br/>
-
+            <input type="button" value="Exchange update draft email" id="exchangeUpdateDraftEmailBtn"/>
+            <br/>
+            <input type="button" value="Exchange send draft email" id="exchangeSendDraftEmailBtn"/>
+            <br/>
+            <hr/>
             <input type="button" value="Exchange calendar data" id="exchangeCalendarDataBtn"/>
             <br/>
             <input type="button" value="Exchange read appointment" id="exchangeReadAppointmentBtn"/>

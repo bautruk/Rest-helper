@@ -55,8 +55,10 @@ public class MainController {
     private final String exchangeContactsdataUrl = "exchjson/service/do/contactsdata";
     private final String exchangeMoveItemUrl = "exchjson/service/do/moveitem";
     private final String exchangeReadEmailUrl = "/exchjson/service/do/reademail";
-    private final String exchangeSendEmailUrl = "/exchjson/service/do/sendemail";
     private final String exchangeAddAttachmentUrl = "/exchjson/service/do/addattachment";
+    private final String exchangePrepareEmailUrl = "/exchjson/service/do/prepareEmail";
+    private final String exchangeUpdateDraftEmailUrl = "/exchjson/service/do/updateDraftEmail";
+    private final String exchangeSendDraftEmailUrl = "/exchjson/service/do/sendDraftEmail";
     private final String exchangeCalendarDataUrl = "/exchjson/service/do/calendardata";
     private final String exchangeReadAppointmentUrl = "/exchjson/service/do/readappointment";
     private final String exchangeReadMasterAppointmentUrl = "/exchjson/service/do/readmasterappointment";
@@ -75,7 +77,7 @@ public class MainController {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestParam("username", "milshtyu");
         requestData.addRequestParam("password", "511maps");
-        requestData.addRequestParam("domain", "botf03.net");
+        requestData.addRequestParam("domain", "e-dapt.net");
         requestData.addRequestParam("deviceId", "rest-client");
         requestData.addRequestParam("deviceIp", "10.0.0.86");
         requestData.addRequestParam("os", "IOS");
@@ -240,11 +242,11 @@ public class MainController {
         return requestData;
     }
 
-    @RequestMapping(value = "/exchangeSendEmail/predefined")
+    @RequestMapping(value = "/exchangePrepareEmail/predefined")
     @ResponseBody
-    public PredefinedRequestData predefParamsForExchangeSendEmail(@ModelAttribute("authToken") String authToken,
-                                                                  @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
-                                                                  @ModelAttribute("exchgToken") String exchgToken) {
+    public PredefinedRequestData predefParamsForExchangePrepareEmail(@ModelAttribute("authToken") String authToken,
+                                                                     @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
+                                                                     @ModelAttribute("exchgToken") String exchgToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
@@ -253,6 +255,47 @@ public class MainController {
         requestData.addRequestParam("Subject", "Test Subj");
         requestData.addRequestParam("Body", "Test body");
         requestData.addRequestParam("TO", "testmail@test.test");
+        requestData.addRequestParam("Send", "false");
+        requestData.addRequestParam("CC", "testmail@test.test");
+        requestData.addRequestParam("BCC", "testmail@test.test");
+        requestData.addRequestParam("Importance", "high");
+
+        return requestData;
+    }
+
+    @RequestMapping(value = "/exchangeUpdateDraftEmail/predefined")
+    @ResponseBody
+    public PredefinedRequestData predefParamsForExchangeUpdateDraftEmail(@ModelAttribute("authToken") String authToken,
+                                                                         @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
+                                                                         @ModelAttribute("exchgToken") String exchgToken) {
+        PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
+        requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+        requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
+
+        requestData.addRequestParam("Subject", "Test Subj");
+        requestData.addRequestParam("Body", "Test body");
+        requestData.addRequestParam("TO", "testmail@test.test");
+        requestData.addRequestParam("Send", "false");
+        requestData.addRequestParam("CC", "testmail@test.test");
+        requestData.addRequestParam("BCC", "testmail@test.test");
+        requestData.addRequestParam("Importance", "high");
+        requestData.addRequestParam("ItemId", "");
+
+        return requestData;
+    }
+
+    @RequestMapping(value = "/exchangeSendDraftEmail/predefined")
+    @ResponseBody
+    public PredefinedRequestData predefParamsForExchangeSendDraftEmail(@ModelAttribute("authToken") String authToken,
+                                                                       @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
+                                                                       @ModelAttribute("exchgToken") String exchgToken) {
+        PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
+        requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+        requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
+
+        requestData.addRequestParam("ItemId", "");
 
         return requestData;
     }
@@ -260,8 +303,8 @@ public class MainController {
     @RequestMapping(value = "/exchangeAddAttachment/predefined")
     @ResponseBody
     public PredefinedRequestData predefParamsForExchangeAddAttachment(@ModelAttribute("authToken") String authToken,
-                                                                  @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
-                                                                  @ModelAttribute("exchgToken") String exchgToken) {
+                                                                      @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
+                                                                      @ModelAttribute("exchgToken") String exchgToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
@@ -575,12 +618,40 @@ public class MainController {
         return mainService.constructSuccessResponse(response);
     }
 
-    @RequestMapping(value = "/exchangeSendEmail", method = RequestMethod.POST)
+    @RequestMapping(value = "/exchangePrepareEmail", method = RequestMethod.POST)
     @ResponseBody
-    public Response exchangeSendEmail(@RequestBody Map<String, String> requestData) throws IOException {
+    public Response exchangePrepareEmail(@RequestBody Map<String, String> requestData) throws IOException {
         HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
         String baseUrl = requestData.get("baseUrl").trim();
-        HttpPost contactsRequest = new HttpPost(baseUrl + exchangeSendEmailUrl);
+        HttpPost contactsRequest = new HttpPost(baseUrl + exchangePrepareEmailUrl);
+        contactsRequest.setEntity(mainService.constructRequestBody(requestData));
+        contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
+
+        HttpResponse response = httpClient.execute(contactsRequest);
+
+        return mainService.constructSuccessResponse(response);
+    }
+
+    @RequestMapping(value = "/exchangeUpdateDraftEmail", method = RequestMethod.POST)
+    @ResponseBody
+    public Response exchangeUpdateDraftEmail(@RequestBody Map<String, String> requestData) throws IOException {
+        HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
+        String baseUrl = requestData.get("baseUrl").trim();
+        HttpPost contactsRequest = new HttpPost(baseUrl + exchangeUpdateDraftEmailUrl);
+        contactsRequest.setEntity(mainService.constructRequestBody(requestData));
+        contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
+
+        HttpResponse response = httpClient.execute(contactsRequest);
+
+        return mainService.constructSuccessResponse(response);
+    }
+
+    @RequestMapping(value = "/exchangeSendDraftEmail", method = RequestMethod.POST)
+    @ResponseBody
+    public Response exchangeSendDraftEmail(@RequestBody Map<String, String> requestData) throws IOException {
+        HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
+        String baseUrl = requestData.get("baseUrl").trim();
+        HttpPost contactsRequest = new HttpPost(baseUrl + exchangeSendDraftEmailUrl);
         contactsRequest.setEntity(mainService.constructRequestBody(requestData));
         contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 

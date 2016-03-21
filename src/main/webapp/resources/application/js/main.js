@@ -99,10 +99,22 @@ $(function() {
         fillPredefinedInfo('/exchangeReadEmail/predefined');
     });
 
-    $('#exchangeSendEmailBtn').click(function() {
+    $('#exchangePrepareEmailBtn').click(function() {
         setContentType("form");
-        sendUrl = "/exchangeSendEmail";
-        fillPredefinedInfo('/exchangeSendEmail/predefined');
+        sendUrl = "/exchangePrepareEmail";
+        fillPredefinedInfo('/exchangePrepareEmail/predefined');
+    });
+
+    $('#exchangeUpdateDraftEmailBtn').click(function() {
+        setContentType("form");
+        sendUrl = "/exchangeUpdateDraftEmail";
+        fillPredefinedInfo('/exchangeUpdateDraftEmail/predefined');
+    });
+
+    $('#exchangeSendDraftEmailBtn').click(function() {
+        setContentType("form");
+        sendUrl = "/exchangeSendDraftEmail";
+        fillPredefinedInfo('/exchangeSendDraftEmail/predefined');
     });
 
     $('#exchangeAddAttachmentToDraft').click(function() {
