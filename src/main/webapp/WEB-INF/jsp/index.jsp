@@ -63,6 +63,8 @@
             <br/>
             <input type="button" value="Exchange send draft email" id="exchangeSendDraftEmailBtn"/>
             <br/>
+            <input type="button" value="Exchange add attachment to draft" id="exchangeAddAttachmentToDraft"/>
+            <br/>
             <hr/>
             <input type="button" value="Exchange calendar data" id="exchangeCalendarDataBtn"/>
             <br/>
@@ -75,8 +77,6 @@
             <input type="button" value="Exchange delete appointment" id="exchangeDeleteAppointmentBtn"/>
             <br/>
             <input type="button" value="Exchange update appointment" id="exchangeUpdateAppointmentBtn"/>
-            <br/>
-            <input type="button" value="Exchange add attachment to draft" id="exchangeAddAttachmentToDraft"/>
             <br/>
             <hr/>
           <span style="display: none;" id="loading">
