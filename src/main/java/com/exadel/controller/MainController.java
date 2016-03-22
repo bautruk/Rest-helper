@@ -280,6 +280,7 @@ public class MainController {
         requestData.addRequestParam("CC", "testmail@test.test");
         requestData.addRequestParam("BCC", "testmail@test.test");
         requestData.addRequestParam("Importance", "high");
+        requestData.addRequestParam("AttachmentsToKeep", "");
         requestData.addRequestParam("ItemId", "");
 
         return requestData;
