@@ -55,7 +55,7 @@ public class MainController {
     private final String exchangeContactsdataUrl = "exchjson/service/do/contactsdata";
     private final String exchangeMoveItemUrl = "exchjson/service/do/moveitem";
     private final String exchangeReadEmailUrl = "/exchjson/service/do/reademail";
-    private final String exchangeAddAttachmentUrl = "/exchjson/service/do/addattachment";
+    private final String exchangeAddAttachmentUrl = "/exchjson/service/do/addAttachment";
     private final String exchangePrepareEmailUrl = "/exchjson/service/do/prepareEmail";
     private final String exchangeUpdateDraftEmailUrl = "/exchjson/service/do/updateDraftEmail";
     private final String exchangeSendDraftEmailUrl = "/exchjson/service/do/sendDraftEmail";

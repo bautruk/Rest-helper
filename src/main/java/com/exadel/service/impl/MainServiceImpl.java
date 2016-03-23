@@ -120,7 +120,7 @@ public class MainServiceImpl implements MainService {
             MultipartEntityBuilder entityBuilder = MultipartEntityBuilder.create();
             setBinaryData(entityBuilder, filePath, fileName);
             for (Map.Entry<String, String> parameterPair : parsedParameters.entrySet()) {
-                entityBuilder.addTextBody(parameterPair.getKey(), parameterPair.getValue(), ContentType.create(TEXT_PLAIN));
+                entityBuilder.addTextBody(parameterPair.getKey(), parameterPair.getValue(), ContentType.create(ContentType.APPLICATION_FORM_URLENCODED.getMimeType(), "UTF-8"));
             }
             return entityBuilder.build();
         }
