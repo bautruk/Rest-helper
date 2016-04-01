@@ -305,11 +305,13 @@ public class MainController {
     @ResponseBody
     public PredefinedRequestData predefParamsForExchangeAddAttachment(@ModelAttribute("authToken") String authToken,
                                                                       @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
-                                                                      @ModelAttribute("exchgToken") String exchgToken) {
+                                                                      @ModelAttribute("exchgToken") String exchgToken,
+                                                                      @ModelAttribute("X-51MAPS-SK") String key) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
+        requestData.addRequestHeader("X-51MAPS-SK", key);
 
         requestData.addRequestParam("FilePath", "");
         requestData.addRequestParam("FileName", "");
