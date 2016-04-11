@@ -77,7 +77,7 @@ public class MainController {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestParam("username", "milshtyu");
         requestData.addRequestParam("password", "511maps");
-        requestData.addRequestParam("domain", "e-dapt.net");
+        requestData.addRequestParam("domain", "botf03.net");
         requestData.addRequestParam("deviceId", "rest-client");
         requestData.addRequestParam("deviceIp", "10.0.0.86");
         requestData.addRequestParam("os", "IOS");
