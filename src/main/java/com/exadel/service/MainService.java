@@ -5,8 +5,10 @@ import com.exadel.dto.Response;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,4 +56,7 @@ public interface MainService {
     public String getResponseParameter(String responseBodyStr, HttpResponse response, String... keys) throws IOException;
 
     public String getResponseBody(HttpResponse response) throws IOException;
+
+    String getUriParameter(Map<String, String> requestData);
+    List<NameValuePair> constructGetMethodParameters(Map<String, String> requestData);
 }

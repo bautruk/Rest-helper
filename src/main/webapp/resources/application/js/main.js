@@ -123,6 +123,12 @@ $(function() {
         fillPredefinedInfo('/exchangeAddAttachment/predefined');
     });
 
+    $('#exchangeFetchAttachment').click(function() {
+        setContentType("get");
+        sendUrl = "/exchangeFetchAttachment";
+        fillPredefinedInfo('/exchangeFetchAttachment/predefined');
+    });
+
     $('#exchangeCalendarDataBtn').click(function() {
         setContentType("form");
         sendUrl = "/exchangeCalendarData";

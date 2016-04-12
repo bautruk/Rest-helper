@@ -8,6 +8,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
@@ -49,6 +50,7 @@ public class MainController {
     private final String explorerFolderDataUrl = "shared-drive/getItems";
     private final String explorerGetFile = "shared-drive/do/get";
     private final String forwardUrl = "forwardurl";
+    private final String exchangeJsonToken = "exchjson/";
     private final String exchangeLoginUrl = "exchjson/service/do/login";
     private final String exchangeFoldersUrl = "exchjson/service/do/folders";
     private final String exchangeFolderdataUrl = "exchjson/service/do/folderdata";
@@ -316,6 +318,24 @@ public class MainController {
         requestData.addRequestParam("FilePath", "");
         requestData.addRequestParam("FileName", "");
         requestData.addRequestParam("EntryID", "");
+        requestData.addRequestParam("AttachmentId", "");
+
+        return requestData;
+    }
+
+    @RequestMapping(value = "/exchangeFetchAttachment/predefined")
+    @ResponseBody
+    public PredefinedRequestData predefParamsForExchangeDownloadAttachment(@ModelAttribute("authToken") String authToken,
+                                                                      @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
+                                                                      @ModelAttribute("exchgToken") String exchgToken,
+                                                                      @ModelAttribute("X-51MAPS-SK") String key) {
+        PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
+        requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+        requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
+        requestData.addRequestHeader("X-51MAPS-SK", key);
+
+        requestData.addRequestParam("URI", "");
         requestData.addRequestParam("AttachmentId", "");
 
         return requestData;
@@ -667,6 +687,20 @@ public class MainController {
         String baseUrl = requestData.get("baseUrl").trim();
         HttpPost contactsRequest = new HttpPost(baseUrl + exchangeAddAttachmentUrl );
         contactsRequest.setEntity(mainService.constructRequestBody(requestData));
+        contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
+
+        HttpResponse response = httpClient.execute(contactsRequest);
+
+        return mainService.constructSuccessResponse(response);
+    }
+
+    @RequestMapping(value = "/exchangeFetchAttachment", method = RequestMethod.POST)
+    @ResponseBody
+    public Response exchangeDownloadAttachment(@RequestBody Map<String, String> requestData) throws IOException, URISyntaxException {
+        HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
+        String baseUrl = requestData.get("baseUrl").trim();
+        URI uri = new URIBuilder(baseUrl + exchangeJsonToken + mainService.getUriParameter(requestData)).addParameters(mainService.constructGetMethodParameters(requestData)).build();
+        HttpGet contactsRequest = new HttpGet(uri);
         contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 
         HttpResponse response = httpClient.execute(contactsRequest);
