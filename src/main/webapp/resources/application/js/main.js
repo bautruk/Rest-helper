@@ -19,7 +19,8 @@ $(function() {
         $.ajax({
             type: 'get',
             url: url,
-            dataType: 'json'
+            dataType: 'json',
+            data: {'username': $('#username').val()}
         }).done(function(result) {
             clearResponseAreas();
 

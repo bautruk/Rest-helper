@@ -30,6 +30,13 @@
             </select>
             <hr/>
             <input type="button" value="Login" id="loginBtn"/>
+            <select id="username">
+                <option value="milshtyu" selected="selected">milshtyu</option>
+                <option value="pizito">pizito</option>
+                <option value="exadel1">exadel1</option>
+                <option value="exadel2">exadel2</option>
+                <option value="exadel3">exadel3</option>
+            </select>
             <br/>
             <input type="button" value="Get Password" id="getPasswordBtn"/>
             <br/>

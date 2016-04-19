@@ -28,6 +28,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -67,6 +68,14 @@ public class MainController {
     private final String exchangeAddAppointmentUrl = "/exchjson/service/do/addappointment";
     private final String exchangeDeleteAppointmentUrl = "/exchjson/service/do/deleteappointment";
     private final String exchangeUpdateAppointmentUrl = "/exchjson/service/do/updateappointment";
+    private static final Map<String, String> credentials = new HashMap<>();
+    static {
+        credentials.put("milshtyu", "511maps");
+        credentials.put("pizito", "511maps");
+        credentials.put("exadel1", "Frame1hawk");
+        credentials.put("exadel2", "Frame1hawk");
+        credentials.put("exadel3", "Frame1hawk");
+    }
 
     @RequestMapping("/")
     public String getMainPageName() {
@@ -75,10 +84,10 @@ public class MainController {
 
     @RequestMapping(value = "/login/predefined", method = RequestMethod.GET)
     @ResponseBody
-    public PredefinedRequestData predefParamsForLogin() {
+    public PredefinedRequestData predefParamsForLogin(@RequestParam("username") String username) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestParam("username", "milshtyu");
-        requestData.addRequestParam("password", "511maps");
+        requestData.addRequestParam("username", username);
+        requestData.addRequestParam("password", credentials.get(username));
         requestData.addRequestParam("domain", "botf03.net");
         requestData.addRequestParam("deviceId", "rest-client");
         requestData.addRequestParam("deviceIp", "10.0.0.86");
