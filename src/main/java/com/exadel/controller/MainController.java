@@ -27,6 +27,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -185,7 +187,7 @@ public class MainController {
         requestData.addRequestParam("EntryID", entryId);
         requestData.addRequestParam("StartIndex", "0");
         requestData.addRequestParam("PageSize", "500");
-        requestData.addRequestParam("ShortHeader", "true");
+        requestData.addRequestParam("ShortHeader", "false");
         requestData.addRequestParam("WithBody", "false");
         requestData.addRequestParam("ModifiedSince", "0");
 
