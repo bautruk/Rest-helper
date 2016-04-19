@@ -19,7 +19,8 @@ $(function() {
         $.ajax({
             type: 'get',
             url: url,
-            dataType: 'json'
+            dataType: 'json',
+            data: {'username': $('#username').val()}
         }).done(function(result) {
             clearResponseAreas();
 
@@ -121,6 +122,12 @@ $(function() {
         setContentType("multipart-form");
         sendUrl = "/exchangeAddAttachment";
         fillPredefinedInfo('/exchangeAddAttachment/predefined');
+    });
+
+    $('#exchangeFetchAttachment').click(function() {
+        setContentType("get");
+        sendUrl = "/exchangeFetchAttachment";
+        fillPredefinedInfo('/exchangeFetchAttachment/predefined');
     });
 
     $('#exchangeCalendarDataBtn').click(function() {

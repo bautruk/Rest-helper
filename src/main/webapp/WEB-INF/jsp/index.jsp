@@ -11,7 +11,8 @@
         <div style="width:220px;float:left;display:inline-block;">
             <p>REQUESTS: </p>
             <select id="contentType">
-                <option value="form">Form </option>
+                <option value="get">GET</option>
+                <option value="form" selected="selected">Form </option>
                 <option value="json">Json </option>
                 <option value="text">Text </option>
                 <option value="multipart-form">Multipart-form </option>
@@ -29,6 +30,13 @@
             </select>
             <hr/>
             <input type="button" value="Login" id="loginBtn"/>
+            <select id="username">
+                <option value="milshtyu" selected="selected">milshtyu</option>
+                <option value="pizito">pizito</option>
+                <option value="exadel1">exadel1</option>
+                <option value="exadel2">exadel2</option>
+                <option value="exadel3">exadel3</option>
+            </select>
             <br/>
             <input type="button" value="Get Password" id="getPasswordBtn"/>
             <br/>
@@ -64,6 +72,8 @@
             <input type="button" value="Exchange send draft email" id="exchangeSendDraftEmailBtn"/>
             <br/>
             <input type="button" value="Exchange add attachment to draft" id="exchangeAddAttachmentToDraft"/>
+            <br/>
+            <input type="button" value="Exchange fetch attachment" id="exchangeFetchAttachment"/>
             <br/>
             <hr/>
             <input type="button" value="Exchange calendar data" id="exchangeCalendarDataBtn"/>

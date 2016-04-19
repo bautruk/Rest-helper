@@ -39,6 +39,7 @@ public class MainServiceImpl implements MainService {
     private static final String ATTACHMENT_DATA_KEY = "AttachmentData";
     private static final String FILE_PATH_KEY = "FilePath";
     private static final String FILE_NAME_KEY = "FileName";
+    private static final String URI = "URI";
 
     private ObjectMapper jsonMapper;
     private String paramKeyValDelim;
@@ -185,6 +186,26 @@ public class MainServiceImpl implements MainService {
     @Override
     public String getResponseBody(HttpResponse response) throws IOException {
         return EntityUtils.toString(response.getEntity());
+    }
+
+    @Override
+    public String getUriParameter(Map<String, String> requestData) {
+        String parametersString = requestData.get("parameters").trim();
+        HashMap<String, String> parameters = parseParametersStringJson(parametersString);
+        return parameters.get(URI);
+    }
+
+    @Override
+    public List<NameValuePair> constructGetMethodParameters(Map<String, String> requestData) {
+        HashMap<String, String> pairs = parseParametersStringJson(requestData.get("parameters"));
+        List<NameValuePair> result = new ArrayList<>();
+        for (Map.Entry<String, String> pair: pairs.entrySet()) {
+            String key = pair.getKey();
+            if (!URI.equals(key)) {
+                result.add(new BasicNameValuePair(key, pair.getValue()));
+            }
+        }
+        return result;
     }
 
     @Override

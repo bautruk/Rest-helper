@@ -8,6 +8,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
@@ -27,8 +28,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -51,6 +50,7 @@ public class MainController {
     private final String explorerFolderDataUrl = "shared-drive/getItems";
     private final String explorerGetFile = "shared-drive/do/get";
     private final String forwardUrl = "forwardurl";
+    private final String exchangeJsonToken = "exchjson/";
     private final String exchangeLoginUrl = "exchjson/service/do/login";
     private final String exchangeFoldersUrl = "exchjson/service/do/folders";
     private final String exchangeFolderdataUrl = "exchjson/service/do/folderdata";
@@ -67,6 +67,14 @@ public class MainController {
     private final String exchangeAddAppointmentUrl = "/exchjson/service/do/addappointment";
     private final String exchangeDeleteAppointmentUrl = "/exchjson/service/do/deleteappointment";
     private final String exchangeUpdateAppointmentUrl = "/exchjson/service/do/updateappointment";
+    private static final Map<String, String> credentials = new HashMap<>();
+    static {
+        credentials.put("milshtyu", "511maps");
+        credentials.put("pizito", "511maps");
+        credentials.put("exadel1", "Frame1hawk");
+        credentials.put("exadel2", "Frame1hawk");
+        credentials.put("exadel3", "Frame1hawk");
+    }
 
     @RequestMapping("/")
     public String getMainPageName() {
@@ -75,10 +83,10 @@ public class MainController {
 
     @RequestMapping(value = "/login/predefined", method = RequestMethod.GET)
     @ResponseBody
-    public PredefinedRequestData predefParamsForLogin() {
+    public PredefinedRequestData predefParamsForLogin(@RequestParam("username") String username) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestParam("username", "milshtyu");
-        requestData.addRequestParam("password", "511maps");
+        requestData.addRequestParam("username", username);
+        requestData.addRequestParam("password", credentials.get(username));
         requestData.addRequestParam("domain", "botf03.net");
         requestData.addRequestParam("deviceId", "rest-client");
         requestData.addRequestParam("deviceIp", "10.0.0.86");
@@ -318,6 +326,24 @@ public class MainController {
         requestData.addRequestParam("FilePath", "");
         requestData.addRequestParam("FileName", "");
         requestData.addRequestParam("EntryID", "");
+        requestData.addRequestParam("AttachmentId", "");
+
+        return requestData;
+    }
+
+    @RequestMapping(value = "/exchangeFetchAttachment/predefined")
+    @ResponseBody
+    public PredefinedRequestData predefParamsForExchangeDownloadAttachment(@ModelAttribute("authToken") String authToken,
+                                                                      @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
+                                                                      @ModelAttribute("exchgToken") String exchgToken,
+                                                                      @ModelAttribute("X-51MAPS-SK") String key) {
+        PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
+        requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+        requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
+        requestData.addRequestHeader("X-51MAPS-SK", key);
+
+        requestData.addRequestParam("URI", "");
         requestData.addRequestParam("AttachmentId", "");
 
         return requestData;
@@ -669,6 +695,20 @@ public class MainController {
         String baseUrl = requestData.get("baseUrl").trim();
         HttpPost contactsRequest = new HttpPost(baseUrl + exchangeAddAttachmentUrl );
         contactsRequest.setEntity(mainService.constructRequestBody(requestData));
+        contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
+
+        HttpResponse response = httpClient.execute(contactsRequest);
+
+        return mainService.constructSuccessResponse(response);
+    }
+
+    @RequestMapping(value = "/exchangeFetchAttachment", method = RequestMethod.POST)
+    @ResponseBody
+    public Response exchangeDownloadAttachment(@RequestBody Map<String, String> requestData) throws IOException, URISyntaxException {
+        HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
+        String baseUrl = requestData.get("baseUrl").trim();
+        URI uri = new URIBuilder(baseUrl + exchangeJsonToken + mainService.getUriParameter(requestData)).addParameters(mainService.constructGetMethodParameters(requestData)).build();
+        HttpGet contactsRequest = new HttpGet(uri);
         contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 
         HttpResponse response = httpClient.execute(contactsRequest);
