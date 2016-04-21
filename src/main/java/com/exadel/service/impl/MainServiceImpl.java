@@ -150,7 +150,7 @@ public class MainServiceImpl implements MainService {
         HttpEntity entity = response.getEntity();
         String responseBodyStr = "";
         if (entity != null) {
-            responseBodyStr = EntityUtils.toString(entity);
+            responseBodyStr = EntityUtils.toString(entity, "UTF-8");
         }
 
         responseRepresentation.setBody(responseBodyStr);

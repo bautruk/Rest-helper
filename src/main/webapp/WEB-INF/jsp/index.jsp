@@ -88,6 +88,9 @@
             <br/>
             <input type="button" value="Exchange update appointment" id="exchangeUpdateAppointmentBtn"/>
             <br/>
+            <br/>
+            <input type="button" value="Exchange get appointment categories" id="exchangeGetAppointmentCategoriesBtn"/>
+            <br/>
             <hr/>
           <span style="display: none;" id="loading">
             <img src="${pageContext.request.contextPath}/resources/application/images/indicator.gif"/>

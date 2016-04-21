@@ -68,6 +68,7 @@ public class MainController {
     private final String exchangeAddAppointmentUrl = "/exchjson/service/do/addappointment";
     private final String exchangeDeleteAppointmentUrl = "/exchjson/service/do/deleteappointment";
     private final String exchangeUpdateAppointmentUrl = "/exchjson/service/do/updateappointment";
+    private final String exchangeGetAppointmentCategoriesUrl = "/exchjson/service/do/appointmentcategories";
     private static final Map<String, String> credentials = new HashMap<>();
     static {
         credentials.put("milshtyu", "511maps");
@@ -417,7 +418,7 @@ public class MainController {
         requestData.addRequestParam("AllDayEvent", "false");
         requestData.addRequestParam("Body", "");
         requestData.addRequestParam("EndDate", "1448546896000");
-        requestData.addRequestParam("Label", "red");
+        requestData.addRequestParam("Categories", "");
         requestData.addRequestParam("Location", "");
         requestData.addRequestParam("RecurrenceRule", "");
         requestData.addRequestParam("ReminderOffset", "0");
@@ -463,9 +464,22 @@ public class MainController {
         requestData.addRequestParam("ReminderOffset", "0");
         requestData.addRequestParam("StartDate", "1448545096000");
         requestData.addRequestParam("Subject", "");
-        requestData.addRequestParam("Label", "red");
+        requestData.addRequestParam("Categories", "");
         requestData.addRequestParam("TimeZone", "Dateline Standard Time");
 
+
+        return requestData;
+    }
+
+    @RequestMapping(value = "/exchangeGetAppointmentCategories/predefined")
+    @ResponseBody
+    public PredefinedRequestData predefParamsForExchangeGetAppointmentCategories(@ModelAttribute("authToken") String authToken,
+                                                                          @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
+                                                                          @ModelAttribute("exchgToken") String exchgToken) {
+        PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
+        requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+        requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
         return requestData;
     }
@@ -793,6 +807,20 @@ public class MainController {
         HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
         String baseUrl = requestData.get("baseUrl").trim();
         HttpPost contactsRequest = new HttpPost(baseUrl + exchangeUpdateAppointmentUrl);
+        contactsRequest.setEntity(mainService.constructRequestBody(requestData));
+        contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
+
+        HttpResponse response = httpClient.execute(contactsRequest);
+
+        return mainService.constructSuccessResponse(response);
+    }
+
+    @RequestMapping(value = "/exchangeGetAppointmentCategories", method = RequestMethod.POST)
+    @ResponseBody
+    public Response exchangeGetAppointmentCategories(@RequestBody Map<String, String> requestData) throws IOException {
+        HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
+        String baseUrl = requestData.get("baseUrl").trim();
+        HttpPost contactsRequest = new HttpPost(baseUrl + exchangeGetAppointmentCategoriesUrl);
         contactsRequest.setEntity(mainService.constructRequestBody(requestData));
         contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 

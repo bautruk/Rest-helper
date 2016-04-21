@@ -165,6 +165,11 @@ $(function() {
         sendUrl = "/exchangeUpdateAppointment";
         fillPredefinedInfo('/exchangeUpdateAppointment/predefined');
     });
+    $('#exchangeGetAppointmentCategoriesBtn').click(function() {
+        setContentType("form");
+        sendUrl = "/exchangeGetAppointmentCategories";
+        fillPredefinedInfo('/exchangeGetAppointmentCategories/predefined');
+    });
 
     $('#sendButton').click(function() {
         $.ajax({
