@@ -63,6 +63,9 @@
             <input type="button" value="Exchange move item" id="exchangeMoveItemBtn"/>
             <br/>
             <hr/>
+            <input type="button" value="Exchange read contact" id="exchangeReadContactBtn"/>
+            <br/>
+            <hr/>
             <input type="button" value="Exchange read email" id="exchangeReadEmailBtn"/>
             <br/>
             <input type="button" value="Exchange prepare email" id="exchangePrepareEmailBtn"/>

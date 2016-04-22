@@ -88,6 +88,12 @@ $(function() {
         fillPredefinedInfo('/exchangeContactsData/predefined');
     });
 
+    $('#exchangeReadContactBtn').click(function() {
+        setContentType("form");
+        sendUrl = "/exchangeReadContact";
+        fillPredefinedInfo('/exchangeReadContact/predefined');
+    });
+
     $('#exchangeMoveItemBtn').click(function() {
         setContentType("form");
         sendUrl = "/exchangeMoveItem";
