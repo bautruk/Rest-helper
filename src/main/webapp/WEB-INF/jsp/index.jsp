@@ -91,8 +91,14 @@
             <br/>
             <input type="button" value="Exchange update appointment" id="exchangeUpdateAppointmentBtn"/>
             <br/>
-            <br/>
+            <hr/>
             <input type="button" value="Exchange get appointment categories" id="exchangeGetAppointmentCategoriesBtn"/>
+            <br/>
+            <input type="button" value="Exchange create appointment category" id="exchangeCreateAppointmentCategoryBtn"/>
+            <br/>
+            <input type="button" value="Exchange update appointment category color" id="exchangeUpdateAppointmentCategoryColorBtn"/>
+            <br/>
+            <input type="button" value="Exchange delete appointment category" id="exchangeDeleteAppointmentCategoryBtn"/>
             <br/>
             <hr/>
           <span style="display: none;" id="loading">

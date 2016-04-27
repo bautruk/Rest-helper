@@ -176,6 +176,21 @@ $(function() {
         sendUrl = "/exchangeGetAppointmentCategories";
         fillPredefinedInfo('/exchangeGetAppointmentCategories/predefined');
     });
+    $('#exchangeCreateAppointmentCategoryBtn').click(function() {
+        setContentType("form");
+        sendUrl = "/exchangeCreateAppointmentCategory";
+        fillPredefinedInfo('/exchangeCreateAppointmentCategory/predefined');
+    });
+    $('#exchangeUpdateAppointmentCategoryColorBtn').click(function() {
+        setContentType("form");
+        sendUrl = "/exchangeUpdateAppointmentCategoryColor";
+        fillPredefinedInfo('/exchangeUpdateAppointmentCategoryColor/predefined');
+    });
+    $('#exchangeDeleteAppointmentCategoryBtn').click(function() {
+        setContentType("form");
+        sendUrl = "/exchangeDeleteAppointmentCategory";
+        fillPredefinedInfo('/exchangeDeleteAppointmentCategory/predefined');
+    });
 
     $('#sendButton').click(function() {
         $.ajax({

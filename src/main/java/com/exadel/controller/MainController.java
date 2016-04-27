@@ -70,6 +70,9 @@ public class MainController {
     private final String exchangeDeleteAppointmentUrl = "/exchjson/service/do/deleteappointment";
     private final String exchangeUpdateAppointmentUrl = "/exchjson/service/do/updateappointment";
     private final String exchangeGetAppointmentCategoriesUrl = "/exchjson/service/do/appointmentcategories";
+    private final String exchangeCreateAppointmentCategoryUrl = "/exchjson/service/do/createappointmentcategory";
+    private final String exchangeUpdateAppointmentCategoryColorUrl = "/exchjson/service/do/updateappointmentcategorycolor";
+    private final String exchangeDeleteAppointmentCategoryUrl = "/exchjson/service/do/deleteappointmentcategory";
     private static final Map<String, String> credentials = new HashMap<>();
     static {
         credentials.put("milshtyu", "511maps");
@@ -500,6 +503,55 @@ public class MainController {
         return requestData;
     }
 
+    @RequestMapping(value = "/exchangeCreateAppointmentCategory/predefined")
+    @ResponseBody
+    public PredefinedRequestData predefParamsForExchangeCreateAppointmentCategory(@ModelAttribute("authToken") String authToken,
+                                                                                 @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
+                                                                                 @ModelAttribute("exchgToken") String exchgToken) {
+        PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
+        requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+        requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
+
+        requestData.addRequestParam("Name", "");
+        requestData.addRequestParam("Color", "RED");
+
+        return requestData;
+    }
+
+    @RequestMapping(value = "/exchangeUpdateAppointmentCategoryColor/predefined")
+    @ResponseBody
+    public PredefinedRequestData predefParamsForExchangeUpdateAppointmentCategoryColor(@ModelAttribute("authToken") String authToken,
+                                                                               @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
+                                                                               @ModelAttribute("exchgToken") String exchgToken) {
+        PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
+        requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+        requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
+
+        requestData.addRequestParam("Name", "");
+        requestData.addRequestParam("Color", "RED");
+
+        return requestData;
+    }
+
+    @RequestMapping(value = "/exchangeDeleteAppointmentCategory/predefined")
+    @ResponseBody
+    public PredefinedRequestData predefParamsForExchangeDeleteAppointmentCategory(@ModelAttribute("authToken") String authToken,
+                                                                               @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
+                                                                               @ModelAttribute("exchgToken") String exchgToken) {
+        PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
+        requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+        requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
+
+        requestData.addRequestParam("Names", "");
+
+        return requestData;
+    }
+
+
+
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
     public Response login(@RequestBody Map<String, String> requestData, Model model) throws IOException {
@@ -851,6 +903,48 @@ public class MainController {
         HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
         String baseUrl = requestData.get("baseUrl").trim();
         HttpPost contactsRequest = new HttpPost(baseUrl + exchangeGetAppointmentCategoriesUrl);
+        contactsRequest.setEntity(mainService.constructRequestBody(requestData));
+        contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
+
+        HttpResponse response = httpClient.execute(contactsRequest);
+
+        return mainService.constructSuccessResponse(response);
+    }
+
+    @RequestMapping(value = "/exchangeCreateAppointmentCategory", method = RequestMethod.POST)
+    @ResponseBody
+    public Response exchangeCreateAppointmentCategory(@RequestBody Map<String, String> requestData) throws IOException {
+        HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
+        String baseUrl = requestData.get("baseUrl").trim();
+        HttpPost contactsRequest = new HttpPost(baseUrl + exchangeCreateAppointmentCategoryUrl);
+        contactsRequest.setEntity(mainService.constructRequestBody(requestData));
+        contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
+
+        HttpResponse response = httpClient.execute(contactsRequest);
+
+        return mainService.constructSuccessResponse(response);
+    }
+
+    @RequestMapping(value = "/exchangeUpdateAppointmentCategoryColor", method = RequestMethod.POST)
+    @ResponseBody
+    public Response exchangeUpdateAppointmentCategoryColor(@RequestBody Map<String, String> requestData) throws IOException {
+        HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
+        String baseUrl = requestData.get("baseUrl").trim();
+        HttpPost contactsRequest = new HttpPost(baseUrl + exchangeUpdateAppointmentCategoryColorUrl);
+        contactsRequest.setEntity(mainService.constructRequestBody(requestData));
+        contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
+
+        HttpResponse response = httpClient.execute(contactsRequest);
+
+        return mainService.constructSuccessResponse(response);
+    }
+
+    @RequestMapping(value = "/exchangeDeleteAppointmentCategory", method = RequestMethod.POST)
+    @ResponseBody
+    public Response exchangeDeleteAppointmentCategory(@RequestBody Map<String, String> requestData) throws IOException {
+        HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
+        String baseUrl = requestData.get("baseUrl").trim();
+        HttpPost contactsRequest = new HttpPost(baseUrl + exchangeDeleteAppointmentCategoryUrl);
         contactsRequest.setEntity(mainService.constructRequestBody(requestData));
         contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 
