@@ -110,7 +110,6 @@ public class MainController {
                                                                    @ModelAttribute("X-51MAPS-SK") String key) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
-        requestData.addRequestHeader("X-51MAPS-CredentialsRequired", "true");
         requestData.addRequestHeader("X-51MAPS-SK", key);
 
         requestData.addRequestParam("path", "");
@@ -123,7 +122,6 @@ public class MainController {
     public PredefinedRequestData predefParamsForExplorerGetFile(@ModelAttribute("authToken") String authToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
-        requestData.addRequestHeader("X-51MAPS-CredentialsRequired", "true");
 
         requestData.addRequestParam("create", "true");
         requestData.addRequestParam("url", "smb://mainserver/S_Drive_Shares/testtester1/Autosync/Autosync");
@@ -159,14 +157,11 @@ public class MainController {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-SK", key);
-        //DEV domain=e-dapt
-        requestData.addRequestHeader("X-51MAPS-CredentialsRequired", "true");
 
 //        requestData.addRequestParam("username", "milshtyu");
 //        requestData.addRequestParam("password", "Frame1hawk");
 //        requestData.addRequestParam("encryptedPassword", "wO+ET6dgk5GeizTtZA+7KQ==");
 //        requestData.addRequestParam("domain", "botf03.net");
-        requestData.addRequestParam("RequestId", "authStepOne");
         requestData.addRequestParam("jsonSupport", "true");
 
         return requestData;
@@ -348,6 +343,7 @@ public class MainController {
         requestData.addRequestParam("FileName", "");
         requestData.addRequestParam("EntryID", "");
         requestData.addRequestParam("AttachmentId", "");
+        requestData.addRequestParam("ExplorerPath", "");
 
         return requestData;
     }
