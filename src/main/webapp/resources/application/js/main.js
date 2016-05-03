@@ -171,6 +171,16 @@ $(function() {
         sendUrl = "/exchangeUpdateAppointment";
         fillPredefinedInfo('/exchangeUpdateAppointment/predefined');
     });
+    $('#exchangeAddDelegateBtn').click(function() {
+        setContentType("form");
+        sendUrl = "/exchangeAddDelegate";
+        fillPredefinedInfo('/exchangeAddDelegate/predefined');
+    });
+    $('#exchangeRemoveDelegateBtn').click(function() {
+        setContentType("form");
+        sendUrl = "/exchangeRemoveDelegate";
+        fillPredefinedInfo('/exchangeRemoveDelegate/predefined');
+    });
     $('#exchangeGetAppointmentCategoriesBtn').click(function() {
         setContentType("form");
         sendUrl = "/exchangeGetAppointmentCategories";

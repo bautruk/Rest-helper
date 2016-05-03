@@ -90,6 +90,10 @@
             <input type="button" value="Exchange delete appointment" id="exchangeDeleteAppointmentBtn"/>
             <br/>
             <input type="button" value="Exchange update appointment" id="exchangeUpdateAppointmentBtn"/>
+            <hr/>
+            <input type="button" value="Exchange add delegate" id="exchangeAddDelegateBtn"/>
+            <br/>
+            <input type="button" value="Exchange remove delegate" id="exchangeRemoveDelegateBtn"/>
             <br/>
             <hr/>
             <input type="button" value="Exchange get appointment categories" id="exchangeGetAppointmentCategoriesBtn"/>

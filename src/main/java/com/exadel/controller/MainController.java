@@ -69,6 +69,8 @@ public class MainController {
     private final String exchangeAddAppointmentUrl = "/exchjson/service/do/addappointment";
     private final String exchangeDeleteAppointmentUrl = "/exchjson/service/do/deleteappointment";
     private final String exchangeUpdateAppointmentUrl = "/exchjson/service/do/updateappointment";
+    private final String exchangeAddDelegateUrl = "/exchjson/service/do/adddelegate";
+    private final String exchangeRemoveDelegateUrl = "/exchjson/service/do/removedelegate";
     private final String exchangeGetAppointmentCategoriesUrl = "/exchjson/service/do/appointmentcategories";
     private final String exchangeCreateAppointmentCategoryUrl = "/exchjson/service/do/createappointmentcategory";
     private final String exchangeUpdateAppointmentCategoryColorUrl = "/exchjson/service/do/updateappointmentcategorycolor";
@@ -430,6 +432,7 @@ public class MainController {
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
+        requestData.addRequestParam("Email", "");
         requestData.addRequestParam("AllDayEvent", "false");
         requestData.addRequestParam("Body", "");
         requestData.addRequestParam("EndDate", "1448546896000");
@@ -482,6 +485,36 @@ public class MainController {
         requestData.addRequestParam("Categories", "");
         requestData.addRequestParam("TimeZone", "Dateline Standard Time");
 
+
+        return requestData;
+    }
+
+    @RequestMapping(value = "/exchangeAddDelegate/predefined")
+    @ResponseBody
+    public PredefinedRequestData predefParamsForExchangeAddDelegate(@ModelAttribute("authToken") String authToken,
+                                                                                  @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
+                                                                                  @ModelAttribute("exchgToken") String exchgToken) {
+        PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
+        requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+        requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
+
+        requestData.addRequestParam("DelegateEmail", "");
+
+        return requestData;
+    }
+
+    @RequestMapping(value = "/exchangeRemoveDelegate/predefined")
+    @ResponseBody
+    public PredefinedRequestData predefParamsForExchangeRemoveDelegate(@ModelAttribute("authToken") String authToken,
+                                                                    @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
+                                                                    @ModelAttribute("exchgToken") String exchgToken) {
+        PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
+        requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+        requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
+
+        requestData.addRequestParam("DelegateEmail", "");
 
         return requestData;
     }
@@ -885,6 +918,34 @@ public class MainController {
         HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
         String baseUrl = requestData.get("baseUrl").trim();
         HttpPost contactsRequest = new HttpPost(baseUrl + exchangeUpdateAppointmentUrl);
+        contactsRequest.setEntity(mainService.constructRequestBody(requestData));
+        contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
+
+        HttpResponse response = httpClient.execute(contactsRequest);
+
+        return mainService.constructSuccessResponse(response);
+    }
+
+    @RequestMapping(value = "/exchangeAddDelegate", method = RequestMethod.POST)
+    @ResponseBody
+    public Response exchangeAddDelegate(@RequestBody Map<String, String> requestData) throws IOException {
+        HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
+        String baseUrl = requestData.get("baseUrl").trim();
+        HttpPost contactsRequest = new HttpPost(baseUrl + exchangeAddDelegateUrl);
+        contactsRequest.setEntity(mainService.constructRequestBody(requestData));
+        contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
+
+        HttpResponse response = httpClient.execute(contactsRequest);
+
+        return mainService.constructSuccessResponse(response);
+    }
+
+    @RequestMapping(value = "/exchangeRemoveDelegate", method = RequestMethod.POST)
+    @ResponseBody
+    public Response exchangeRemoveDelegate(@RequestBody Map<String, String> requestData) throws IOException {
+        HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
+        String baseUrl = requestData.get("baseUrl").trim();
+        HttpPost contactsRequest = new HttpPost(baseUrl + exchangeRemoveDelegateUrl);
         contactsRequest.setEntity(mainService.constructRequestBody(requestData));
         contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 
