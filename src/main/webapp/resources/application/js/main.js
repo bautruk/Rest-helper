@@ -124,6 +124,12 @@ $(function() {
         fillPredefinedInfo('/exchangeSendDraftEmail/predefined');
     });
 
+    $('#exchangeForwardEmailBtn').click(function() {
+        setContentType("form");
+        sendUrl = "/exchangeForwardEmail";
+        fillPredefinedInfo('/exchangeForwardEmail/predefined');
+    });
+
     $('#exchangeAddAttachmentToDraft').click(function() {
         setContentType("multipart-form");
         sendUrl = "/exchangeAddAttachment";

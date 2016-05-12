@@ -74,6 +74,8 @@
             <br/>
             <input type="button" value="Exchange send draft email" id="exchangeSendDraftEmailBtn"/>
             <br/>
+            <input type="button" value="Exchange forward email" id="exchangeForwardEmailBtn"/>
+            <br/>
             <input type="button" value="Exchange add attachment to draft" id="exchangeAddAttachmentToDraft"/>
             <br/>
             <input type="button" value="Exchange fetch attachment" id="exchangeFetchAttachment"/>
