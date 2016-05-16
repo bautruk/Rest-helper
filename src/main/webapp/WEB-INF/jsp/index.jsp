@@ -74,6 +74,8 @@
             <br/>
             <input type="button" value="Exchange send draft email" id="exchangeSendDraftEmailBtn"/>
             <br/>
+            <input type="button" value="Exchange forward email" id="exchangeForwardEmailBtn"/>
+            <br/>
             <input type="button" value="Exchange add attachment to draft" id="exchangeAddAttachmentToDraft"/>
             <br/>
             <input type="button" value="Exchange fetch attachment" id="exchangeFetchAttachment"/>
@@ -90,9 +92,19 @@
             <input type="button" value="Exchange delete appointment" id="exchangeDeleteAppointmentBtn"/>
             <br/>
             <input type="button" value="Exchange update appointment" id="exchangeUpdateAppointmentBtn"/>
+            <hr/>
+            <input type="button" value="Exchange add delegate" id="exchangeAddDelegateBtn"/>
             <br/>
+            <input type="button" value="Exchange remove delegate" id="exchangeRemoveDelegateBtn"/>
             <br/>
+            <hr/>
             <input type="button" value="Exchange get appointment categories" id="exchangeGetAppointmentCategoriesBtn"/>
+            <br/>
+            <input type="button" value="Exchange create appointment category" id="exchangeCreateAppointmentCategoryBtn"/>
+            <br/>
+            <input type="button" value="Exchange update appointment category color" id="exchangeUpdateAppointmentCategoryColorBtn"/>
+            <br/>
+            <input type="button" value="Exchange delete appointment category" id="exchangeDeleteAppointmentCategoryBtn"/>
             <br/>
             <hr/>
           <span style="display: none;" id="loading">

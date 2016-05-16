@@ -124,6 +124,12 @@ $(function() {
         fillPredefinedInfo('/exchangeSendDraftEmail/predefined');
     });
 
+    $('#exchangeForwardEmailBtn').click(function() {
+        setContentType("form");
+        sendUrl = "/exchangeForwardEmail";
+        fillPredefinedInfo('/exchangeForwardEmail/predefined');
+    });
+
     $('#exchangeAddAttachmentToDraft').click(function() {
         setContentType("multipart-form");
         sendUrl = "/exchangeAddAttachment";
@@ -171,10 +177,35 @@ $(function() {
         sendUrl = "/exchangeUpdateAppointment";
         fillPredefinedInfo('/exchangeUpdateAppointment/predefined');
     });
+    $('#exchangeAddDelegateBtn').click(function() {
+        setContentType("form");
+        sendUrl = "/exchangeAddDelegate";
+        fillPredefinedInfo('/exchangeAddDelegate/predefined');
+    });
+    $('#exchangeRemoveDelegateBtn').click(function() {
+        setContentType("form");
+        sendUrl = "/exchangeRemoveDelegate";
+        fillPredefinedInfo('/exchangeRemoveDelegate/predefined');
+    });
     $('#exchangeGetAppointmentCategoriesBtn').click(function() {
         setContentType("form");
         sendUrl = "/exchangeGetAppointmentCategories";
         fillPredefinedInfo('/exchangeGetAppointmentCategories/predefined');
+    });
+    $('#exchangeCreateAppointmentCategoryBtn').click(function() {
+        setContentType("form");
+        sendUrl = "/exchangeCreateAppointmentCategory";
+        fillPredefinedInfo('/exchangeCreateAppointmentCategory/predefined');
+    });
+    $('#exchangeUpdateAppointmentCategoryColorBtn').click(function() {
+        setContentType("form");
+        sendUrl = "/exchangeUpdateAppointmentCategoryColor";
+        fillPredefinedInfo('/exchangeUpdateAppointmentCategoryColor/predefined');
+    });
+    $('#exchangeDeleteAppointmentCategoryBtn').click(function() {
+        setContentType("form");
+        sendUrl = "/exchangeDeleteAppointmentCategory";
+        fillPredefinedInfo('/exchangeDeleteAppointmentCategory/predefined');
     });
 
     $('#sendButton').click(function() {
