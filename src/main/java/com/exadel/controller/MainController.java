@@ -98,6 +98,8 @@ public class MainController {
         requestData.addRequestParam("application", "edge");
         requestData.addRequestParam("applicationVersion", "1.0");
         requestData.addRequestParam("deviceType", "test-device-type");
+        requestData.addRequestParam("activationCode", "");
+        requestData.addRequestParam("sendActivationCode", "");
         return requestData;
     }
 
