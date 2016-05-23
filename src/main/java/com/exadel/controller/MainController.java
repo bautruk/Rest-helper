@@ -94,6 +94,8 @@ public class MainController {
     @ResponseBody
     public PredefinedRequestData predefParamsForLogin(@RequestParam("username") String username) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+        requestData.addRequestHeader("Cookie", "");
+
         requestData.addRequestParam("username", username);
         requestData.addRequestParam("password", credentials.get(username));
         requestData.addRequestParam("domain", "botf03.net");
@@ -104,8 +106,11 @@ public class MainController {
         requestData.addRequestParam("application", "edge");
         requestData.addRequestParam("applicationVersion", "1.0");
         requestData.addRequestParam("deviceType", "test-device-type");
+        requestData.addRequestParam("rsaUsername", "skoval");
+        requestData.addRequestParam("rsaPasscode", "");
         requestData.addRequestParam("activationCode", "");
         requestData.addRequestParam("sendActivationCode", "");
+
         return requestData;
     }
 
@@ -615,6 +620,7 @@ public class MainController {
         HttpPost authRequest = new HttpPost(baseUrl + loginUrl);
         String passwordKey = mainService.encodeRequestParameters(requestData);
         authRequest.setEntity(mainService.constructRequestBody(requestData));
+        authRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
         model.addAttribute("X-51MAPS-SK", passwordKey);
 
         HttpResponse response = httpClient.execute(authRequest);
