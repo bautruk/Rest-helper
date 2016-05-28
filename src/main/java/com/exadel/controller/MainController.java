@@ -35,8 +35,7 @@ import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/")
-@SessionAttributes(value = {"authToken", "setCookieHeaderValue", "exchgToken",
-        "inboxEntryId", "contactsEntryId", "X-51MAPS-SK"})
+@SessionAttributes(value = {"authToken", "exchgToken", "inboxEntryId", "contactsEntryId", "X-51MAPS-SK"})
 public class MainController {
     private static final String HTTPS = "https";
 
@@ -77,6 +76,7 @@ public class MainController {
     private final String exchangeUpdateAppointmentCategoryColorUrl = "/exchjson/service/do/updateappointmentcategorycolor";
     private final String exchangeDeleteAppointmentCategoryUrl = "/exchjson/service/do/deleteappointmentcategory";
     private static final Map<String, String> credentials = new HashMap<>();
+
     static {
         credentials.put("milshtyu", "511maps");
         credentials.put("pizito", "511maps");
@@ -84,6 +84,7 @@ public class MainController {
         credentials.put("exadel2", "Frame1hawk");
         credentials.put("exadel3", "Frame1hawk");
     }
+
 
     @RequestMapping("/")
     public String getMainPageName() {
@@ -94,7 +95,6 @@ public class MainController {
     @ResponseBody
     public PredefinedRequestData predefParamsForLogin(@RequestParam("username") String username) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestHeader("Cookie", "");
 
         requestData.addRequestParam("username", username);
         requestData.addRequestParam("password", credentials.get(username));
@@ -180,10 +180,8 @@ public class MainController {
     @RequestMapping(value = "/exchangeFolders/predefined")
     @ResponseBody
     public PredefinedRequestData predefParamsForExchgFolders(@ModelAttribute("authToken") String authToken,
-                                                             @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
                                                              @ModelAttribute("exchgToken") String exchgToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
@@ -195,11 +193,9 @@ public class MainController {
     @RequestMapping(value = "/exchangeFolderData/predefined")
     @ResponseBody
     public PredefinedRequestData predefParamsForExchgFolderData(@ModelAttribute("authToken") String authToken,
-                                                                @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
                                                                 @ModelAttribute("exchgToken") String exchgToken,
                                                                 @ModelAttribute("inboxEntryId") String entryId) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
@@ -216,11 +212,9 @@ public class MainController {
     @RequestMapping(value = "/exchangeContactsData/predefined")
     @ResponseBody
     public PredefinedRequestData predefParamsForExchgContactsData(@ModelAttribute("authToken") String authToken,
-                                                                  @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
                                                                   @ModelAttribute("exchgToken") String exchgToken,
                                                                   @ModelAttribute("contactsEntryId") String entryId) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
@@ -232,10 +226,8 @@ public class MainController {
     @RequestMapping(value = "/exchangeReadContact/predefined")
     @ResponseBody
     public PredefinedRequestData predefParamsForExchgReadContact(@ModelAttribute("authToken") String authToken,
-                                                                  @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
-                                                                  @ModelAttribute("exchgToken") String exchgToken) {
+                                                                 @ModelAttribute("exchgToken") String exchgToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
@@ -247,12 +239,10 @@ public class MainController {
     @RequestMapping(value = "/exchangeMoveItem/predefined")
     @ResponseBody
     public PredefinedRequestData predefParamsForExchgMoveData(@ModelAttribute("authToken") String authToken,
-                                                              @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
                                                               @ModelAttribute("exchgToken") String exchgToken,
                                                               @ModelAttribute("itemId") String itemId,
                                                               @ModelAttribute("destinationId") String destId) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
@@ -265,10 +255,8 @@ public class MainController {
     @RequestMapping(value = "/exchangeReadEmail/predefined")
     @ResponseBody
     public PredefinedRequestData predefParamsForExchangeReadEmail(@ModelAttribute("authToken") String authToken,
-                                                                  @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
                                                                   @ModelAttribute("exchgToken") String exchgToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
@@ -281,10 +269,8 @@ public class MainController {
     @RequestMapping(value = "/exchangePrepareEmail/predefined")
     @ResponseBody
     public PredefinedRequestData predefParamsForExchangePrepareEmail(@ModelAttribute("authToken") String authToken,
-                                                                     @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
                                                                      @ModelAttribute("exchgToken") String exchgToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
@@ -302,10 +288,8 @@ public class MainController {
     @RequestMapping(value = "/exchangeUpdateDraftEmail/predefined")
     @ResponseBody
     public PredefinedRequestData predefParamsForExchangeUpdateDraftEmail(@ModelAttribute("authToken") String authToken,
-                                                                         @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
                                                                          @ModelAttribute("exchgToken") String exchgToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
@@ -325,10 +309,8 @@ public class MainController {
     @RequestMapping(value = "/exchangeSendDraftEmail/predefined")
     @ResponseBody
     public PredefinedRequestData predefParamsForExchangeSendDraftEmail(@ModelAttribute("authToken") String authToken,
-                                                                       @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
                                                                        @ModelAttribute("exchgToken") String exchgToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
@@ -340,10 +322,8 @@ public class MainController {
     @RequestMapping(value = "/exchangeForwardEmail/predefined")
     @ResponseBody
     public PredefinedRequestData predefParamsForExchangeForwardEmail(@ModelAttribute("authToken") String authToken,
-                                                                       @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
-                                                                       @ModelAttribute("exchgToken") String exchgToken) {
+                                                                     @ModelAttribute("exchgToken") String exchgToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
@@ -362,11 +342,9 @@ public class MainController {
     @RequestMapping(value = "/exchangeAddAttachment/predefined")
     @ResponseBody
     public PredefinedRequestData predefParamsForExchangeAddAttachment(@ModelAttribute("authToken") String authToken,
-                                                                      @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
                                                                       @ModelAttribute("exchgToken") String exchgToken,
                                                                       @ModelAttribute("X-51MAPS-SK") String key) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
         requestData.addRequestHeader("X-51MAPS-SK", key);
@@ -383,11 +361,9 @@ public class MainController {
     @RequestMapping(value = "/exchangeFetchAttachment/predefined")
     @ResponseBody
     public PredefinedRequestData predefParamsForExchangeDownloadAttachment(@ModelAttribute("authToken") String authToken,
-                                                                      @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
-                                                                      @ModelAttribute("exchgToken") String exchgToken,
-                                                                      @ModelAttribute("X-51MAPS-SK") String key) {
+                                                                           @ModelAttribute("exchgToken") String exchgToken,
+                                                                           @ModelAttribute("X-51MAPS-SK") String key) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
         requestData.addRequestHeader("X-51MAPS-SK", key);
@@ -401,10 +377,8 @@ public class MainController {
     @RequestMapping(value = "/exchangeCalendarData/predefined")
     @ResponseBody
     public PredefinedRequestData predefParamsForExchangeCalendarData(@ModelAttribute("authToken") String authToken,
-                                                                     @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
                                                                      @ModelAttribute("exchgToken") String exchgToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
@@ -421,10 +395,8 @@ public class MainController {
     @RequestMapping(value = "/exchangeReadAppointment/predefined")
     @ResponseBody
     public PredefinedRequestData predefParamsForExchangeReadAppointment(@ModelAttribute("authToken") String authToken,
-                                                                        @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
                                                                         @ModelAttribute("exchgToken") String exchgToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
@@ -438,10 +410,8 @@ public class MainController {
     @RequestMapping(value = "/exchangeReadMasterAppointment/predefined")
     @ResponseBody
     public PredefinedRequestData predefParamsForExchangeReadMasterAppointment(@ModelAttribute("authToken") String authToken,
-                                                                              @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
                                                                               @ModelAttribute("exchgToken") String exchgToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
@@ -455,10 +425,8 @@ public class MainController {
     @RequestMapping(value = "/exchangeAddAppointment/predefined")
     @ResponseBody
     public PredefinedRequestData predefParamsForExchangeAddAppointment(@ModelAttribute("authToken") String authToken,
-                                                                       @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
                                                                        @ModelAttribute("exchgToken") String exchgToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
@@ -480,10 +448,8 @@ public class MainController {
     @RequestMapping(value = "/exchangeDeleteAppointment/predefined")
     @ResponseBody
     public PredefinedRequestData predefParamsForExchangeDeleteAppointment(@ModelAttribute("authToken") String authToken,
-                                                                       @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
-                                                                       @ModelAttribute("exchgToken") String exchgToken) {
+                                                                          @ModelAttribute("exchgToken") String exchgToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
@@ -496,10 +462,8 @@ public class MainController {
     @RequestMapping(value = "/exchangeUpdateAppointment/predefined")
     @ResponseBody
     public PredefinedRequestData predefParamsForExchangeChangeAppointment(@ModelAttribute("authToken") String authToken,
-                                                                          @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
                                                                           @ModelAttribute("exchgToken") String exchgToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
@@ -522,10 +486,8 @@ public class MainController {
     @RequestMapping(value = "/exchangeAddDelegate/predefined")
     @ResponseBody
     public PredefinedRequestData predefParamsForExchangeAddDelegate(@ModelAttribute("authToken") String authToken,
-                                                                                  @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
-                                                                                  @ModelAttribute("exchgToken") String exchgToken) {
+                                                                    @ModelAttribute("exchgToken") String exchgToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
@@ -537,10 +499,8 @@ public class MainController {
     @RequestMapping(value = "/exchangeRemoveDelegate/predefined")
     @ResponseBody
     public PredefinedRequestData predefParamsForExchangeRemoveDelegate(@ModelAttribute("authToken") String authToken,
-                                                                    @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
-                                                                    @ModelAttribute("exchgToken") String exchgToken) {
+                                                                       @ModelAttribute("exchgToken") String exchgToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
@@ -552,10 +512,8 @@ public class MainController {
     @RequestMapping(value = "/exchangeGetAppointmentCategories/predefined")
     @ResponseBody
     public PredefinedRequestData predefParamsForExchangeGetAppointmentCategories(@ModelAttribute("authToken") String authToken,
-                                                                          @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
-                                                                          @ModelAttribute("exchgToken") String exchgToken) {
+                                                                                 @ModelAttribute("exchgToken") String exchgToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
@@ -565,10 +523,8 @@ public class MainController {
     @RequestMapping(value = "/exchangeCreateAppointmentCategory/predefined")
     @ResponseBody
     public PredefinedRequestData predefParamsForExchangeCreateAppointmentCategory(@ModelAttribute("authToken") String authToken,
-                                                                                 @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
-                                                                                 @ModelAttribute("exchgToken") String exchgToken) {
+                                                                                  @ModelAttribute("exchgToken") String exchgToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
@@ -581,10 +537,8 @@ public class MainController {
     @RequestMapping(value = "/exchangeUpdateAppointmentCategoryColor/predefined")
     @ResponseBody
     public PredefinedRequestData predefParamsForExchangeUpdateAppointmentCategoryColor(@ModelAttribute("authToken") String authToken,
-                                                                               @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
-                                                                               @ModelAttribute("exchgToken") String exchgToken) {
+                                                                                       @ModelAttribute("exchgToken") String exchgToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
@@ -597,10 +551,8 @@ public class MainController {
     @RequestMapping(value = "/exchangeDeleteAppointmentCategory/predefined")
     @ResponseBody
     public PredefinedRequestData predefParamsForExchangeDeleteAppointmentCategory(@ModelAttribute("authToken") String authToken,
-                                                                               @ModelAttribute("setCookieHeaderValue") String setCookieHeaderValue,
-                                                                               @ModelAttribute("exchgToken") String exchgToken) {
+                                                                                  @ModelAttribute("exchgToken") String exchgToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
-        requestData.addRequestHeader("Cookie", setCookieHeaderValue);
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
@@ -627,7 +579,6 @@ public class MainController {
 
         String responseBody = mainService.getResponseBody(response);
         model.addAttribute("authToken", mainService.getResponseParameter(responseBody, response, "result", "token"));
-        model.addAttribute("setCookieHeaderValue", "");
 
         return mainService.constructSuccessResponse(response, responseBody);
     }
@@ -701,7 +652,6 @@ public class MainController {
         Matcher matcher = getMatcherForSecurityToken(result);
 
         if (matcher.find()) {
-            model.addAttribute("setCookieHeaderValue", getHeaderBeginWith(response, "Set-Cookie", "X-51MAPS-SessionId").getValue());
             model.addAttribute("exchgToken", matcher.group(1));
         }
 
@@ -864,7 +814,7 @@ public class MainController {
     public Response exchangeAddAttachment(@RequestBody Map<String, String> requestData) throws IOException {
         HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
         String baseUrl = requestData.get("baseUrl").trim();
-        HttpPost contactsRequest = new HttpPost(baseUrl + exchangeAddAttachmentUrl );
+        HttpPost contactsRequest = new HttpPost(baseUrl + exchangeAddAttachmentUrl);
         contactsRequest.setEntity(mainService.constructRequestBody(requestData));
         contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 
@@ -944,8 +894,8 @@ public class MainController {
     }
 
     @RequestMapping(value = "/exchangeDeleteAppointment", method = RequestMethod.POST)
-     @ResponseBody
-     public Response exchangeDeleteAppointment(@RequestBody Map<String, String> requestData) throws IOException {
+    @ResponseBody
+    public Response exchangeDeleteAppointment(@RequestBody Map<String, String> requestData) throws IOException {
         HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
         String baseUrl = requestData.get("baseUrl").trim();
         HttpPost contactsRequest = new HttpPost(baseUrl + exchangeDeleteAppointmentUrl);
