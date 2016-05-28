@@ -7,6 +7,7 @@ import com.exadel.security.encoder.Encoder;
 import com.exadel.service.MainService;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -130,8 +131,8 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public Header[] constructHeadersArray(String requestHeaders) {
-        List<Header> headers = new ArrayList<Header>();
-        String[] headersStrArr = requestHeaders.split(LINE_SEPARATOR);
+        List<Header> headers = new ArrayList<>();
+        String[] headersStrArr = StringUtils.split(requestHeaders, LINE_SEPARATOR);
 
         for (String headerStr : headersStrArr) {
             String[] headerKeyVal = headerStr.split(headerKeyValDelim, 2);
