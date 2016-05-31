@@ -50,6 +50,7 @@ public class MainController {
     private final String explorerFolderDataUrl = "shared-drive/getItems";
     private final String explorerGetFile = "shared-drive/do/get";
     private final String forwardUrl = "forwardurl";
+    private final String rsaCheckerUrl = "rsaChecker/check";
     private final String exchangeJsonToken = "exchjson/";
     private final String exchangeLoginUrl = "exchjson/service/do/login";
     private final String exchangeFoldersUrl = "exchjson/service/do/folders";
@@ -157,6 +158,16 @@ public class MainController {
         requestData.addRequestHeader("X-51MAPS-SK", key);
         requestData.addRequestHeader("X-51MAPS-ForwardUrl", "http://www.tashkent.org/whoami.asp");
 
+        return requestData;
+    }
+
+    @RequestMapping(value = "/rsaChecker/predefined", method = RequestMethod.GET)
+    @ResponseBody
+    public PredefinedRequestData predefRSAChecker(@ModelAttribute("authToken") String authToken, @ModelAttribute("X-51MAPS-SK") String key) {
+        PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+        requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+        requestData.addRequestParam("username", "");
+        requestData.addRequestParam("passcode", "");
         return requestData;
     }
 
@@ -634,6 +645,19 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(forwardRequest);
 
+        return mainService.constructSuccessResponse(response);
+    }
+
+    @RequestMapping(value = "/rsaChecker", method = RequestMethod.POST, consumes = "application/json")
+    @ResponseBody
+    public Response rsaChecker(@RequestBody Map<String, String> requestData) throws IOException{
+        HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
+        String baseUrl = requestData.get("baseUrl").trim();
+        HttpPost rsaCheckerRequest = new HttpPost(baseUrl + rsaCheckerUrl);
+        rsaCheckerRequest.setEntity(mainService.constructRequestBody(requestData));
+        rsaCheckerRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
+
+        HttpResponse response = httpClient.execute(rsaCheckerRequest);
         return mainService.constructSuccessResponse(response);
     }
 
