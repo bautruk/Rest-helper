@@ -64,6 +64,12 @@ $(function() {
         fillPredefinedInfo('/forwardUrl/predefined');
     });
 
+    $('#rsaCheckerBtn').click(function() {
+        setContentType("json");
+        sendUrl = "/rsaChecker";
+        fillPredefinedInfo('/rsaChecker/predefined');
+    });
+
     $('#exchangeLoginBtn').click(function() {
         setContentType("form");
         sendUrl = "/exchangeLogin";

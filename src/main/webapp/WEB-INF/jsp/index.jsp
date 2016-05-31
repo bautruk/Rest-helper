@@ -53,6 +53,9 @@
             <br/>
             <hr/>
             <hr/>
+            <input type="button" value="RSA checker" id="rsaCheckerBtn"/>
+            <hr/>
+            <hr/>
             <input type="button" value="Exchange login" id="exchangeLoginBtn"/>
             <br/>
             <input type="button" value="Exchange folders" id="exchangeFoldersBtn"/>
