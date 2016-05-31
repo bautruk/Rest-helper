@@ -308,7 +308,7 @@ public class MainServiceImpl implements MainService {
             try {
                 byte[] content = IOUtils.toByteArray(new FileInputStream(new File(filePath)));
                 builder.addBinaryBody(ATTACHMENT_DATA_KEY, content,
-                        ContentType.create(CONTENT_TYPE_APPLICATION_OCTET_STREAM), fileName);
+                        ContentType.create(CONTENT_TYPE_APPLICATION_OCTET_STREAM), null);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
