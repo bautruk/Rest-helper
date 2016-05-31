@@ -701,7 +701,7 @@ public class MainController {
         Matcher matcher = getMatcherForSecurityToken(result);
 
         if (matcher.find()) {
-            model.addAttribute("setCookieHeaderValue", getHeaderBeginWith(response, "Set-Cookie", "X-51MAPS-SessionId").getValue());
+//            model.addAttribute("setCookieHeaderValue", getHeaderBeginWith(response, "Set-Cookie", "X-51MAPS-SessionId").getValue());
             model.addAttribute("exchgToken", matcher.group(1));
         }
 
