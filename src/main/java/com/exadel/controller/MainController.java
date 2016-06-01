@@ -52,7 +52,7 @@ public class MainController {
     private final String explorerFolderDataUrl = "shared-drive/getItems";
     private final String explorerGetFile = "shared-drive/do/get";
     private final String forwardUrl = "forwardurl";
-    private final String rsaCheckerUrl = "rsaChecker/check";
+    private final String rsaCheckerUrl = "rsa/check";
     private final String exchangeJsonToken = "exchjson/";
     private final String exchangeLoginUrl = "exchjson/service/do/login";
     private final String exchangeFoldersUrl = "exchjson/service/do/folders";
