@@ -327,7 +327,9 @@ public class MainServiceImpl implements MainService {
                     responseHeaders.add(header.toString());
                 }
             }
-            response.setHeaders(join(responseHeaders, LINE_SEPARATOR));
+            if(!responseHeaders.isEmpty()) {
+                response.setHeaders(join(responseHeaders, LINE_SEPARATOR));
+            }
         }
     }
 }
