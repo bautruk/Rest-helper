@@ -227,8 +227,9 @@ $(function() {
             }),
             contentType: 'application/json'
         }).done(function(result) {
-            $('#responseBodyArea').val(result.body.split('\\n').join('\n'));
-            $('#responseMetaArea').val(result.meta.split('\\n').join('\n'));
+            $('#responseBodyArea').val(result.body);
+            $('#responseMetaArea').val(result.meta);
+            $('#headersArea').val(result.headers);
         });
     });
 });

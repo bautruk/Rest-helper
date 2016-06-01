@@ -29,7 +29,9 @@ import java.net.URISyntaxException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -77,6 +79,7 @@ public class MainController {
     private final String exchangeUpdateAppointmentCategoryColorUrl = "/exchjson/service/do/updateappointmentcategorycolor";
     private final String exchangeDeleteAppointmentCategoryUrl = "/exchjson/service/do/deleteappointmentcategory";
     private static final Map<String, String> credentials = new HashMap<>();
+    private static final String X_51_MAPS_SESSION_ID = "X-51MAPS-SessionId";
 
     static {
         credentials.put("milshtyu", "511maps");
@@ -590,8 +593,9 @@ public class MainController {
 
         String responseBody = mainService.getResponseBody(response);
         model.addAttribute("authToken", mainService.getResponseParameter(responseBody, response, "result", "token"));
-
-        return mainService.constructSuccessResponse(response, responseBody);
+        Set<String> requestedHeaders = new HashSet<>();
+        requestedHeaders.add(X_51_MAPS_SESSION_ID);
+        return mainService.constructSuccessResponse(response, responseBody, requestedHeaders);
     }
 
     @RequestMapping(value = "/getPassword", method = RequestMethod.POST, consumes = "application/json")
@@ -604,7 +608,7 @@ public class MainController {
         authRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 
         HttpResponse response = httpClient.execute(authRequest);
-        return mainService.constructSuccessResponse(response);
+        return mainService.constructSuccessResponse(response, null);
     }
 
     @RequestMapping(value = "/explorerFolderData", method = RequestMethod.POST, consumes = "application/json")
@@ -618,7 +622,7 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(explorerFRequest);
 
-        return mainService.constructSuccessResponse(response);
+        return mainService.constructSuccessResponse(response, null);
     }
 
     @RequestMapping(value = "/explorerGetFile", method = RequestMethod.POST, consumes = "application/json")
@@ -632,7 +636,7 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(explorerFRequest);
 
-        return mainService.constructSuccessResponse(response);
+        return mainService.constructSuccessResponse(response, null);
     }
 
     @RequestMapping(value = "/forwardUrl", method = RequestMethod.POST, consumes = "application/json")
@@ -645,7 +649,7 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(forwardRequest);
 
-        return mainService.constructSuccessResponse(response);
+        return mainService.constructSuccessResponse(response, null);
     }
 
     @RequestMapping(value = "/rsaChecker", method = RequestMethod.POST, consumes = "application/json")
@@ -658,7 +662,9 @@ public class MainController {
         rsaCheckerRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 
         HttpResponse response = httpClient.execute(rsaCheckerRequest);
-        return mainService.constructSuccessResponse(response);
+        Set<String> requestedHeaders = new HashSet<>();
+        requestedHeaders.add(X_51_MAPS_SESSION_ID);
+        return mainService.constructSuccessResponse(response, requestedHeaders);
     }
 
     @RequestMapping(value = "/exchangeLogin", method = RequestMethod.POST, consumes = "application/json")
@@ -672,7 +678,7 @@ public class MainController {
         exchangeRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 
         HttpResponse response = httpClient.execute(exchangeRequest);
-        Response result = mainService.constructSuccessResponse(response);
+        Response result = mainService.constructSuccessResponse(response, null);
         Matcher matcher = getMatcherForSecurityToken(result);
 
         if (matcher.find()) {
@@ -692,7 +698,7 @@ public class MainController {
         foldersRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 
         HttpResponse response = httpClient.execute(foldersRequest);
-        Response result = mainService.constructSuccessResponse(response);
+        Response result = mainService.constructSuccessResponse(response, null);
 
         Matcher inboxMatcher = getMatcherForEntryID(result, "Inbox");
         if (inboxMatcher.find()) {
@@ -718,7 +724,7 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(foldersRequest);
 
-        return mainService.constructSuccessResponse(response);
+        return mainService.constructSuccessResponse(response, null);
     }
 
     @RequestMapping(value = "/exchangeContactsData", method = RequestMethod.POST)
@@ -732,7 +738,7 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(contactsRequest);
 
-        return mainService.constructSuccessResponse(response);
+        return mainService.constructSuccessResponse(response, null);
     }
 
     @RequestMapping(value = "/exchangeReadContact", method = RequestMethod.POST)
@@ -746,7 +752,7 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(contactsRequest);
 
-        return mainService.constructSuccessResponse(response);
+        return mainService.constructSuccessResponse(response, null);
     }
 
     @RequestMapping(value = "/exchangeMoveItem", method = RequestMethod.POST)
@@ -760,7 +766,7 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(contactsRequest);
 
-        return mainService.constructSuccessResponse(response);
+        return mainService.constructSuccessResponse(response, null);
     }
 
     @RequestMapping(value = "/exchangeReadEmail", method = RequestMethod.POST)
@@ -774,7 +780,7 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(contactsRequest);
 
-        return mainService.constructSuccessResponse(response);
+        return mainService.constructSuccessResponse(response, null);
     }
 
     @RequestMapping(value = "/exchangePrepareEmail", method = RequestMethod.POST)
@@ -788,7 +794,7 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(contactsRequest);
 
-        return mainService.constructSuccessResponse(response);
+        return mainService.constructSuccessResponse(response, null);
     }
 
     @RequestMapping(value = "/exchangeUpdateDraftEmail", method = RequestMethod.POST)
@@ -802,7 +808,7 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(contactsRequest);
 
-        return mainService.constructSuccessResponse(response);
+        return mainService.constructSuccessResponse(response, null);
     }
 
     @RequestMapping(value = "/exchangeSendDraftEmail", method = RequestMethod.POST)
@@ -816,7 +822,7 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(contactsRequest);
 
-        return mainService.constructSuccessResponse(response);
+        return mainService.constructSuccessResponse(response, null);
     }
 
     @RequestMapping(value = "/exchangeForwardEmail", method = RequestMethod.POST)
@@ -830,7 +836,7 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(contactsRequest);
 
-        return mainService.constructSuccessResponse(response);
+        return mainService.constructSuccessResponse(response, null);
     }
 
     @RequestMapping(value = "/exchangeAddAttachment", method = RequestMethod.POST)
@@ -844,7 +850,7 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(contactsRequest);
 
-        return mainService.constructSuccessResponse(response);
+        return mainService.constructSuccessResponse(response, null);
     }
 
     @RequestMapping(value = "/exchangeFetchAttachment", method = RequestMethod.POST)
@@ -858,7 +864,7 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(contactsRequest);
 
-        return mainService.constructSuccessResponse(response);
+        return mainService.constructSuccessResponse(response, null);
     }
 
     @RequestMapping(value = "/exchangeCalendarData", method = RequestMethod.POST)
@@ -872,7 +878,7 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(contactsRequest);
 
-        return mainService.constructSuccessResponse(response);
+        return mainService.constructSuccessResponse(response, null);
     }
 
     @RequestMapping(value = "/exchangeReadAppointment", method = RequestMethod.POST)
@@ -886,7 +892,7 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(contactsRequest);
 
-        return mainService.constructSuccessResponse(response);
+        return mainService.constructSuccessResponse(response, null);
     }
 
     @RequestMapping(value = "/exchangeReadMasterAppointment", method = RequestMethod.POST)
@@ -900,7 +906,7 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(contactsRequest);
 
-        return mainService.constructSuccessResponse(response);
+        return mainService.constructSuccessResponse(response, null);
     }
 
     @RequestMapping(value = "/exchangeAddAppointment", method = RequestMethod.POST)
@@ -914,7 +920,7 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(contactsRequest);
 
-        return mainService.constructSuccessResponse(response);
+        return mainService.constructSuccessResponse(response, null);
     }
 
     @RequestMapping(value = "/exchangeDeleteAppointment", method = RequestMethod.POST)
@@ -928,7 +934,7 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(contactsRequest);
 
-        return mainService.constructSuccessResponse(response);
+        return mainService.constructSuccessResponse(response, null);
     }
 
     @RequestMapping(value = "/exchangeUpdateAppointment", method = RequestMethod.POST)
@@ -942,7 +948,7 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(contactsRequest);
 
-        return mainService.constructSuccessResponse(response);
+        return mainService.constructSuccessResponse(response, null);
     }
 
     @RequestMapping(value = "/exchangeAddDelegate", method = RequestMethod.POST)
@@ -956,7 +962,7 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(contactsRequest);
 
-        return mainService.constructSuccessResponse(response);
+        return mainService.constructSuccessResponse(response, null);
     }
 
     @RequestMapping(value = "/exchangeRemoveDelegate", method = RequestMethod.POST)
@@ -970,7 +976,7 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(contactsRequest);
 
-        return mainService.constructSuccessResponse(response);
+        return mainService.constructSuccessResponse(response, null);
     }
 
     @RequestMapping(value = "/exchangeGetAppointmentCategories", method = RequestMethod.POST)
@@ -984,7 +990,7 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(contactsRequest);
 
-        return mainService.constructSuccessResponse(response);
+        return mainService.constructSuccessResponse(response, null);
     }
 
     @RequestMapping(value = "/exchangeCreateAppointmentCategory", method = RequestMethod.POST)
@@ -998,7 +1004,7 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(contactsRequest);
 
-        return mainService.constructSuccessResponse(response);
+        return mainService.constructSuccessResponse(response, null);
     }
 
     @RequestMapping(value = "/exchangeUpdateAppointmentCategoryColor", method = RequestMethod.POST)
@@ -1012,7 +1018,7 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(contactsRequest);
 
-        return mainService.constructSuccessResponse(response);
+        return mainService.constructSuccessResponse(response, null);
     }
 
     @RequestMapping(value = "/exchangeDeleteAppointmentCategory", method = RequestMethod.POST)
@@ -1026,7 +1032,7 @@ public class MainController {
 
         HttpResponse response = httpClient.execute(contactsRequest);
 
-        return mainService.constructSuccessResponse(response);
+        return mainService.constructSuccessResponse(response, null);
     }
 
     private Matcher getMatcherForSecurityToken(Response response) {

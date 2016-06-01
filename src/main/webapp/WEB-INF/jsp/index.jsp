@@ -9,6 +9,9 @@
     <div>
         <%-- FIRST COLUMN (buttons) --%>
         <div style="width:220px;float:left;display:inline-block;">
+            <span style="display: none;" id="loading">
+                <img src="${pageContext.request.contextPath}/resources/application/images/indicator.gif"/>
+            </span>
             <p>REQUESTS: </p>
             <select id="contentType">
                 <option value="get">GET</option>
@@ -111,9 +114,6 @@
             <input type="button" value="Exchange delete appointment category" id="exchangeDeleteAppointmentCategoryBtn"/>
             <br/>
             <hr/>
-          <span style="display: none;" id="loading">
-            <img src="${pageContext.request.contextPath}/resources/application/images/indicator.gif"/>
-          </span>
         </div>
         <%-- SECOND COLUMN (areas) --%>
         <div style="margin-left:220px; padding-left: 20px">

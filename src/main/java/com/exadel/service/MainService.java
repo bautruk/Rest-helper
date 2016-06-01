@@ -10,6 +10,7 @@ import org.apache.http.NameValuePair;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Provides common methods to work with requests and responses
@@ -45,8 +46,8 @@ public interface MainService {
      * Creates {@link com.exadel.dto.Response} DTO containing response body, status code, status message and response headers
      * extracted from given {@link org.apache.http.HttpResponse} object
      */
-    public Response constructSuccessResponse(HttpResponse response) throws IOException;
-    public Response constructSuccessResponse(HttpResponse response, String responseBodyStr) throws IOException;
+    public Response constructSuccessResponse(HttpResponse response, Set<String> requestedHeaders) throws IOException;
+    public Response constructSuccessResponse(HttpResponse response, String responseBodyStr, Set<String> requestedHeaders) throws IOException;
 
     /**
      * Creates {@link com.exadel.dto.PredefinedRequestData} object based on line separator that is used in implementation

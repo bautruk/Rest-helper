@@ -145,7 +145,7 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public Response constructSuccessResponse(HttpResponse response) throws IOException {
+    public Response constructSuccessResponse(HttpResponse response, Set<String> requestedHeaders) throws IOException {
         Response responseRepresentation = new Response();
 
         HttpEntity entity = response.getEntity();
@@ -158,28 +158,30 @@ public class MainServiceImpl implements MainService {
 
         String statusMessage = "Status message: " + response.getStatusLine().getReasonPhrase();
         String statusCode = "Status code: " + response.getStatusLine().getStatusCode();
-        String headers = join(Arrays.asList(response.getAllHeaders()), LINE_SEPARATOR);
-
+        List<Header> headerList = Arrays.asList(response.getAllHeaders());
+        String headers = join(headerList, LINE_SEPARATOR);
         String metaStr = statusCode + LINE_SEPARATOR + statusMessage + LINE_SEPARATOR + headers;
 
         responseRepresentation.setMeta(metaStr);
+        setResponseHeaders(responseRepresentation, headerList, requestedHeaders);
 
         return responseRepresentation;
     }
 
     @Override
-    public Response constructSuccessResponse(HttpResponse response, String responseBodyStr) throws IOException {
+    public Response constructSuccessResponse(HttpResponse response, String responseBodyStr, Set<String> requestedHeaders) throws IOException {
         Response responseRepresentation = new Response();
 
         responseRepresentation.setBody(responseBodyStr);
 
         String statusMessage = "Status message: " + response.getStatusLine().getReasonPhrase();
         String statusCode = "Status code: " + response.getStatusLine().getStatusCode();
-        String headers = join(Arrays.asList(response.getAllHeaders()), LINE_SEPARATOR);
-
+        List<Header> headerList = Arrays.asList(response.getAllHeaders());
+        String headers = join(headerList, LINE_SEPARATOR);
         String metaStr = statusCode + LINE_SEPARATOR + statusMessage + LINE_SEPARATOR + headers;
 
         responseRepresentation.setMeta(metaStr);
+        setResponseHeaders(responseRepresentation, headerList, requestedHeaders);
 
         return responseRepresentation;
     }
@@ -314,6 +316,18 @@ public class MainServiceImpl implements MainService {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void setResponseHeaders(Response response, List<Header> headerList, Set<String> requestedHeaders) {
+        if(requestedHeaders != null) {
+            List<String> responseHeaders = new ArrayList<>();
+            for (Header header : headerList) {
+                if (requestedHeaders.contains(header.getName())) {
+                    responseHeaders.add(header.toString());
+                }
+            }
+            response.setHeaders(join(responseHeaders, LINE_SEPARATOR));
         }
     }
 }
