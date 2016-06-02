@@ -66,8 +66,8 @@ $(function() {
 
     $('#rsaCheckerBtn').click(function() {
         setContentType("json");
-        sendUrl = "/rsaChecker";
-        fillPredefinedInfo('/rsaChecker/predefined');
+        sendUrl = "/rsaCheck";
+        fillPredefinedInfo('/rsaCheck/predefined');
     });
 
     $('#exchangeLoginBtn').click(function() {

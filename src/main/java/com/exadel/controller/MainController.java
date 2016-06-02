@@ -52,7 +52,7 @@ public class MainController {
     private final String explorerFolderDataUrl = "shared-drive/getItems";
     private final String explorerGetFile = "shared-drive/do/get";
     private final String forwardUrl = "forwardurl";
-    private final String rsaCheckerUrl = "rsa/check";
+    private final String rsaCheckUrl = "rsa/check";
     private final String exchangeJsonToken = "exchjson/";
     private final String exchangeLoginUrl = "exchjson/service/do/login";
     private final String exchangeFoldersUrl = "exchjson/service/do/folders";
@@ -110,7 +110,6 @@ public class MainController {
         requestData.addRequestParam("application", "edge");
         requestData.addRequestParam("applicationVersion", "1.0");
         requestData.addRequestParam("deviceType", "test-device-type");
-        requestData.addRequestParam("rsaUsername", "skoval");
         requestData.addRequestParam("rsaPasscode", "");
         requestData.addRequestParam("activationCode", "");
         requestData.addRequestParam("sendActivationCode", "");
@@ -164,12 +163,11 @@ public class MainController {
         return requestData;
     }
 
-    @RequestMapping(value = "/rsaChecker/predefined", method = RequestMethod.GET)
+    @RequestMapping(value = "/rsaCheck/predefined", method = RequestMethod.GET)
     @ResponseBody
-    public PredefinedRequestData predefRSAChecker(@ModelAttribute("authToken") String authToken, @ModelAttribute("X-51MAPS-SK") String key) {
+    public PredefinedRequestData predefRSACheck(@ModelAttribute("authToken") String authToken, @ModelAttribute("X-51MAPS-SK") String key) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
-        requestData.addRequestParam("username", "");
         requestData.addRequestParam("passcode", "");
         return requestData;
     }
@@ -652,16 +650,16 @@ public class MainController {
         return mainService.constructSuccessResponse(response, null);
     }
 
-    @RequestMapping(value = "/rsaChecker", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/rsaCheck", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
-    public Response rsaChecker(@RequestBody Map<String, String> requestData) throws IOException{
+    public Response rsaCheck(@RequestBody Map<String, String> requestData) throws IOException{
         HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
         String baseUrl = requestData.get("baseUrl").trim();
-        HttpPost rsaCheckerRequest = new HttpPost(baseUrl + rsaCheckerUrl);
-        rsaCheckerRequest.setEntity(mainService.constructRequestBody(requestData));
-        rsaCheckerRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
+        HttpPost rsaCheckRequest = new HttpPost(baseUrl + rsaCheckUrl);
+        rsaCheckRequest.setEntity(mainService.constructRequestBody(requestData));
+        rsaCheckRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 
-        HttpResponse response = httpClient.execute(rsaCheckerRequest);
+        HttpResponse response = httpClient.execute(rsaCheckRequest);
         Set<String> requestedHeaders = new HashSet<>();
         requestedHeaders.add(X_51_MAPS_SESSION_ID);
         return mainService.constructSuccessResponse(response, requestedHeaders);
