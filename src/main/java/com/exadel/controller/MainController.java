@@ -87,6 +87,7 @@ public class MainController {
         credentials.put("exadel1", "Frame1hawk");
         credentials.put("exadel2", "Frame1hawk");
         credentials.put("exadel3", "Frame1hawk");
+        credentials.put("skoval", "Exadel1");
     }
 
 
