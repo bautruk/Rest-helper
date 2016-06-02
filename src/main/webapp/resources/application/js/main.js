@@ -3,12 +3,20 @@ $(function() {
 
     $.ajaxSetup({
         beforeSend:function(){
-            $("#loading").show();
+            $("body").addClass("loading");
         },
         complete:function(){
-            $("#loading").hide();
+            $("body").removeClass("loading");
         }
     });
+
+    var acc = document.getElementsByClassName("accordion");
+    for (var i = 0; i < acc.length; i++) {
+        acc[i].onclick = function(){
+            this.classList.toggle("active");
+            this.nextElementSibling.classList.toggle("show");
+        }
+    }
 
     var clearResponseAreas = function() {
         $('#responseMetaArea').val('');
@@ -24,8 +32,8 @@ $(function() {
         }).done(function(result) {
             clearResponseAreas();
 
-            $('#parametersArea').val(result.requestParams.split('\\n').join('\n'));
-            $('#headersArea').val(result.requestHeaders.split('\\n').join('\n'));
+            $('#parametersArea').val(result.requestParams);
+            $('#headersArea').val(result.requestHeaders);
         });
     };
 
@@ -227,7 +235,7 @@ $(function() {
             }),
             contentType: 'application/json'
         }).done(function(result) {
-            $('#responseBodyArea').val(result.body);
+            $('#responseBodyArea').val(JSON.stringify(JSON.parse(result.body), null, 2));
             $('#responseMetaArea').val(result.meta);
             $('#headersArea').val(result.headers);
         });

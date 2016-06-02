@@ -3,15 +3,13 @@
     <script type="text/javascript"
             src="${pageContext.request.contextPath}/resources/jquery/js/jquery-1.11.0.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/application/js/main.js"></script>
+    <link href="${pageContext.request.contextPath}/resources/application/css/main.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
 <div>
     <div>
         <%-- FIRST COLUMN (buttons) --%>
         <div style="width:220px;float:left;display:inline-block;">
-            <span style="display: none;" id="loading">
-                <img src="${pageContext.request.contextPath}/resources/application/images/indicator.gif"/>
-            </span>
             <p>REQUESTS: </p>
             <select id="contentType">
                 <option value="get">GET</option>
@@ -119,21 +117,21 @@
         <div style="margin-left:220px; padding-left: 20px">
             <input type="button" value="Send" id="sendButton"/>
             <br/>
-            <label for="parametersArea">Parameters</label>
-            <textarea wrap="off" id="parametersArea" rows="10" style="width: 100%"></textarea>
+            <label for="parametersArea" class="accordion">Parameters</label>
+            <textarea class="panel show" wrap="off" id="parametersArea" rows="10" style="width: 100%; height: 20%"></textarea>
             <br/>
-            <label for="headersArea">Headers</label>
-            <textarea wrap="off" id="headersArea" rows="10" style="width: 100%; margin-bottom: 30px"></textarea>
+            <label for="headersArea" class="accordion">Headers</label>
+            <textarea class="panel" wrap="off" id="headersArea" rows="10" style="width: 100%; height: 20%"></textarea>
             <br/>
             <hr/>
+            <label for="responseMetaArea" class="accordion" style="margin-top: 30px">Response meta (headers etc.)</label>
+            <textarea class="panel show" wrap="off" id="responseMetaArea" rows="10" style="width: 100%; height: 20%"></textarea>
             <br/>
-            <label for="responseMetaArea" style="margin-top: 30px">Response meta (headers etc.)</label>
-            <textarea wrap="off" id="responseMetaArea" rows="10" style="width: 100%"></textarea>
-            <br/>
-            <label for="responseBodyArea">Response body</label>
-            <textarea wrap="off" id="responseBodyArea" rows="10" style="width: 100%"></textarea>
+            <label for="responseBodyArea" class="accordion">Response body</label>
+            <textarea class="panel show" wrap="off" id="responseBodyArea" rows="10" style="width: 100%; height: 40%" ></textarea>
         </div>
     </div>
 </div>
+<div class="modal"></div>
 </body>
 </html>
