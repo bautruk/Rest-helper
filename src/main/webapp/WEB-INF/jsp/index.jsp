@@ -40,6 +40,7 @@
                 <option value="exadel1">exadel1</option>
                 <option value="exadel2">exadel2</option>
                 <option value="exadel3">exadel3</option>
+                <option value="skoval">skoval</option>
             </select>
             <br/>
             <input type="button" value="Get Password" id="getPasswordBtn"/>
