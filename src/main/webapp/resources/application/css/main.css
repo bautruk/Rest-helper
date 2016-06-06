@@ -38,6 +38,6 @@ body.loading .modal {
 
 .panel.show {
     opacity: 1;
-    max-height: 40%;
+    max-height: 45%;
     overflow: auto;
 }

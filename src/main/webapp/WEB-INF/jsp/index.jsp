@@ -10,7 +10,6 @@
     <div>
         <%-- FIRST COLUMN (buttons) --%>
         <div style="width:220px;float:left;display:inline-block;">
-            <p>REQUESTS: </p>
             <select id="contentType">
                 <option value="get">GET</option>
                 <option value="form" selected="selected">Form </option>
@@ -18,6 +17,7 @@
                 <option value="text">Text </option>
                 <option value="multipart-form">Multipart-form </option>
             </select>
+            <input type="button" value="Send" id="sendButton"/>
             <select id="baseUrl">
                 <option value="http://192.168.12.60:9512/" selected="selected">192.168.12.60:9512</option>
                 <option value="http://128.66.200.101:9512/">Dev-128.66.200.101:9512</option>
@@ -31,7 +31,6 @@
                 <option value="http://192.168.12.7:9512/">192.168.12.7:9512</option>
             </select>
             <hr/>
-            <input type="button" value="Login" id="loginBtn"/>
             <select id="username">
                 <option value="milshtyu" selected="selected">milshtyu</option>
                 <option value="pizito">pizito</option>
@@ -40,6 +39,7 @@
                 <option value="exadel3">exadel3</option>
                 <option value="skoval">skoval</option>
             </select>
+            <input type="button" value="Login" id="loginBtn"/>
             <br/>
             <input type="button" value="Get Password" id="getPasswordBtn"/>
             <br/>
@@ -116,8 +116,6 @@
         </div>
         <%-- SECOND COLUMN (areas) --%>
         <div style="margin-left:220px; padding-left: 20px">
-            <input type="button" value="Send" id="sendButton"/>
-            <br/>
             <label for="parametersArea" class="accordion">Parameters</label>
             <textarea class="panel show" wrap="off" id="parametersArea" rows="10" style="width: 100%; height: 20%"></textarea>
             <br/>
@@ -126,10 +124,10 @@
             <br/>
             <hr/>
             <label for="responseMetaArea" class="accordion" style="margin-top: 30px">Response meta (headers etc.)</label>
-            <textarea class="panel show" wrap="off" id="responseMetaArea" rows="10" style="width: 100%; height: 20%"></textarea>
+            <textarea class="panel show" wrap="off" id="responseMetaArea" rows="10" style="width: 100%; height: 13%"></textarea>
             <br/>
             <label for="responseBodyArea" class="accordion">Response body</label>
-            <textarea class="panel show" wrap="off" id="responseBodyArea" rows="10" style="width: 100%; height: 40%" ></textarea>
+            <textarea class="panel show" wrap="off" id="responseBodyArea" rows="10" style="width: 100%; height: 45%" ></textarea>
         </div>
     </div>
 </div>
