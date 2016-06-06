@@ -13,11 +13,16 @@ $(function() {
     var acc = document.getElementsByClassName("accordion");
     for (var i = 0; i < acc.length; i++) {
         acc[i].onclick = function(){
-            this.classList.toggle("active");
+            this.getElementsByClassName("arrow")[0].classList.toggle("arrow-up");
             this.nextElementSibling.classList.toggle("show");
         }
     }
 
+    $('#exchangeToggle').click(function() {
+        this.classList.toggle("arrow-up-big");
+        this.nextElementSibling.classList.toggle("show");
+    });
+    
     var clearResponseAreas = function() {
         $('#responseMetaArea').val('');
         $('#responseBodyArea').val('');
@@ -80,6 +85,7 @@ $(function() {
 
     $('#exchangeLoginBtn').click(function() {
         setContentType("form");
+        $('#exchangePanel').addClass("show");
         sendUrl = "/exchangeLogin";
         fillPredefinedInfo('/exchangeLogin/predefined');
     });

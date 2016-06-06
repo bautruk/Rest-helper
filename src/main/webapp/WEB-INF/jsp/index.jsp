@@ -5,20 +5,21 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/application/js/main.js"></script>
     <link href="${pageContext.request.contextPath}/resources/application/css/main.css" type="text/css" rel="stylesheet" />
 </head>
-<body>
+<body style="background-color: #f8f8f8;">
 <div>
     <div>
         <%-- FIRST COLUMN (buttons) --%>
         <div style="width:220px;float:left;display:inline-block;">
-            <select id="contentType">
+            <select class="dropdown" id="contentType">
                 <option value="get">GET</option>
                 <option value="form" selected="selected">Form </option>
                 <option value="json">Json </option>
                 <option value="text">Text </option>
                 <option value="multipart-form">Multipart-form </option>
             </select>
-            <input type="button" value="Send" id="sendButton"/>
-            <select id="baseUrl">
+            <input type="button" style="font-size: 14px;width: 30%;height: 3%;background-color: #4CAF50;"
+                   class="button" value="Send" id="sendButton"/>
+            <select class="dropdown" id="baseUrl">
                 <option value="http://192.168.12.60:9512/" selected="selected">192.168.12.60:9512</option>
                 <option value="http://128.66.200.101:9512/">Dev-128.66.200.101:9512</option>
                 <option value="http://128.66.200.102:9512/">Test-128.66.200.102:9512</option>
@@ -31,7 +32,7 @@
                 <option value="http://192.168.12.7:9512/">192.168.12.7:9512</option>
             </select>
             <hr/>
-            <select id="username">
+            <select class="dropdown" id="username">
                 <option value="milshtyu" selected="selected">milshtyu</option>
                 <option value="pizito">pizito</option>
                 <option value="exadel1">exadel1</option>
@@ -39,95 +40,152 @@
                 <option value="exadel3">exadel3</option>
                 <option value="skoval">skoval</option>
             </select>
-            <input type="button" value="Login" id="loginBtn"/>
+            <input type="button" class="button" value="Login" id="loginBtn"/>
             <br/>
-            <input type="button" value="Get Password" id="getPasswordBtn"/>
-            <br/>
-            <hr/>
-            <hr/>
-            <input type="button" value="Explorer Folder data" id="explorerFolderDataBtn"/>
-            <br/>
-            <input type="button" value="Explorer Get File" id="explorerGetFileBtn"/>
+            <input type="button" class="button" value="Get Password" id="getPasswordBtn"/>
             <br/>
             <hr/>
             <hr/>
-            <input type="button" value="Forward" id="forwardUrlBtn"/>
+            <input type="button" class="button" value="Explorer Folder data" id="explorerFolderDataBtn"/>
+            <br/>
+            <input type="button" class="button" value="Explorer Get File" id="explorerGetFileBtn"/>
             <br/>
             <hr/>
             <hr/>
-            <input type="button" value="RSA checker" id="rsaCheckerBtn"/>
-            <hr/>
-            <hr/>
-            <input type="button" value="Exchange login" id="exchangeLoginBtn"/>
-            <br/>
-            <input type="button" value="Exchange folders" id="exchangeFoldersBtn"/>
-            <br/>
-            <input type="button" value="Exchange folder data" id="exchangeFolderDataBtn"/>
-            <br/>
-            <input type="button" value="Exchange contacts data" id="exchangeContactsDataBtn"/>
-            <br/>
-            <input type="button" value="Exchange move item" id="exchangeMoveItemBtn"/>
+            <input type="button" class="button" value="Forward" id="forwardUrlBtn"/>
             <br/>
             <hr/>
-            <input type="button" value="Exchange read contact" id="exchangeReadContactBtn"/>
-            <br/>
             <hr/>
-            <input type="button" value="Exchange read email" id="exchangeReadEmailBtn"/>
-            <br/>
-            <input type="button" value="Exchange prepare email" id="exchangePrepareEmailBtn"/>
-            <br/>
-            <input type="button" value="Exchange update draft email" id="exchangeUpdateDraftEmailBtn"/>
-            <br/>
-            <input type="button" value="Exchange send draft email" id="exchangeSendDraftEmailBtn"/>
-            <br/>
-            <input type="button" value="Exchange forward email" id="exchangeForwardEmailBtn"/>
-            <br/>
-            <input type="button" value="Exchange add attachment to draft" id="exchangeAddAttachmentToDraft"/>
-            <br/>
-            <input type="button" value="Exchange fetch attachment" id="exchangeFetchAttachment"/>
-            <br/>
+            <input type="button" class="button" value="RSA checker" id="rsaCheckerBtn"/>
             <hr/>
-            <input type="button" value="Exchange calendar data" id="exchangeCalendarDataBtn"/>
-            <br/>
-            <input type="button" value="Exchange read appointment" id="exchangeReadAppointmentBtn"/>
-            <br/>
-            <input type="button" value="Exchange read master appointment" id="exchangeReadMasterAppointmentBtn"/>
-            <br/>
-            <input type="button" value="Exchange add appointment" id="exchangeAddAppointmentBtn"/>
-            <br/>
-            <input type="button" value="Exchange delete appointment" id="exchangeDeleteAppointmentBtn"/>
-            <br/>
-            <input type="button" value="Exchange update appointment" id="exchangeUpdateAppointmentBtn"/>
             <hr/>
-            <input type="button" value="Exchange add delegate" id="exchangeAddDelegateBtn"/>
-            <br/>
-            <input type="button" value="Exchange remove delegate" id="exchangeRemoveDelegateBtn"/>
-            <br/>
-            <hr/>
-            <input type="button" value="Exchange get appointment categories" id="exchangeGetAppointmentCategoriesBtn"/>
-            <br/>
-            <input type="button" value="Exchange create appointment category" id="exchangeCreateAppointmentCategoryBtn"/>
-            <br/>
-            <input type="button" value="Exchange update appointment category color" id="exchangeUpdateAppointmentCategoryColorBtn"/>
-            <br/>
-            <input type="button" value="Exchange delete appointment category" id="exchangeDeleteAppointmentCategoryBtn"/>
-            <br/>
-            <hr/>
+            <input type="button" class="button" value="Exchange login" id="exchangeLoginBtn"/>
+            <div class="arrow-big" id="exchangeToggle"></div>
+            <div class="panel" id="exchangePanel">
+                <br/>
+                <div class="accordion">
+                    <label class="label">Folders</label>
+                    <div class="arrow"></div>
+                </div>
+                <div class="panel">
+                    <hr/>
+                    <input type="button" class="button" value="Get folders" id="exchangeFoldersBtn"/>
+                    <br/>
+                    <input type="button" class="button" value="Get folder data" id="exchangeFolderDataBtn"/>
+                    <br/>
+                    <input type="button" class="button" value="Move item" id="exchangeMoveItemBtn"/>
+                </div>
+                <hr/>
+                <div class="accordion">
+                    <label class="label">Emails</label>
+                    <div class="arrow"></div>
+                </div>
+                <div class="panel">
+                    <hr/>
+                    <input type="button" class="button" value="Read email" id="exchangeReadEmailBtn"/>
+                    <br/>
+                    <input type="button" class="button" value="Prepare email" id="exchangePrepareEmailBtn"/>
+                    <br/>
+                    <input type="button" class="button" value="Update draft email" id="exchangeUpdateDraftEmailBtn"/>
+                    <br/>
+                    <input type="button" class="button" value="Send draft email" id="exchangeSendDraftEmailBtn"/>
+                    <br/>
+                    <input type="button" class="button" value="Forward email" id="exchangeForwardEmailBtn"/>
+                    <br/>
+                    <input type="button" class="button" value="Add attachment to draft" id="exchangeAddAttachmentToDraft"/>
+                    <br/>
+                    <input type="button" class="button" value="Fetch attachment" id="exchangeFetchAttachment"/>
+                </div>
+                <hr/>
+                <div class="accordion">
+                    <label class="label">Contacts</label>
+                    <div class="arrow"></div>
+                </div>
+                <div class="panel">
+                    <hr/>
+                    <input type="button" class="button" value="Get contacts data" id="exchangeContactsDataBtn"/>
+                    <br/>
+                    <input type="button" class="button" value="Read contact" id="exchangeReadContactBtn"/>
+                </div>
+                <hr/>
+                <div class="accordion">
+                    <label class="label">Calendar</label>
+                    <div class="arrow"></div>
+                </div>
+                <div class="panel">
+                    <hr/>
+                    <input type="button" class="button" value="Get calendar data" id="exchangeCalendarDataBtn"/>
+                    <br/>
+                    <input type="button" class="button" value="Read appointment" id="exchangeReadAppointmentBtn"/>
+                    <br/>
+                    <input type="button" class="button" value="Read master appointment" id="exchangeReadMasterAppointmentBtn"/>
+                    <br/>
+                    <input type="button" class="button" value="Add appointment" id="exchangeAddAppointmentBtn"/>
+                    <br/>
+                    <input type="button" class="button" value="Delete appointment" id="exchangeDeleteAppointmentBtn"/>
+                    <br/>
+                    <input type="button" class="button" value="Update appointment" id="exchangeUpdateAppointmentBtn"/>
+                    <hr/>
+                    <div class="accordion">
+                        <label class="label">Categories</label>
+                        <div class="arrow"></div>
+                    </div>
+                    <div class="panel">
+                        <hr/>
+                        <input type="button" class="button" value="Get appointment categories" id="exchangeGetAppointmentCategoriesBtn"/>
+                        <br/>
+                        <input type="button" class="button" value="Create appointment category" id="exchangeCreateAppointmentCategoryBtn"/>
+                        <br/>
+                        <input type="button" class="button" value="Update appointment category color" id="exchangeUpdateAppointmentCategoryColorBtn"/>
+                        <br/>
+                        <input type="button" class="button" value="Delete appointment category" id="exchangeDeleteAppointmentCategoryBtn"/>
+                    </div>
+                    <hr/>
+                    <div class="accordion">
+                        <label class="label">Delegates</label>
+                        <div class="arrow"></div>
+                    </div>
+                    <div class="panel">
+                        <hr/>
+                        <input type="button" class="button" value="Exchange add delegate" id="exchangeAddDelegateBtn"/>
+                        <br/>
+                        <input type="button" class="button" value="Exchange remove delegate" id="exchangeRemoveDelegateBtn"/>
+                    </div>
+                    <hr/>
+                </div>
+            </div>
         </div>
         <%-- SECOND COLUMN (areas) --%>
         <div style="margin-left:220px; padding-left: 20px">
-            <label for="parametersArea" class="accordion">Parameters</label>
-            <textarea class="panel show" wrap="off" id="parametersArea" rows="10" style="width: 100%; height: 20%"></textarea>
-            <br/>
-            <label for="headersArea" class="accordion">Headers</label>
-            <textarea class="panel" wrap="off" id="headersArea" rows="10" style="width: 100%; height: 20%"></textarea>
-            <br/>
+            <div class="accordion">
+                <label for="parametersArea" class="label">Parameters</label>
+                <div class="arrow arrow-up"></div>
+            </div>
+            <div class="panel show">
+                <textarea wrap="off" class="textarea" id="parametersArea" rows="10" style="width: 100%; height: 15%"></textarea>
+            </div>
+            <div class="accordion">
+                <label for="headersArea" class="label">Headers</label>
+                <div class="arrow"></div>
+            </div>
+            <div class="panel">
+                <textarea wrap="off" class="textarea" id="headersArea" rows="10" style="width: 100%; height: 15%"></textarea>
+            </div>
             <hr/>
-            <label for="responseMetaArea" class="accordion" style="margin-top: 30px">Response meta (headers etc.)</label>
-            <textarea class="panel show" wrap="off" id="responseMetaArea" rows="10" style="width: 100%; height: 13%"></textarea>
-            <br/>
-            <label for="responseBodyArea" class="accordion">Response body</label>
-            <textarea class="panel show" wrap="off" id="responseBodyArea" rows="10" style="width: 100%; height: 45%" ></textarea>
+            <div class="accordion">
+                <label for="responseMetaArea" class="label">Response meta (headers etc.)</label>
+                <div class="arrow arrow-up"></div>
+            </div>
+            <div class="panel show">
+                <textarea wrap="off" class="textarea" id="responseMetaArea" rows="10" style="width: 100%; height: 13%"></textarea>
+            </div>
+            <div class="accordion">
+                <label for="responseBodyArea" class="label">Response body</label>
+                <div class="arrow arrow-up"></div>
+            </div>
+            <div class="panel show">
+                <textarea wrap="off" class="textarea" id="responseBodyArea" rows="10" style="width: 100%; height: 61%" ></textarea>
+            </div>
         </div>
     </div>
 </div>

@@ -38,6 +38,62 @@ body.loading .modal {
 
 .panel.show {
     opacity: 1;
-    max-height: 45%;
-    overflow: auto;
+    max-height: 100%;
+    overflow: hidden;
+}
+
+.arrow-up {
+    border-bottom: 6px solid #006080;
+    border-top: 0 !important;
+}
+
+.arrow {
+    width: 0;
+    height: 0;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+    display: inline-block;
+    border-top: 6px solid #006080;
+}
+
+.arrow-up-big {
+    border-bottom: 10px solid #006080;
+    border-top: 0 !important;
+}
+
+.arrow-big {
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    display: inline-block;
+    border-top: 10px solid #006080;
+}
+
+.button {
+    background-color: #008CBA;
+    border: none;
+    color: white;
+    padding: 3px 7px;
+    text-align: center;
+    display: inline-block;
+    border-radius: 4px;
+    font-size: 12px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.textarea {
+    border-radius: 4px;
+    color: #006080;
+}
+
+.dropdown {
+    border-radius: 4px;
+    color: #006080;
+}
+
+.label {
+    color: #006080;
+    font-size: 18px;
 }
