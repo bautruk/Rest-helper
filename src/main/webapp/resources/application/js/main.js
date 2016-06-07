@@ -114,6 +114,18 @@ $(function() {
         fillPredefinedInfo('/exchangeReadContact/predefined');
     });
 
+    $('#exchangeAddContactBtn').click(function () {
+        setContentType("form");
+        sendUrl = "/exchangeUpdateContact";
+        fillPredefinedInfo('/exchangeAddContact/predefined');
+    });
+
+    $('#exchangeEditContactBtn').click(function () {
+        setContentType("form");
+        sendUrl = "/exchangeUpdateContact";
+        fillPredefinedInfo('/exchangeEditContact/predefined');
+    });
+
     $('#exchangeMoveItemBtn').click(function() {
         setContentType("form");
         sendUrl = "/exchangeMoveItem";
