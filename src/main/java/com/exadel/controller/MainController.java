@@ -58,6 +58,7 @@ public class MainController {
     private final String exchangeFoldersUrl = "exchjson/service/do/folders";
     private final String exchangeFolderdataUrl = "exchjson/service/do/folderdata";
     private final String exchangeContactsdataUrl = "exchjson/service/do/contactsdata";
+    private final String exchangeUpdateContactUrl = "exchjson/service/do/modifycontact";
     private final String exchangeReadContactUrl = "exchjson/service/do/readcontact";
     private final String exchangeMoveItemUrl = "exchjson/service/do/moveitem";
     private final String exchangeReadEmailUrl = "/exchjson/service/do/reademail";
@@ -232,6 +233,85 @@ public class MainController {
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
 
         requestData.addRequestParam("EntryID", entryId);
+
+        return requestData;
+    }
+
+    @RequestMapping(value = "/exchangeAddContact/predefined")
+    @ResponseBody
+    public PredefinedRequestData predefParamsForExchgAddContact(@ModelAttribute("authToken") String authToken,
+                                                                @ModelAttribute("exchgToken") String exchgToken,
+                                                                @ModelAttribute("contactsEntryId") String entryId) {
+        PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+        requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+        requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
+
+        requestData.addRequestParam("EntryID", entryId);
+        requestData.addRequestParam("FirstName", "");
+        requestData.addRequestParam("LastName", "");
+        requestData.addRequestParam("MiddleName", "");
+        requestData.addRequestParam("JobTitle", "");
+        requestData.addRequestParam("Company", "");
+        requestData.addRequestParam("Department", "");
+        requestData.addRequestParam("Email1", "");
+        requestData.addRequestParam("Email2", "");
+        requestData.addRequestParam("Email3", "");
+        requestData.addRequestParam("IMId", "");
+        requestData.addRequestParam("WebAddress", "");
+        requestData.addRequestParam("Phone", "");
+        requestData.addRequestParam("HomePhone", "");
+        requestData.addRequestParam("MobilePhone", "");
+        requestData.addRequestParam("BusinessAddressStreet", "");
+        requestData.addRequestParam("BusinessAddressCity", "");
+        requestData.addRequestParam("BusinessAddressState", "");
+        requestData.addRequestParam("BusinessAddressPostalCode", "");
+        requestData.addRequestParam("BusinessAddressCountry", "");
+        requestData.addRequestParam("HomeAddressStreet", "");
+        requestData.addRequestParam("HomeAddressCity", "");
+        requestData.addRequestParam("HomeAddressState", "");
+        requestData.addRequestParam("HomeAddressPostalCode", "");
+        requestData.addRequestParam("HomeAddressCounty", "");
+        requestData.addRequestParam("Birthday", "");
+
+        return requestData;
+    }
+
+    @RequestMapping(value = "/exchangeEditContact/predefined")
+    @ResponseBody
+    public PredefinedRequestData predefParamsForExchgEditContact(@ModelAttribute("authToken") String authToken,
+                                                                 @ModelAttribute("exchgToken") String exchgToken,
+                                                                 @ModelAttribute("contactsEntryId") String entryId) {
+        PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+        requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+        requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
+
+        requestData.addRequestParam("EntryID", entryId);
+        requestData.addRequestParam("ItemId", "");
+        requestData.addRequestParam("FirstName", "");
+        requestData.addRequestParam("LastName", "");
+        requestData.addRequestParam("MiddleName", "");
+        requestData.addRequestParam("JobTitle", "");
+        requestData.addRequestParam("Company", "");
+        requestData.addRequestParam("Department", "");
+        requestData.addRequestParam("Email1", "");
+        requestData.addRequestParam("Email2", "");
+        requestData.addRequestParam("Email3", "");
+        requestData.addRequestParam("IMId", "");
+        requestData.addRequestParam("WebAddress", "");
+        requestData.addRequestParam("Phone", "");
+        requestData.addRequestParam("HomePhone", "");
+        requestData.addRequestParam("MobilePhone", "");
+        requestData.addRequestParam("BusinessAddressStreet", "");
+        requestData.addRequestParam("BusinessAddressCity", "");
+        requestData.addRequestParam("BusinessAddressState", "");
+        requestData.addRequestParam("BusinessAddressPostalCode", "");
+        requestData.addRequestParam("BusinessAddressCountry", "");
+        requestData.addRequestParam("HomeAddressStreet", "");
+        requestData.addRequestParam("HomeAddressCity", "");
+        requestData.addRequestParam("HomeAddressState", "");
+        requestData.addRequestParam("HomeAddressPostalCode", "");
+        requestData.addRequestParam("HomeAddressCounty", "");
+        requestData.addRequestParam("Birthday", "");
 
         return requestData;
     }
@@ -732,6 +812,20 @@ public class MainController {
         HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
         String baseUrl = requestData.get("baseUrl").trim();
         HttpPost contactsRequest = new HttpPost(baseUrl + exchangeContactsdataUrl);
+        contactsRequest.setEntity(mainService.constructRequestBody(requestData));
+        contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
+
+        HttpResponse response = httpClient.execute(contactsRequest);
+
+        return mainService.constructSuccessResponse(response, null);
+    }
+
+    @RequestMapping(value = "/exchangeUpdateContact", method = RequestMethod.POST)
+    @ResponseBody
+    public Response exchangeUpdateContact(@RequestBody Map<String, String> requestData) throws IOException {
+        HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
+        String baseUrl = requestData.get("baseUrl").trim();
+        HttpPost contactsRequest = new HttpPost(baseUrl + exchangeUpdateContactUrl);
         contactsRequest.setEntity(mainService.constructRequestBody(requestData));
         contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 

@@ -106,6 +106,10 @@
                     <input type="button" class="button" value="Get contacts data" id="exchangeContactsDataBtn"/>
                     <br/>
                     <input type="button" class="button" value="Read contact" id="exchangeReadContactBtn"/>
+                    <br/>
+                    <input type="button" class="button" value="Add contact" id="exchangeAddContactBtn"/>
+                    <br/>
+                    <input type="button" class="button" value="Edit contact" id="exchangeEditContactBtn"/>
                 </div>
                 <hr/>
                 <div class="accordion">
