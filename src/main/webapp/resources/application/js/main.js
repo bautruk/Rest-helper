@@ -253,7 +253,12 @@ $(function() {
             }),
             contentType: 'application/json'
         }).done(function(result) {
-            $('#responseBodyArea').val(JSON.stringify(JSON.parse(result.body), null, 2));
+            try {
+                $('#responseBodyArea').val(JSON.stringify(JSON.parse(result.body), null, 4));    
+            } catch (e) {
+                console.log("Given response is not a valid JSON string.");
+                $('#responseBodyArea').val(result.body);
+            }
             $('#responseMetaArea').val(result.meta);
             $('#headersArea').val(result.headers);
         });
