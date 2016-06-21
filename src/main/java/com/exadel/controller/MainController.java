@@ -533,7 +533,7 @@ public class MainController {
         requestData.addRequestParam("ReminderOffset", "0");
         requestData.addRequestParam("StartDate", "1448545096000");
         requestData.addRequestParam("Subject", "");
-        requestData.addRequestParam("TimeZone", "Dateline Standard Time");
+        requestData.addRequestParam("TimeZone", "Europe/Minsk");
 
         return requestData;
     }
@@ -570,7 +570,7 @@ public class MainController {
         requestData.addRequestParam("StartDate", "1448545096000");
         requestData.addRequestParam("Subject", "");
         requestData.addRequestParam("Categories", "");
-        requestData.addRequestParam("TimeZone", "Dateline Standard Time");
+        requestData.addRequestParam("TimeZone", "Europe/Minsk");
 
 
         return requestData;
