@@ -260,7 +260,6 @@ $(function() {
                 $('#responseBodyArea').val(result.body);
             }
             $('#responseMetaArea').val(result.meta);
-            $('#headersArea').val(result.headers);
         });
     });
 });
