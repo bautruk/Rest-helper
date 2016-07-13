@@ -51,7 +51,7 @@ public class MainController {
     private final String getPasswordUrl = "proxy/profile/getPassword";
     private final String explorerFolderDataUrl = "shared-drive/getItems";
     private final String explorerGetFile = "shared-drive/do/get";
-    private final String explorerPutFile = "explorer/putFile";
+    private final String explorerPutFile = "shared-drive/putFile";
     private final String forwardUrl = "forwardurl";
     private final String rsaCheckUrl = "rsa/check";
     private final String exchangeJsonToken = "exchjson/";
