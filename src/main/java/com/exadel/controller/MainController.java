@@ -147,9 +147,11 @@ public class MainController {
 
     @RequestMapping(value = "/explorerPutFile/predefined", method = RequestMethod.GET)
     @ResponseBody
-    public PredefinedRequestData predefParamsForExplorerPutFile(@ModelAttribute("authToken") String authToken) {
+    public PredefinedRequestData predefParamsForExplorerPutFile(@ModelAttribute("authToken") String authToken,
+                                                                @ModelAttribute("X-51MAPS-SK") String key) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+        requestData.addRequestHeader("X-51MAPS-SK", key);
 
         requestData.addRequestParam("explorerPath", "");
         requestData.addRequestParam("FilePath", "");
@@ -669,7 +671,6 @@ public class MainController {
     }
 
 
-
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
     public Response login(@RequestBody Map<String, String> requestData, Model model) throws IOException {
@@ -761,7 +762,7 @@ public class MainController {
 
     @RequestMapping(value = "/rsaCheck", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
-    public Response rsaCheck(@RequestBody Map<String, String> requestData) throws IOException{
+    public Response rsaCheck(@RequestBody Map<String, String> requestData) throws IOException {
         HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
         String baseUrl = requestData.get("baseUrl").trim();
         HttpPost rsaCheckRequest = new HttpPost(baseUrl + rsaCheckUrl);
