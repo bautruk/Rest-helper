@@ -63,7 +63,13 @@ $(function() {
         sendUrl = "/explorerGetFile";
         fillPredefinedInfo('/explorerGetFile/predefined');
     });
-
+    
+     $('#explorerPutFileBtn').click(function() {
+        setContentType("multipart-form");
+        sendUrl = "/explorerPutFile";
+        fillPredefinedInfo('/explorerPutFile/predefined');
+    });
+    
 
     $('#getPasswordBtn').click(function() {
         setContentType("json");

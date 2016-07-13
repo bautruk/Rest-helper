@@ -51,6 +51,7 @@ public class MainController {
     private final String getPasswordUrl = "proxy/profile/getPassword";
     private final String explorerFolderDataUrl = "shared-drive/getItems";
     private final String explorerGetFile = "shared-drive/do/get";
+    private final String explorerPutFile = "explorer/putFile";
     private final String forwardUrl = "forwardurl";
     private final String rsaCheckUrl = "rsa/check";
     private final String exchangeJsonToken = "exchjson/";
@@ -140,6 +141,19 @@ public class MainController {
 
         requestData.addRequestParam("create", "true");
         requestData.addRequestParam("url", "smb://mainserver/S_Drive_Shares/testtester1/Autosync/Autosync");
+
+        return requestData;
+    }
+
+    @RequestMapping(value = "/explorerPutFile/predefined", method = RequestMethod.GET)
+    @ResponseBody
+    public PredefinedRequestData predefParamsForExplorerPutFile(@ModelAttribute("authToken") String authToken) {
+        PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+        requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+
+        requestData.addRequestParam("explorerPath", "");
+        requestData.addRequestParam("FilePath", "");
+        requestData.addRequestParam("FileName", "");
 
         return requestData;
     }
@@ -710,6 +724,20 @@ public class MainController {
         HttpClient httpClient = HttpClients.createDefault();
         String baseUrl = requestData.get("baseUrl").trim();
         HttpPost explorerFRequest = new HttpPost(baseUrl + explorerGetFile);
+        explorerFRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
+        explorerFRequest.setEntity(mainService.constructRequestBody(requestData));
+
+        HttpResponse response = httpClient.execute(explorerFRequest);
+
+        return mainService.constructSuccessResponse(response, null);
+    }
+
+    @RequestMapping(value = "/explorerPutFile", method = RequestMethod.POST, consumes = "application/json")
+    @ResponseBody
+    public Response explorerPutFile(@RequestBody Map<String, String> requestData) throws IOException {
+        HttpClient httpClient = HttpClients.createDefault();
+        String baseUrl = requestData.get("baseUrl").trim();
+        HttpPost explorerFRequest = new HttpPost(baseUrl + explorerPutFile);
         explorerFRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
         explorerFRequest.setEntity(mainService.constructRequestBody(requestData));
 

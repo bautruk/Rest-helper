@@ -50,6 +50,8 @@
             <br/>
             <input type="button" class="button" value="Explorer Get File" id="explorerGetFileBtn"/>
             <br/>
+            <input type="button" class="button" value="Explorer Update File" id="explorerPutFileBtn"/>
+            <br/>
             <hr/>
             <hr/>
             <input type="button" class="button" value="Forward" id="forwardUrlBtn"/>
