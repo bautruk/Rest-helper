@@ -64,10 +64,10 @@ $(function() {
         fillPredefinedInfo('/explorerGetFile/predefined');
     });
     
-     $('#explorerPutFileBtn').click(function() {
+     $('#explorerUpdateFileBtn').click(function() {
         setContentType("multipart-form");
-        sendUrl = "/explorerPutFile";
-        fillPredefinedInfo('/explorerPutFile/predefined');
+        sendUrl = "/explorerUpdateFileContent";
+        fillPredefinedInfo('/explorerUpdateFileContent/predefined');
     });
     
 
