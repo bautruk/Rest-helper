@@ -39,6 +39,7 @@
                 <option value="exadel2">exadel2</option>
                 <option value="exadel3">exadel3</option>
                 <option value="skoval">skoval</option>
+                <option value="paulk@51maps.onmicrosoft.com">paulk</option>
             </select>
             <input type="button" class="button" value="Login" id="loginBtn"/>
             <br/>

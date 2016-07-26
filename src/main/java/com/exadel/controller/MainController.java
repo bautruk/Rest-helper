@@ -50,7 +50,7 @@ public class MainController {
     private final String loginUrl = "proxy/authentication/login";
     private final String getPasswordUrl = "proxy/profile/getPassword";
     private final String explorerFolderDataUrl = "shared-drive/getItems";
-    private final String explorerGetFile = "shared-drive/do/get";
+    private final String explorerGetFile = "shared-drive/getFile";
     private final String explorerUpdateFile = "shared-drive/updateFile";
     private final String forwardUrl = "forwardurl";
     private final String rsaCheckUrl = "rsa/check";
@@ -90,6 +90,7 @@ public class MainController {
         credentials.put("exadel2", "Frame1hawk");
         credentials.put("exadel3", "Frame1hawk");
         credentials.put("skoval", "Exadel1");
+        credentials.put("paulk@51maps.onmicrosoft.com", "kNm6iKgYxJ1ILRg4nv");
     }
 
 
@@ -135,12 +136,13 @@ public class MainController {
 
     @RequestMapping(value = "/explorerGetFile/predefined", method = RequestMethod.GET)
     @ResponseBody
-    public PredefinedRequestData predefParamsForExplorerGetFile(@ModelAttribute("authToken") String authToken) {
+    public PredefinedRequestData predefParamsForExplorerGetFile(@ModelAttribute("authToken") String authToken,
+                                                                @ModelAttribute("X-51MAPS-SK") String key) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+        requestData.addRequestHeader("X-51MAPS-SK", key);
 
-        requestData.addRequestParam("create", "true");
-        requestData.addRequestParam("url", "smb://mainserver/S_Drive_Shares/testtester1/Autosync/Autosync");
+        requestData.addRequestParam("path", "");
 
         return requestData;
     }
@@ -153,7 +155,7 @@ public class MainController {
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-SK", key);
 
-        requestData.addRequestParam("explorerPath", "");
+        requestData.addRequestParam("path", "");
         requestData.addRequestParam("FilePath", "");
         requestData.addRequestParam("FileName", "");
 

@@ -37,7 +37,7 @@ public class MainServiceImpl implements MainService {
     private static final String CONTENT_TYPE_APPLICATION_OCTET_STREAM =  "application/octet-stream";
     private static final String TEXT_PLAIN =  "text/plain";
     private static final String LINE_SEPARATOR = "\n";
-    private static final String ATTACHMENT_DATA_KEY = "AttachmentData";
+    private static final String ATTACHMENT_DATA_KEY = "data";
     private static final String FILE_PATH_KEY = "FilePath";
     private static final String FILE_NAME_KEY = "FileName";
     private static final String URI = "URI";
