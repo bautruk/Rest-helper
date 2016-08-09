@@ -80,6 +80,7 @@ public class MainController {
     private final String exchangeCreateAppointmentCategoryUrl = "/exchjson/service/do/createappointmentcategory";
     private final String exchangeUpdateAppointmentCategoryColorUrl = "/exchjson/service/do/updateappointmentcategorycolor";
     private final String exchangeDeleteAppointmentCategoryUrl = "/exchjson/service/do/deleteappointmentcategory";
+    private final String exchangeGetTimezonesUrl = "/exchjson/service/do/timezones";
     private static final Map<String, String> credentials = new HashMap<>();
     private static final String X_51_MAPS_SESSION_ID = "X-51MAPS-SessionId";
 
@@ -92,7 +93,6 @@ public class MainController {
         credentials.put("skoval", "Exadel1");
         credentials.put("paulk@51maps.onmicrosoft.com", "kNm6iKgYxJ1ILRg4nv");
     }
-
 
     @RequestMapping("/")
     public String getMainPageName() {
@@ -551,7 +551,7 @@ public class MainController {
         requestData.addRequestParam("ReminderOffset", "0");
         requestData.addRequestParam("StartDate", "1448545096000");
         requestData.addRequestParam("Subject", "");
-        requestData.addRequestParam("TimeZone", "Europe/Minsk");
+        requestData.addRequestParam("Timezone", "(UTC+03:00) Minsk");
 
         return requestData;
     }
@@ -588,7 +588,7 @@ public class MainController {
         requestData.addRequestParam("StartDate", "1448545096000");
         requestData.addRequestParam("Subject", "");
         requestData.addRequestParam("Categories", "");
-        requestData.addRequestParam("TimeZone", "Europe/Minsk");
+        requestData.addRequestParam("Timezone", "(UTC+03:00) Minsk");
 
 
         return requestData;
@@ -624,6 +624,17 @@ public class MainController {
     @ResponseBody
     public PredefinedRequestData predefParamsForExchangeGetAppointmentCategories(@ModelAttribute("authToken") String authToken,
                                                                                  @ModelAttribute("exchgToken") String exchgToken) {
+        PredefinedRequestData requestData = mainService.createPredefinedRequestData();
+        requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
+        requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
+
+        return requestData;
+    }
+
+    @RequestMapping(value = "/exchangeGetTimezones/predefined")
+    @ResponseBody
+    public PredefinedRequestData predefParamsForExchangeGetTimezones(@ModelAttribute("authToken") String authToken,
+                                                                     @ModelAttribute("exchgToken") String exchgToken) {
         PredefinedRequestData requestData = mainService.createPredefinedRequestData();
         requestData.addRequestHeader("X-51MAPS-AuthToken", authToken);
         requestData.addRequestHeader("X-51MAPS-Exchange-AuthToken", exchgToken);
@@ -1109,6 +1120,20 @@ public class MainController {
         HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
         String baseUrl = requestData.get("baseUrl").trim();
         HttpPost contactsRequest = new HttpPost(baseUrl + exchangeGetAppointmentCategoriesUrl);
+        contactsRequest.setEntity(mainService.constructRequestBody(requestData));
+        contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
+
+        HttpResponse response = httpClient.execute(contactsRequest);
+
+        return mainService.constructSuccessResponse(response, null);
+    }
+
+    @RequestMapping(value = "/exchangeGetTimezones", method = RequestMethod.POST)
+    @ResponseBody
+    public Response exchangeGetTimezones(@RequestBody Map<String, String> requestData) throws IOException {
+        HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
+        String baseUrl = requestData.get("baseUrl").trim();
+        HttpPost contactsRequest = new HttpPost(baseUrl + exchangeGetTimezonesUrl);
         contactsRequest.setEntity(mainService.constructRequestBody(requestData));
         contactsRequest.setHeaders(mainService.constructHeadersArray(requestData.get("headers").trim()));
 

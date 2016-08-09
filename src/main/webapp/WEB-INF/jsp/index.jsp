@@ -66,6 +66,9 @@
             <div class="arrow-big" id="exchangeToggle"></div>
             <div class="panel" id="exchangePanel">
                 <br/>
+                <input type="button" class="button" value="Get timezones" id="exchangeGetTimezonesBtn"/>
+                <hr/>
+
                 <div class="accordion">
                     <label class="label">Folders</label>
                     <div class="arrow"></div>

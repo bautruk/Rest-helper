@@ -245,6 +245,11 @@ $(function() {
         sendUrl = "/exchangeDeleteAppointmentCategory";
         fillPredefinedInfo('/exchangeDeleteAppointmentCategory/predefined');
     });
+    $('#exchangeGetTimezonesBtn').click(function() {
+        setContentType("form");
+        sendUrl = "/exchangeGetTimezones";
+        fillPredefinedInfo('/exchangeGetTimezones/predefined');
+    });
 
     $('#sendButton').click(function() {
         $.ajax({
