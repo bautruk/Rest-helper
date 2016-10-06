@@ -40,6 +40,7 @@
                 <option value="exadel3">exadel3</option>
                 <option value="skoval">skoval</option>
                 <option value="paulk@51maps.onmicrosoft.com">paulk</option>
+                <option value="yurim">yurim</option>
             </select>
             <input type="button" class="button" value="Login" id="loginBtn"/>
             <br/>

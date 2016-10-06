@@ -92,6 +92,7 @@ public class MainController {
         credentials.put("exadel3", "Frame1hawk");
         credentials.put("skoval", "Exadel1");
         credentials.put("paulk@51maps.onmicrosoft.com", "kNm6iKgYxJ1ILRg4nv");
+        credentials.put("yurim", "Frame1hawk");
     }
 
     @RequestMapping("/")
@@ -106,7 +107,7 @@ public class MainController {
 
         requestData.addRequestParam("username", username);
         requestData.addRequestParam("password", credentials.get(username));
-        requestData.addRequestParam("domain", "botf03.net");
+        requestData.addRequestParam("domain", "karabas.local");
         requestData.addRequestParam("deviceId", "rest-client");
         requestData.addRequestParam("deviceIp", "10.0.0.86");
         requestData.addRequestParam("os", "IOS");
@@ -237,6 +238,9 @@ public class MainController {
         requestData.addRequestParam("ShortHeader", "false");
         requestData.addRequestParam("WithBody", "false");
         requestData.addRequestParam("ModifiedSince", "0");
+        requestData.addRequestParam("SortingField", "DATE_RECEIVED");
+        requestData.addRequestParam("SortingOrder", "DESCENDING");
+        requestData.addRequestParam("SubFolders", "false");
 
         return requestData;
     }
